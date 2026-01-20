@@ -5,8 +5,13 @@ import cleanCSS from 'gulp-clean-css';
 
 export const styles = () => {
   return app.gulp
-    .src(`${app.paths.src}/styles/**/*.{css,scss}`)
-    .pipe(gulpDartSass({ logger: dartSass.Logger.silent }).on('error', gulpDartSass.logError))
+    .src([`${app.paths.src}/styles/**/*.{css,scss}`, `!${app.paths.src}/styles/tailwind.css`])
+    .pipe(
+      gulpDartSass({
+        logger: dartSass.Logger.silent,
+        loadPaths: [app.paths.src, 'node_modules'],
+      }).on('error', gulpDartSass.logError)
+    )
     .pipe(mergeMediaQueries())
     .pipe(
       cleanCSS({
