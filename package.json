@@ -11,13 +11,22 @@
     "build:dev": "cross-env NODE_ENV=development gulp build:dev",
     "build:prod": "cross-env NODE_ENV=production gulp build:prod",
     "tailwind:setup": "node .template/setup/tailwind/setup.js",
-    "clean": "rm -rf node_modules dist pnpm-lock.yaml package-lock.json"
+    "lint": "pnpm lint:js && pnpm lint:css",
+    "lint:js": "eslint . --fix",
+    "lint:css": "stylelint \"src/**/*.{css,scss}\" --fix",
+    "format": "prettier --write \"**/*.{js,json,html,css,scss,md}\"",
+    "clean:cache": "rm -rf node_modules/.cache dist .parcel-cache",
+    "clean:all": "rm -rf node_modules dist pnpm-lock.yaml package-lock.json .parcel-cache"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.2",
     "browser-sync": "^2.27.11",
     "cross-env": "^10.1.0",
     "del": "^6.1.1",
     "dotenv": "^16.4.7",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
     "gulp": "^4.0.2",
     "gulp-clean-css": "^4.3.0",
     "gulp-csso": "^4.0.1",
@@ -32,6 +41,9 @@
     "gulp-replace": "^1.1.4",
     "gulp-svg-sprite": "^2.0.3",
     "gulp-terser": "^2.1.0",
-    "sass": "^1.83.4"
+    "prettier": "^3.8.0",
+    "sass": "^1.83.4",
+    "stylelint": "^17.0.0",
+    "stylelint-config-standard-scss": "^17.0.0"
   }
 }

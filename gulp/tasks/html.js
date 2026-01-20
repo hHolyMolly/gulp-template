@@ -3,7 +3,11 @@ import prettify from 'gulp-prettify';
 
 export const html = async () => {
   return app.gulp
-    .src([`${app.paths.src}/html/**/*.html`, `!${app.paths.src}/html/**/_*.html`, `!${app.paths.src}/html/ui/**`])
+    .src([
+      app.paths.globs.html,
+      app.paths.exclude(app.paths.globs.htmlComponents),
+      app.paths.exclude(app.paths.globs.htmlUI),
+    ])
     .pipe(
       fileInclude({
         prefix: '@@',

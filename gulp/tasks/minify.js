@@ -22,21 +22,21 @@ export const minifyHTML = () => {
 
 export const minifyCSS = () => {
   return app.gulp
-    .src(`${app.paths.build}/styles/**/*.css`)
+    .src(`${app.paths.buildStyles}/**/*.css`)
     .pipe(gulpIf(config.minify.css, csso()))
-    .pipe(app.gulp.dest(`${app.paths.build}/styles`));
+    .pipe(app.gulp.dest(app.paths.buildStyles));
 };
 
 export const minifyJS = () => {
   return app.gulp
-    .src(`${app.paths.build}/scripts/**/*.js`)
+    .src(`${app.paths.buildScripts}/**/*.js`)
     .pipe(gulpIf(config.minify.js, terser()))
-    .pipe(app.gulp.dest(`${app.paths.build}/scripts`));
+    .pipe(app.gulp.dest(app.paths.buildScripts));
 };
 
 export const minifyImages = () => {
   return app.gulp
-    .src(`${app.paths.build}/assets/img/**/*.{jpg,jpeg,png,gif,svg}`)
+    .src(`${app.paths.buildImages}/**/*.${app.paths.extensions.images}`)
     .pipe(
       gulpIf(
         config.minify.images,
@@ -50,5 +50,5 @@ export const minifyImages = () => {
         ])
       )
     )
-    .pipe(app.gulp.dest(`${app.paths.build}/assets/img`));
+    .pipe(app.gulp.dest(app.paths.buildImages));
 };

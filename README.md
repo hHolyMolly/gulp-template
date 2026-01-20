@@ -146,22 +146,15 @@ src/assets/icons/
 ### Button
 
 ```html
-@@include('ui/button/button.html', { "text": "Нажми меня", "modifier": "btn--primary" }) @@include('ui/button/button.html', { "text": "Submit", "modifier": "btn--success btn--lg",
-"attributes": "type='submit'" })
+@@include('UI/button/index.html', { "text": "Нажми меня" }) @@include('UI/button/index.html', { "text": "Отправить" })
 ```
-
-Модификаторы:
-
-- `btn--primary`, `btn--secondary`, `btn--success`, `btn--danger`
-- `btn--outline`
-- `btn--sm`, `btn--lg`
 
 ### Создание компонента
 
 ```
-src/html/ui/my-component/
-├── my-component.html
-├── my-component.scss
+src/html/UI/my-component/
+├── index.html
+├── index.scss
 ├── my-component.js (опционально)
 └── README.md
 ```
@@ -169,7 +162,7 @@ src/html/ui/my-component/
 Импорт стилей в `main.scss`:
 
 ```scss
-@import '../html/ui/my-component/my-component.scss';
+@import '../html/UI/my-component/index.scss';
 ```
 
 ---
@@ -182,7 +175,7 @@ gulp-template/
 │   ├── html/
 │   │   ├── index.html
 │   │   ├── components/     # _head, _header, _footer
-│   │   └── ui/             # UI компоненты
+│   │   └── UI/             # UI компоненты
 │   ├── styles/
 │   │   └── main.scss
 │   ├── scripts/

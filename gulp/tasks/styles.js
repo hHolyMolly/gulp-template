@@ -5,7 +5,7 @@ import cleanCSS from 'gulp-clean-css';
 
 export const styles = () => {
   return app.gulp
-    .src([`${app.paths.src}/styles/**/*.{css,scss}`, `!${app.paths.src}/styles/tailwind.css`])
+    .src([app.paths.globs.styles, app.paths.exclude(`${app.paths.srcStyles}/${app.paths.files.tailwindCSS}`)])
     .pipe(
       gulpDartSass({
         logger: dartSass.Logger.silent,
@@ -18,6 +18,6 @@ export const styles = () => {
         format: 'beautify',
       })
     )
-    .pipe(app.gulp.dest(`${app.paths.build}/styles`))
+    .pipe(app.gulp.dest(app.paths.buildStyles))
     .pipe(app.plugins.browserSync.stream());
 };

@@ -3,6 +3,10 @@
  */
 
 import 'dotenv/config';
+import { folders, files, paths as projectPaths } from '../../../project.config.js';
+
+// Re-export for convenience
+export { folders, files };
 
 // ─────────────────────────────────────────────────────────────
 // Version
@@ -27,28 +31,28 @@ export const paths = {
   // Where to create tailwind config
   config: {
     dest: './',
-    filename: 'tailwind.config.js', // or .ts, .mjs, .cjs
+    filename: files.tailwindConfig,
   },
 
   // Where to create tailwind styles
   styles: {
-    dest: 'src/styles/',
-    filename: 'tailwind.css',
+    dest: `${projectPaths.srcStyles}/`,
+    filename: files.tailwindCSS,
   },
 
   // Gulp task file
   gulpTask: {
-    dest: 'gulp/tasks/',
-    filename: 'tailwind.js',
+    dest: `${projectPaths.gulpTasks}/`,
+    filename: files.tailwindTask,
   },
 
   // HTML file to inject CDN script
-  head: 'src/html/components/_head.html',
+  head: `${projectPaths.srcHtmlLayouts}/${files.head}`,
 
   // Demo page
   demo: {
-    dest: 'src/html/',
-    filename: 'tailwind.html',
+    dest: `${projectPaths.srcHtml}/`,
+    filename: files.tailwindDemo,
   },
 };
 

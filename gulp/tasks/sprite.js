@@ -1,17 +1,15 @@
-import svgSprite from 'gulp-svg-sprite';
-
 export const sprite = () => {
   return app.gulp
-    .src(`${app.paths.src}/assets/icons/**/*.svg`)
+    .src(app.paths.globs.icons)
     .pipe(
-      svgSprite({
+      app.plugins.svgSprite({
         mode: {
           stack: {
             sprite: '../sprite.svg',
-            example: false,
+            example: true,
           },
         },
       })
     )
-    .pipe(app.gulp.dest(`${app.paths.build}/assets`));
+    .pipe(app.gulp.dest(app.paths.buildAssets));
 };

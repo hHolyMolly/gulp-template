@@ -28,6 +28,15 @@ function resolvePath(...parts) {
   return path.join(rootDir, ...parts);
 }
 
+// Helper to get folder-aware paths
+function getSourcePath(...parts) {
+  return resolvePath(config.folders.src, ...parts);
+}
+
+function getGulpPath(...parts) {
+  return resolvePath(config.folders.gulp, ...parts);
+}
+
 function copyTemplate(templateName, destPath) {
   const srcPath = path.join(templatesDir, templateName);
 
@@ -71,7 +80,7 @@ function isServerRunning() {
 
 function reloadServer() {
   // Touch a file to trigger BrowserSync reload
-  const indexPath = resolvePath('src/html/index.html');
+  const indexPath = getSourcePath(config.folders.html, config.files.indexHTML);
   if (fs.existsSync(indexPath)) {
     const now = new Date();
     fs.utimesSync(indexPath, now, now);
@@ -91,8 +100,8 @@ function createConfig() {
 function createStyles() {
   if (!config.options.createStyles) return;
 
-  const destPath = resolvePath(config.paths.styles.dest, config.paths.styles.filename);
-  copyTemplate('tailwind.css', destPath);
+  const destPath = getSourcePath(config.folders.styles, config.files.tailwindCSS);
+  copyTemplate(config.files.tailwindCSS, destPath);
 }
 
 function injectCDN() {
@@ -137,13 +146,13 @@ function injectCDN() {
 function copyDemoPage() {
   if (!config.options.copyDemoPage) return;
 
-  const destPath = resolvePath(config.paths.demo.dest, config.paths.demo.filename);
-  copyTemplate('tailwind.html', destPath);
+  const destPath = getSourcePath(config.folders.html, config.files.tailwindDemo);
+  copyTemplate(config.files.tailwindDemo, destPath);
 }
 
 function createGulpTask() {
-  const destPath = resolvePath(config.paths.gulpTask.dest, config.paths.gulpTask.filename);
-  copyTemplate('tailwind.js', destPath);
+  const destPath = getGulpPath(config.folders.tasks, config.files.tailwindTask);
+  copyTemplate(config.files.tailwindTask, destPath);
 }
 
 function updateGulpfile() {
@@ -173,7 +182,10 @@ function updateGulpfile() {
   );
 
   // Add to mainTasks
-  content = content.replace(/const mainTasks = gulp\.parallel\(([^)]+)\);/, 'const mainTasks = gulp.parallel($1, tailwind);');
+  content = content.replace(
+    /const mainTasks = gulp\.parallel\(([^)]+)\);/,
+    'const mainTasks = gulp.parallel($1, tailwind);'
+  );
 
   fs.writeFileSync(gulpfilePath, content);
   log('Updated gulpfile.js.', 'success');

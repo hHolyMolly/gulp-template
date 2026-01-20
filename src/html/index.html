@@ -1,21 +1,30 @@
 <!doctype html>
 <html lang="en">
   <head>
-    @@include('components/_head.html')
+    @@include('layouts/_head.html')
 
     <title>gulp-template</title>
   </head>
 
   <body>
     <div class="wrapper">
-      @@include('components/_header.html')
+      @@include('layouts/_header.html')
 
-      <main class="page">page</main>
+      <main class="page">
+        <h1>Примеры UI компонентов</h1>
 
-      @@include('components/_footer.html')
+        <section class="buttons-demo">
+          <h2>Кнопки</h2>
+          @@include('UI/button/index.html', { "text": "Нажми меня" })
+          @@include('UI/button/index.html', { "text": "Отправить" })
+          @@include('UI/button/index.html', { "text": "Кнопка" })
+        </section>
+      </main>
+
+      @@include('layouts/_footer.html')
     </div>
 
-    @@include('components/_modals.html')
+    @@include('layouts/_modals.html')
 
     <script src="./scripts/app.js" type="module"></script>
   </body>

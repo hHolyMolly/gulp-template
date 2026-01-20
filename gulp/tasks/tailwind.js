@@ -6,8 +6,8 @@ const { src, dest } = gulp;
 
 export const tailwind = () => {
   const { paths } = global.app;
-  const configPath = `${paths.root}/tailwind.config.js`;
-  const stylesPath = `${paths.src}/styles/tailwind.css`;
+  const configPath = `${paths.root}/${paths.files.tailwindConfig}`;
+  const stylesPath = `${paths.srcStyles}/${paths.files.tailwindCSS}`;
 
   // Check if tailwind is installed
   if (!fs.existsSync(configPath)) {
@@ -23,7 +23,7 @@ export const tailwind = () => {
 
   // Copy tailwind.css to dist/styles
   if (fs.existsSync(stylesPath)) {
-    tasks.push(src(stylesPath).pipe(dest(`${paths.build}/styles`)));
+    tasks.push(src(stylesPath).pipe(dest(paths.buildStyles)));
   }
 
   if (tasks.length === 0) {

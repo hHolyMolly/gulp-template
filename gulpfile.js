@@ -22,14 +22,17 @@ import { minifyHTML, minifyCSS, minifyJS, minifyImages } from './gulp/tasks/mini
 import { sprite } from './gulp/tasks/sprite.js';
 import { tailwind, tailwindReload } from './gulp/tasks/tailwind.js';
 
+// Destructure for cleaner code
+const { globs: g } = paths;
+
 const watchTask = () => {
-  gulp.watch(`${paths.src}/html/**/*.html`, html);
-  gulp.watch(`${paths.src}/styles/**/*.{css,scss}`, styles);
-  gulp.watch(`${paths.src}/scripts/**/*.js`, scripts);
-  gulp.watch(`${paths.src}/assets/img/**/*.{jpg,jpeg,png,svg,gif,ico,webp}`, images);
-  gulp.watch(`${paths.src}/assets/icons/**/*.svg`, sprite);
-  gulp.watch([`${app.paths.src}/assets/**/*`, `!${app.paths.src}/assets/img/**/*.{jpg,jpeg,png,svg,gif,ico,webp}`, `!${app.paths.src}/assets/icons/**/*.svg`], assets);
-  gulp.watch([`${paths.root}/tailwind.config.js`, `${paths.src}/styles/tailwind.css`], gulp.series(tailwind, tailwindReload));
+  gulp.watch(g.html, html);
+  gulp.watch(g.styles, styles);
+  gulp.watch(g.scripts, scripts);
+  gulp.watch(g.images, images);
+  gulp.watch(g.icons, sprite);
+  gulp.watch(g.assets, assets);
+  gulp.watch(g.tailwind, gulp.series(tailwind, tailwindReload));
 };
 
 const mainTasks = gulp.parallel(html, styles, scripts, images, sprite, assets, tailwind);
