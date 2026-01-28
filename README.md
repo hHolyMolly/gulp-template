@@ -55,7 +55,7 @@ Alternatively, with `NPM`:
 npm run start
 ```
 
-> Opens dev server at `http://localhost:5555`
+> Opens dev server at `http://localhost:${PORT}` (default: 3000)
 
 ### 4. Build for Development 🔨
 
@@ -233,16 +233,11 @@ npm run clean:all
 
 ### Environment Files
 
-`.env.development`:
+Configure your environment in `.env.development` and `.env.production`:
 
 ```env
-PORT=5555
-```
-
-`.env.production`:
-
-```env
-PORT=5555
+# Server port (default: 3000)
+PORT=3000
 ```
 
 ### Project Config
