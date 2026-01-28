@@ -8,6 +8,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { exec } from 'child_process';
 import http from 'http';
+import readline from 'readline';
 import * as config from './config.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -22,6 +23,20 @@ const templatesDir = path.join(__dirname, 'templates');
 function log(message, type = 'info') {
   const icons = { info: '◦', success: '✓', error: '✗', skip: '−' };
   console.log(`    ${icons[type]} ${message}`);
+}
+
+function confirm(question) {
+  return new Promise((resolve) => {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+
+    rl.question(`  ${question} (y/N): `, (answer) => {
+      rl.close();
+      resolve(answer.toLowerCase() === 'y' || answer.toLowerCase() === 'yes');
+    });
+  });
 }
 
 function resolvePath(...parts) {
@@ -220,7 +235,21 @@ async function setup() {
     return;
   }
 
-  console.log('  Installing...\n');
+  console.log('  This will:');
+  console.log('    • Create tailwind.config.js');
+  console.log('    • Create tailwind.css in styles folder');
+  console.log('    • Add Tailwind CDN to _head.html');
+  console.log('    • Create gulp task for Tailwind');
+  console.log('    • Copy demo page\n');
+
+  const confirmed = await confirm('Do you want to continue?');
+
+  if (!confirmed) {
+    console.log('\n  ❌ Setup cancelled.\n');
+    return;
+  }
+
+  console.log('\n  Installing...\n');
 
   createConfig();
   createStyles();

@@ -5,7 +5,7 @@ import browserSync from 'browser-sync';
 const { src, dest } = gulp;
 
 export const tailwind = () => {
-  const { paths } = global.app;
+  const { paths } = globalThis.app;
   const configPath = `${paths.root}/${paths.files.tailwindConfig}`;
   const stylesPath = `${paths.srcStyles}/${paths.files.tailwindCSS}`;
 

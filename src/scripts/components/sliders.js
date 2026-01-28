@@ -1,3 +1,5 @@
+/* global Swiper */
+
 const sliderConfigs = {
   '.swiper': {
     grabCursor: true,

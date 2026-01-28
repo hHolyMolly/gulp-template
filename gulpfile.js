@@ -2,14 +2,13 @@ import gulp from 'gulp';
 import dotenv from 'dotenv';
 
 const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development';
-
 dotenv.config({ path: envFile });
 
 import { paths } from './gulp/configs/paths.js';
 import { plugins } from './gulp/configs/plugins.js';
 import { config } from './gulp/configs/config.js';
 
-global.app = { paths, plugins, gulp, config };
+globalThis.app = { paths, plugins, gulp, config };
 
 import { clean } from './gulp/tasks/clean.js';
 import { html } from './gulp/tasks/html.js';
@@ -21,12 +20,23 @@ import { server } from './gulp/tasks/server.js';
 import { minifyHTML, minifyCSS, minifyJS, minifyImages } from './gulp/tasks/minify.js';
 import { sprite } from './gulp/tasks/sprite.js';
 import { tailwind, tailwindReload } from './gulp/tasks/tailwind.js';
+import { logBuildStart, logBuildEnd } from './gulp/utils/logger.js';
 
-// Destructure for cleaner code
+// ─────────────────────────────────────────────────────────────
+// Tasks
+// ─────────────────────────────────────────────────────────────
+
 const { globs: g } = paths;
+
+// Clear cache when layout/component files change
+const clearHtmlCache = (done) => {
+  delete plugins.cached.caches['html'];
+  done();
+};
 
 const watchTask = () => {
   gulp.watch(g.html, html);
+  gulp.watch([g.htmlComponents, g.htmlUI], gulp.series(clearHtmlCache, html));
   gulp.watch(g.styles, styles);
   gulp.watch(g.scripts, scripts);
   gulp.watch(g.images, images);
@@ -36,12 +46,12 @@ const watchTask = () => {
 };
 
 const mainTasks = gulp.parallel(html, styles, scripts, images, sprite, assets, tailwind);
+const minifyTasks = gulp.parallel(minifyHTML, minifyCSS, minifyJS, minifyImages);
 
-const gulp_start = gulp.series(clean, mainTasks, gulp.parallel(watchTask, server));
-gulp.task('start', gulp_start);
+// ─────────────────────────────────────────────────────────────
+// Gulp Commands
+// ─────────────────────────────────────────────────────────────
 
-const gulp_build_dev = gulp.series(clean, mainTasks);
-gulp.task('build:dev', gulp_build_dev);
-
-const gulp_build_prod = gulp.series(clean, mainTasks, gulp.parallel(minifyHTML, minifyCSS, minifyJS, minifyImages));
-gulp.task('build:prod', gulp_build_prod);
+gulp.task('start', gulp.series(logBuildStart, clean, mainTasks, gulp.parallel(watchTask, server)));
+gulp.task('build:dev', gulp.series(logBuildStart, clean, mainTasks, logBuildEnd));
+gulp.task('build:prod', gulp.series(logBuildStart, clean, mainTasks, minifyTasks, logBuildEnd));

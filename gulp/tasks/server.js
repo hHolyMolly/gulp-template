@@ -1,13 +1,20 @@
 import { config } from '../configs/config.js';
+import { logServerStart } from '../utils/logger.js';
 
 export const server = () => {
-  app.plugins.browserSync.init({
-    server: {
-      baseDir: app.paths.build,
+  app.plugins.browserSync.init(
+    {
+      server: {
+        baseDir: app.paths.build,
+      },
+      notify: false,
+      port: config.port,
+      open: true,
+      cors: true,
+      logLevel: 'silent',
     },
-    notify: false,
-    port: config.port,
-    open: true,
-    cors: true,
-  });
+    () => {
+      logServerStart(config.port);
+    }
+  );
 };
