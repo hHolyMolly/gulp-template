@@ -19,7 +19,6 @@ import { assets } from './gulp/tasks/assets.js';
 import { server } from './gulp/tasks/server.js';
 import { minifyHTML, minifyCSS, minifyJS, minifyImages } from './gulp/tasks/minify.js';
 import { sprite } from './gulp/tasks/sprite.js';
-import { tailwind, tailwindReload } from './gulp/tasks/tailwind.js';
 import { logBuildStart, logBuildEnd } from './gulp/utils/logger.js';
 
 // ─────────────────────────────────────────────────────────────
@@ -42,10 +41,9 @@ const watchTask = () => {
   gulp.watch(g.images, images);
   gulp.watch(g.icons, sprite);
   gulp.watch(g.assets, assets);
-  gulp.watch(g.tailwind, gulp.series(tailwind, tailwindReload));
 };
 
-const mainTasks = gulp.parallel(html, styles, scripts, images, sprite, assets, tailwind);
+const mainTasks = gulp.parallel(html, styles, scripts, images, sprite, assets);
 const minifyTasks = gulp.parallel(minifyHTML, minifyCSS, minifyJS, minifyImages);
 
 // ─────────────────────────────────────────────────────────────

@@ -52,12 +52,14 @@ export const extensions = {
 // ─────────────────────────────────────────────────────────────
 
 export const files = {
+  // Tailwind (used by setup script)
   tailwindConfig: 'tailwind.config.js',
   tailwindCSS: 'tailwind.css',
-  head: '_head.html',
   tailwindDemo: 'tailwind.html',
-  indexHTML: 'index.html',
   tailwindTask: 'tailwind.js',
+  // HTML
+  head: '_head.html',
+  indexHTML: 'index.html',
 };
 
 // ─────────────────────────────────────────────────────────────
@@ -125,9 +127,6 @@ export const globs = {
     `!${paths.srcImages}/**/*.${extensions.images}`,
     `!${paths.srcIcons}/**/*.${extensions.icons}`,
   ],
-
-  // Tailwind
-  tailwind: [files.tailwindConfig, `${paths.srcStyles}/${files.tailwindCSS}`],
 };
 
 // ─────────────────────────────────────────────────────────────
