@@ -1,5 +1,10 @@
+# Dependencies
 node_modules
+
+# Build output
 dist
+
+# Lock files
 pnpm-lock.yaml
 package-lock.json
 
@@ -13,3 +18,10 @@ package-lock.json
 *.njsproj
 *.sln
 *.sw?
+
+# Compressed files (generated)
+*.gz
+*.br
+
+# TypeScript cache
+*.tsbuildinfo

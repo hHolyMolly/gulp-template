@@ -1,7 +1,7 @@
 {
   "name": "gulp-template",
   "description": "Modern Gulp template with Tailwind CSS CDN, aliases, and .env configuration",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "type": "module",
   "main": "gulpfile.js",
   "author": "HolyMolly",
@@ -14,16 +14,17 @@
     "lint": "pnpm lint:js && pnpm lint:css",
     "lint:js": "eslint . --fix",
     "lint:css": "stylelint \"src/**/*.{css,scss}\" --fix",
-    "format": "prettier --write \"**/*.{js,json,html,css,scss,md}\"",
+    "format": "prettier --write \"**/*.{js,ts,json,html,css,scss,md}\"",
     "clean:cache": "rm -rf node_modules/.cache dist .parcel-cache",
     "clean:all": "rm -rf node_modules dist pnpm-lock.yaml package-lock.json .parcel-cache"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
+    "autoprefixer": "^10.4.21",
     "browser-sync": "^2.27.11",
     "cross-env": "^10.1.0",
-    "del": "^6.1.1",
     "dotenv": "^16.4.7",
+    "esbuild": "^0.25.0",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
@@ -32,6 +33,7 @@
     "gulp-clean-css": "^4.3.0",
     "gulp-csso": "^4.0.1",
     "gulp-dart-sass": "^1.1.0",
+    "gulp-esbuild": "^0.12.1",
     "gulp-file-include": "^2.3.0",
     "gulp-htmlmin": "^5.0.1",
     "gulp-if": "^3.0.0",
@@ -40,15 +42,20 @@
     "gulp-newer": "^1.4.0",
     "gulp-notify": "^5.0.0",
     "gulp-plumber": "^1.2.1",
+    "gulp-postcss": "^10.0.0",
     "gulp-prettify": "^0.5.0",
     "gulp-remember": "^1.0.1",
     "gulp-replace": "^1.1.4",
+    "gulp-size": "^5.0.0",
     "gulp-sourcemaps": "^3.0.0",
     "gulp-svg-sprite": "^2.0.3",
     "gulp-terser": "^2.1.0",
+    "gulp-webp": "^5.0.0",
+    "postcss": "^8.5.3",
     "prettier": "^3.8.0",
     "sass": "^1.83.4",
     "stylelint": "^17.0.0",
-    "stylelint-config-standard-scss": "^17.0.0"
+    "stylelint-config-standard-scss": "^17.0.0",
+    "typescript": "^5.7.3"
   }
 }

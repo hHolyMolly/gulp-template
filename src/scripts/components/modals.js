@@ -12,12 +12,43 @@ const CLASSES = {
   active: 'is-active',
 };
 
+/**
+ * Get transition duration from CSS custom property or computed style
+ * @param {HTMLElement} element - Element to get transition from
+ * @param {string} cssVar - CSS variable name (e.g., '--popup-speed')
+ * @returns {number} Duration in milliseconds (0 if not defined in CSS)
+ */
+const getTransitionDuration = (element, cssVar = '--popup-speed') => {
+  if (!element) return 0;
+
+  const styles = getComputedStyle(element);
+
+  // First try to get from CSS variable
+  const cssVarValue = styles.getPropertyValue(cssVar).trim();
+  if (cssVarValue) {
+    const parsed = parseFloat(cssVarValue);
+    // If value is in seconds (< 10), convert to ms
+    return parsed < 10 ? parsed * 1000 : parsed;
+  }
+
+  // Fallback to computed transition-duration
+  const transitionDuration = styles.transitionDuration;
+  if (transitionDuration && transitionDuration !== '0s') {
+    const parsed = parseFloat(transitionDuration);
+    return parsed * 1000;
+  }
+
+  // Return 0 if no CSS transition defined
+  return 0;
+};
+
 class Modal {
   constructor() {
     this.wrapper = document.querySelector(SELECTORS.wrapper);
     if (!this.wrapper) return;
 
-    this.speed = Number(this.wrapper.dataset.popupSpeed) || 500;
+    // Speed from data attribute or CSS variable (0 if not defined)
+    this.speed = Number(this.wrapper.dataset.popupSpeed) || getTransitionDuration(this.wrapper);
     this.isLocked = false;
 
     this.init();

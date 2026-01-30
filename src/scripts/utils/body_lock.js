@@ -1,5 +1,5 @@
 const body = document.body;
-const lockPadding = document.querySelectorAll('._lock-padding');
+const lockPadding = document.querySelectorAll('.is-lock-padding');
 
 export function bodyLock() {
   const lockPaddingValue = window.innerWidth - document.querySelector('.wrapper').offsetWidth + 'px';
@@ -11,7 +11,7 @@ export function bodyLock() {
   }
 
   body.style.paddingRight = lockPaddingValue;
-  body.classList.add('_lock-scroll');
+  body.classList.add('is-lock-scroll');
 }
 
 export function bodyUnLock(speed = 0) {
@@ -23,6 +23,6 @@ export function bodyUnLock(speed = 0) {
     }
 
     body.style.paddingRight = '0px';
-    body.classList.remove('_lock-scroll');
+    body.classList.remove('is-lock-scroll');
   }, speed);
 }

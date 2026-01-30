@@ -2,7 +2,10 @@ import * as dartSass from 'sass';
 import gulpDartSass from 'gulp-dart-sass';
 import mergeMediaQueries from 'gulp-merge-media-queries';
 import cleanCSS from 'gulp-clean-css';
+import postcss from 'gulp-postcss';
+import autoprefixer from 'autoprefixer';
 import gulpIf from 'gulp-if';
+import size from 'gulp-size';
 import { config } from '../configs/config.js';
 
 export const styles = () => {
@@ -18,6 +21,7 @@ export const styles = () => {
       }).on('error', gulpDartSass.logError)
     )
     .pipe(app.plugins.remember('styles'))
+    .pipe(postcss([autoprefixer()]))
     .pipe(mergeMediaQueries())
     .pipe(
       cleanCSS({
@@ -25,6 +29,17 @@ export const styles = () => {
       })
     )
     .pipe(gulpIf(config.sourceMaps, app.plugins.sourcemaps.write('.')))
+    .pipe(
+      gulpIf(
+        config.sizeReport.enabled,
+        size({
+          title: 'CSS',
+          showFiles: config.sizeReport.showFiles,
+          showTotal: config.sizeReport.showTotal,
+          gzip: config.sizeReport.gzip,
+        })
+      )
+    )
     .pipe(app.gulp.dest(app.paths.buildStyles))
     .pipe(app.plugins.browserSync.stream());
 };

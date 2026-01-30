@@ -21,6 +21,12 @@ class Sliders {
   }
 
   init() {
+    // Check if Swiper is available
+    if (typeof Swiper === 'undefined') {
+      console.warn('[Sliders] Swiper is not loaded. Include Swiper library to use sliders.');
+      return;
+    }
+
     Object.entries(sliderConfigs).forEach(([selector, config]) => {
       const sliders = document.querySelectorAll(selector);
       if (!sliders.length) return;
@@ -31,12 +37,16 @@ class Sliders {
 
         if (slidesCount < 1) return;
 
-        const instance = new Swiper(slider, {
-          loop: slidesCount > 1,
-          ...config,
-        });
+        try {
+          const instance = new Swiper(slider, {
+            loop: slidesCount > 1,
+            ...config,
+          });
 
-        this.instances.set(`${selector}-${index}`, instance);
+          this.instances.set(`${selector}-${index}`, instance);
+        } catch (error) {
+          console.error(`[Sliders] Failed to initialize slider "${selector}":`, error);
+        }
       });
     });
   }
@@ -51,6 +61,11 @@ class Sliders {
       instance.destroy();
       this.instances.delete(`${selector}-${index}`);
     }
+  }
+
+  destroyAll() {
+    this.instances.forEach((instance) => instance.destroy());
+    this.instances.clear();
   }
 }
 

@@ -1,0 +1,16 @@
+# Browsers that we support
+# https://browsersl.ist/
+
+# Production: Modern browsers with good support
+last 2 versions
+> 1%
+not dead
+not op_mini all
+
+# Safari needs special attention
+Safari >= 14
+iOS >= 14
+
+# Exclude old browsers
+not IE 11
+not IE_Mob 11

@@ -1,5 +1,9 @@
-import del from 'del';
+import fs from 'fs/promises';
 
-export const clean = () => {
-  return del(app.paths.build);
+export const clean = async () => {
+  try {
+    await fs.rm(app.paths.build, { recursive: true, force: true });
+  } catch {
+    // Directory doesn't exist, ignore
+  }
 };

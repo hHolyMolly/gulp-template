@@ -1,0 +1,120 @@
+<!-- Welcome Component — удали после ознакомления -->
+<section class="welcome">
+  <style>
+    .welcome {
+      padding: 2rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 12px;
+      color: #fff;
+      margin-bottom: 2rem;
+    }
+    .welcome h1 {
+      margin: 0 0 0.5rem;
+      font-size: 2rem;
+    }
+    .welcome p {
+      margin: 0;
+      opacity: 0.9;
+    }
+    .welcome__content {
+      display: grid;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    /* Button Example (из UI компонентов) */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 500;
+      text-decoration: none;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    .btn--primary {
+      background: #fff;
+      color: #667eea;
+    }
+    .btn--outline {
+      background: transparent;
+      color: #fff;
+      border: 2px solid #fff;
+    }
+    .btn .icon {
+      width: 1em;
+      height: 1em;
+      fill: currentColor;
+    }
+
+    /* SVG Sprite Demo */
+    .sprite-demo {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1.5rem;
+      border-radius: 8px;
+    }
+    .sprite-demo h3 {
+      margin: 0 0 1rem;
+      font-size: 1rem;
+    }
+    .sprite-demo code {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+    }
+    .icons-row {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .icons-row .icon {
+      width: 32px;
+      height: 32px;
+      fill: #fff;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.5rem;
+      border-radius: 8px;
+    }
+  </style>
+
+  <h1>🚀 gulp-template</h1>
+  <p>Готов к работе. Удали этот компонент и начинай разработку.</p>
+
+  <div class="welcome__content">
+    <!-- Buttons Example -->
+    <div class="buttons-demo">
+      <h3>Пример кнопок</h3>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;">
+        <button class="btn btn--primary">
+          <svg class="icon"><use href="./assets/icons/sprite.symbol.svg#search"></use></svg>
+          Primary Button
+        </button>
+        <button class="btn btn--outline">
+          <svg class="icon"><use href="./assets/icons/sprite.symbol.svg#arrow-right"></use></svg>
+          Outline Button
+        </button>
+      </div>
+    </div>
+
+    <!-- SVG Sprite Example -->
+    <div class="sprite-demo">
+      <h3>SVG Sprite (symbol mode)</h3>
+      <p>Использование: <code>&lt;svg&gt;&lt;use href="./assets/icons/sprite.symbol.svg#icon-name"&gt;&lt;/use&gt;&lt;/svg&gt;</code></p>
+      <div class="icons-row">
+        <svg class="icon"><use href="./assets/icons/sprite.symbol.svg#search"></use></svg>
+        <svg class="icon"><use href="./assets/icons/sprite.symbol.svg#heart"></use></svg>
+        <svg class="icon"><use href="./assets/icons/sprite.symbol.svg#bell"></use></svg>
+        <svg class="icon"><use href="./assets/icons/sprite.symbol.svg#arrow-right"></use></svg>
+      </div>
+    </div>
+  </div>
+</section>

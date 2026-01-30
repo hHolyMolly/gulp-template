@@ -11,14 +11,9 @@
       @@include('layouts/_header.html')
 
       <main class="page">
-        <h1>Примеры UI компонентов</h1>
-
-        <section class="buttons-demo">
-          <h2>Кнопки</h2>
-          @@include('UI/button/index.html', { "text": "Нажми меня" })
-          @@include('UI/button/index.html', { "text": "Отправить" })
-          @@include('UI/button/index.html', { "text": "Кнопка" })
-        </section>
+        <div class="container">
+          @@include('components/_welcome.html')
+        </div>
       </main>
 
       @@include('layouts/_footer.html')

@@ -23,7 +23,6 @@ export const folders = {
   // HTML subfolders
   layouts: 'layouts',
   components: 'components',
-  ui: 'ui',
 
   // Gulp folders
   gulp: 'gulp',
@@ -41,9 +40,9 @@ export const folders = {
 
 export const extensions = {
   styles: '{css,scss}',
-  scripts: 'js',
+  scripts: '{js,ts}',
   html: 'html',
-  images: '{jpg,jpeg,png,svg,gif,ico,webp}',
+  images: '{jpg,jpeg,png,svg,gif,ico,webp,avif}',
   icons: 'svg',
 };
 
@@ -81,7 +80,6 @@ export const paths = {
   srcHtmlLayouts: `${folders.src}/${folders.html}/${folders.layouts}`,
   srcHtmlPages: `${folders.src}/${folders.html}/${folders.pages}`,
   srcHtmlComponents: `${folders.src}/${folders.html}/${folders.components}`,
-  srcHtmlUI: `${folders.src}/${folders.html}/${folders.ui}`,
 
   // Build paths
   buildStyles: `${folders.build}/${folders.styles}`,
@@ -107,7 +105,6 @@ export const globs = {
   // HTML
   html: `${paths.srcHtml}/**/*.${extensions.html}`,
   htmlComponents: `${paths.srcHtml}/**/_*.${extensions.html}`,
-  htmlUI: `${paths.srcHtmlUI}/**`,
 
   // Styles
   styles: `${paths.srcStyles}/**/*.${extensions.styles}`,

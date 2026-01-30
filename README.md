@@ -1,19 +1,25 @@
 # 📌 Gulp Template
 
-Modern Gulp template with SCSS, SVG sprites, UI components, and flexible configuration.
+Modern Gulp template with SCSS, SVG sprites, TypeScript, and flexible configuration.
 
 ---
 
 ## ✨ Features
 
 - 🔥 **BrowserSync** — Hot reload development server
-- 🎨 **SCSS** — With source maps and auto-prefixing
-- 📦 **SVG Sprites** — Automatic sprite generation
-- 🧩 **UI Components** — Ready-to-use component system
+- 🎨 **SCSS** — With source maps, autoprefixer, and media query merging
+- 📦 **SVG Sprites** — Automatic sprite generation (symbol mode)
 - 🗂️ **File Include** — Modular HTML structure
 - ⚡ **Tailwind CSS** — Optional setup via CDN
 - 🔧 **ESLint + Prettier + Stylelint** — Code quality tools
-- 📁 **Flexible Config** — Single source of truth in `project.config.js`
+- 📁 **Flexible Config** — Single source of truth
+- 🖼️ **WebP/AVIF** — Automatic modern image format generation
+- 🗜️ **GZIP/Brotli** — Pre-compression for production
+- 📊 **Size Report** — Build size analysis
+- 🗺️ **Sitemap & Robots.txt** — SEO files generation (optional)
+- 🔄 **Lazy Loading** — Automatic image lazy loading
+- 📝 **TypeScript** — Full TypeScript support out of the box
+- ⚡ **esbuild** — Fast JavaScript/TypeScript transpilation
 
 ---
 
@@ -258,18 +264,53 @@ export const folders = {
 
 ## 📜 Available Scripts
 
-| Command               | Description               |
-| --------------------- | ------------------------- |
-| `pnpm start`          | Start development server  |
-| `pnpm build:dev`      | Build for development     |
-| `pnpm build:prod`     | Build for production      |
-| `pnpm lint`           | Run all linters           |
-| `pnpm lint:js`        | Lint JavaScript           |
-| `pnpm lint:css`       | Lint styles               |
-| `pnpm format`         | Format code with Prettier |
-| `pnpm tailwind:setup` | Setup Tailwind CSS        |
-| `pnpm clean:cache`    | Clear cache               |
-| `pnpm clean:all`      | Full project cleanup      |
+| Command               | Description                  |
+| --------------------- | ---------------------------- |
+| `pnpm start`          | Start development server     |
+| `pnpm build:dev`      | Build for development        |
+| `pnpm build:prod`     | Build for production         |
+| `pnpm build:analyze`  | Build with size analysis     |
+| `pnpm lint`           | Run all linters              |
+| `pnpm lint:js`        | Lint JavaScript/TypeScript   |
+| `pnpm lint:css`       | Lint styles                  |
+| `pnpm format`         | Format code with Prettier    |
+| `pnpm tailwind:setup` | Setup Tailwind CSS           |
+| `pnpm clean:cache`    | Clear cache                  |
+| `pnpm clean:all`      | Full project cleanup         |
+
+---
+
+## ⚙️ Build Configuration
+
+All build options are configured in `gulp/configs/config.js`:
+
+```js
+export const config = {
+  // WebP/AVIF generation
+  images: {
+    webp: { enabled: true, quality: 80 },
+    avif: { enabled: true, quality: 50 },
+  },
+
+  // SVG Sprite mode: 'symbol' | 'stack' | 'both'
+  sprite: { mode: 'symbol' },
+
+  // TypeScript support
+  typescript: { enabled: false },
+
+  // Compression
+  compression: {
+    gzip: { enabled: true },
+    brotli: { enabled: true },
+  },
+
+  // SEO files
+  seo: {
+    sitemap: { enabled: false, hostname: 'https://example.com' },
+    robots: { enabled: false },
+  },
+};
+```
 
 ---
 

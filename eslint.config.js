@@ -62,9 +62,9 @@ export default [
       globals: nodeGlobals,
     },
   },
-  // Browser files (src/scripts)
+  // Browser files (src/scripts) - JS and TS
   {
-    files: ['src/scripts/**/*.js'],
+    files: ['src/scripts/**/*.js', 'src/scripts/**/*.ts'],
     plugins: { prettier },
     rules: {
       'prettier/prettier': 'warn',
@@ -78,6 +78,6 @@ export default [
     },
   },
   {
-    ignores: ['dist/**', 'node_modules/**', '*.min.js'],
+    ignores: ['dist/**', 'node_modules/**', '*.min.js', '*.d.ts'],
   },
 ];
