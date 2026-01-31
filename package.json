@@ -6,10 +6,6 @@
   "main": "gulpfile.js",
   "author": "HolyMolly",
   "license": "MIT",
-  "engines": {
-    "node": ">=18.0.0",
-    "pnpm": ">=8.0.0"
-  },
   "scripts": {
     "start": "cross-env NODE_OPTIONS=--no-deprecation NODE_ENV=development gulp start",
     "build:dev": "cross-env NODE_OPTIONS=--no-deprecation NODE_ENV=development gulp build:dev",

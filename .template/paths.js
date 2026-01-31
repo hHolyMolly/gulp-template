@@ -1,6 +1,6 @@
 /**
  * Template Paths
- * Утилиты для скриптов установки в .template/setup/
+ * Utilities for setup scripts in .template/setup/
  */
 
 import path from 'path';
@@ -17,17 +17,17 @@ const { folders } = projectConfig;
 // ─────────────────────────────────────────────────────────────
 
 /**
- * Путь относительно корня проекта
+ * Path relative to project root
  */
 export const resolvePath = (...parts) => path.join(rootDir, ...parts);
 
 /**
- * Путь к исходникам
+ * Path to source files
  */
 export const srcPath = (...parts) => resolvePath(folders.src, ...parts);
 
 /**
- * Путь к gulp задачам
+ * Path to gulp tasks
  */
 export const gulpPath = (...parts) => resolvePath('gulp', ...parts);
 
@@ -39,7 +39,7 @@ export const templatePaths = {
   root: rootDir,
   template: __dirname,
 
-  // Вычисляемые пути
+  // Computed paths
   src: srcPath(),
   srcStyles: srcPath(folders.styles),
   srcScripts: srcPath(folders.scripts),

@@ -21,7 +21,7 @@ export const imagesWebp = () => {
     return Promise.resolve();
   }
 
-  // Только jpg/jpeg/png, исключаем уже webp
+  // Only jpg/jpeg/png, exclude already webp
   const src = [`${paths.srcImages}/**/*.{jpg,jpeg,png}`, `!${paths.srcImages}/**/*.webp`];
 
   return gulp

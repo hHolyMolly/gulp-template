@@ -5,19 +5,19 @@
 import gulp from 'gulp';
 import dotenv from 'dotenv';
 
-// Загрузка переменных окружения
+// Load environment variables
 const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development';
 dotenv.config({ path: envFile });
 
-// Конфигурация
+// Configuration
 import { paths } from './gulp/configs/paths.js';
 import { plugins } from './gulp/configs/plugins.js';
 import { config } from './gulp/configs/config.js';
 
-// Глобальный объект приложения
+// Global app object
 globalThis.app = { gulp, paths, plugins, config };
 
-// Задачи
+// Tasks
 import { clean, clearHtmlCache, clearStylesCache } from './gulp/tasks/clean.js';
 import { html } from './gulp/tasks/html.js';
 import { styles } from './gulp/tasks/styles.js';

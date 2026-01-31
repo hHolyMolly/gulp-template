@@ -19,7 +19,7 @@ export default [
       globals: {
         ...globals.browser,
         ...globals.node,
-        app: 'readonly', // Наш глобальный объект Gulp
+        app: 'readonly', // Global Gulp object
       },
     },
   },
