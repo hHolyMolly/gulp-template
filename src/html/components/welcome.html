@@ -62,12 +62,13 @@
   }
 
   .welcome__title {
-    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-size: clamp(2rem, 5vw, 3.5rem);
     font-weight: 800;
-    line-height: 1.1;
+    line-height: 1.2;
     letter-spacing: -0.02em;
     color: #f8fafc;
     margin-bottom: 24px;
+    text-wrap: balance;
   }
 
   .welcome__gradient {
@@ -115,23 +116,13 @@
     box-shadow: 0 8px 32px rgba(56, 189, 248, 0.4);
   }
 
-  .welcome__btn--secondary {
-    color: #f8fafc;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .welcome__btn--secondary:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.2);
-  }
-
   .welcome__stack {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
     justify-content: center;
-    max-width: 600px;
+    max-width: 700px;
+    margin: 0 auto;
   }
 
   .welcome__tag {
@@ -204,8 +195,6 @@
         </svg>
         GitHub
       </a>
-
-      <a href="#" class="welcome__btn welcome__btn--secondary"> Документация </a>
     </div>
 
     <div class="welcome__stack">
