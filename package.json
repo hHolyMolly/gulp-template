@@ -18,15 +18,21 @@
     "clean:all": "rm -rf node_modules dist pnpm-lock.yaml"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.2",
     "autoprefixer": "^10.4.21",
     "browser-sync": "^2.27.11",
     "cross-env": "^10.1.0",
     "dotenv": "^16.4.7",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "globals": "^17.2.0",
     "gulp": "^4.0.2",
     "gulp-cached": "^1.1.1",
     "gulp-csso": "^4.0.1",
     "gulp-dart-sass": "^1.1.0",
     "gulp-file-include": "^2.3.0",
+    "gulp-html-beautify": "^1.0.1",
     "gulp-htmlmin": "^5.0.1",
     "gulp-if": "^3.0.0",
     "gulp-merge-media-queries": "^0.2.1",
@@ -43,16 +49,11 @@
     "gulp-terser": "^2.1.0",
     "gulp-webp": "^5.0.0",
     "postcss": "^8.5.3",
+    "prettier": "^3.8.0",
     "sass": "^1.83.4",
     "sharp": "^0.33.0",
-    "through2": "^4.0.2",
-    "@eslint/js": "^9.39.2",
-    "eslint": "^9.39.2",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.5",
-    "globals": "^17.2.0",
-    "prettier": "^3.8.0",
     "stylelint": "^17.0.0",
-    "stylelint-config-standard-scss": "^17.0.0"
+    "stylelint-config-standard-scss": "^17.0.0",
+    "through2": "^4.0.2"
   }
 }
