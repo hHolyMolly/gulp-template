@@ -3,10 +3,15 @@
  */
 
 import 'dotenv/config';
-import { folders, files, paths as projectPaths } from '../../../project.config.js';
+import { projectConfig } from '../../paths.js';
 
-// Re-export for convenience
-export { folders, files };
+const { folders } = projectConfig;
+
+// ─────────────────────────────────────────────────────────────
+// Export folders
+// ─────────────────────────────────────────────────────────────
+
+export { folders };
 
 // ─────────────────────────────────────────────────────────────
 // Version
@@ -24,7 +29,18 @@ export const server = {
 };
 
 // ─────────────────────────────────────────────────────────────
-// Paths (relative to project root)
+// Files
+// ─────────────────────────────────────────────────────────────
+
+export const files = {
+  tailwindConfig: 'tailwind.config.js',
+  tailwindCSS: 'tailwind.css',
+  tailwindDemo: 'tailwind-demo.html',
+  head: '_head.html',
+};
+
+// ─────────────────────────────────────────────────────────────
+// Paths
 // ─────────────────────────────────────────────────────────────
 
 export const paths = {
@@ -36,22 +52,22 @@ export const paths = {
 
   // Where to create tailwind styles
   styles: {
-    dest: `${projectPaths.srcStyles}/`,
+    dest: `${folders.src}/${folders.styles}/`,
     filename: files.tailwindCSS,
   },
 
   // Gulp task file
   gulpTask: {
-    dest: `${projectPaths.gulpTasks}/`,
-    filename: files.tailwindTask,
+    dest: 'gulp/tasks/',
+    filename: 'tailwind.js',
   },
 
   // HTML file to inject CDN script
-  head: `${projectPaths.srcHtmlLayouts}/${files.head}`,
+  head: `${folders.src}/${folders.html}/${folders.layouts}/${files.head}`,
 
   // Demo page
   demo: {
-    dest: `${projectPaths.srcHtml}/`,
+    dest: `${folders.src}/${folders.html}/`,
     filename: files.tailwindDemo,
   },
 };
@@ -61,16 +77,9 @@ export const paths = {
 // ─────────────────────────────────────────────────────────────
 
 export const options = {
-  // Open demo page in browser after setup
   openBrowser: true,
-
-  // Copy demo page to project
   copyDemoPage: true,
-
-  // Create tailwind.css in styles folder
   createStyles: true,
-
-  // Inject CDN script into _head.html
   injectCDN: true,
 };
 
@@ -79,16 +88,12 @@ export const options = {
 // ─────────────────────────────────────────────────────────────
 
 export const cdn = {
-  // Use specific version or 'latest'
   url: `https://cdn.tailwindcss.com/${version}`,
-
-  // Script attributes
   attributes: '',
-  // Example: 'defer' or 'data-turbo-track="reload"'
 };
 
 // ─────────────────────────────────────────────────────────────
-// Computed URLs
+// URLs
 // ─────────────────────────────────────────────────────────────
 
 export const urls = {

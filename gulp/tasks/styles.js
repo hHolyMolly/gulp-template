@@ -1,45 +1,36 @@
 import * as dartSass from 'sass';
 import gulpDartSass from 'gulp-dart-sass';
+import sassGlob from 'gulp-sass-glob';
 import mergeMediaQueries from 'gulp-merge-media-queries';
-import cleanCSS from 'gulp-clean-css';
 import postcss from 'gulp-postcss';
 import autoprefixer from 'autoprefixer';
-import gulpIf from 'gulp-if';
-import size from 'gulp-size';
-import { config } from '../configs/config.js';
+import { sizeReporter, sourcemapsInit, sourcemapsWrite } from '../utils/index.js';
 
 export const styles = () => {
-  return app.gulp
-    .src([app.paths.globs.styles, app.paths.exclude(`${app.paths.srcStyles}/${app.paths.files.tailwindCSS}`)])
-    .pipe(app.plugins.errorHandler('Styles'))
-    .pipe(app.plugins.cached('styles'))
-    .pipe(gulpIf(config.sourceMaps, app.plugins.sourcemaps.init()))
+  const { gulp, paths, plugins, config } = app;
+
+  // Exclude critical.scss if disabled
+  const src = config.optimization.criticalCSS
+    ? paths.globs.styles
+    : [...paths.globs.styles, `!${paths.srcStyles}/critical.scss`];
+
+  return gulp
+    .src(src)
+    .pipe(plugins.errorHandler('Styles'))
+    .pipe(plugins.cached('styles'))
+    .pipe(sourcemapsInit())
+    .pipe(sassGlob())
     .pipe(
       gulpDartSass({
         logger: dartSass.Logger.silent,
-        loadPaths: [app.paths.src, 'node_modules'],
+        loadPaths: [paths.src, 'node_modules'],
       }).on('error', gulpDartSass.logError)
     )
-    .pipe(app.plugins.remember('styles'))
+    .pipe(plugins.remember('styles'))
     .pipe(postcss([autoprefixer()]))
     .pipe(mergeMediaQueries())
-    .pipe(
-      cleanCSS({
-        format: config.isDev ? 'beautify' : false,
-      })
-    )
-    .pipe(gulpIf(config.sourceMaps, app.plugins.sourcemaps.write('.')))
-    .pipe(
-      gulpIf(
-        config.sizeReport.enabled,
-        size({
-          title: 'CSS',
-          showFiles: config.sizeReport.showFiles,
-          showTotal: config.sizeReport.showTotal,
-          gzip: config.sizeReport.gzip,
-        })
-      )
-    )
-    .pipe(app.gulp.dest(app.paths.buildStyles))
-    .pipe(app.plugins.browserSync.stream());
+    .pipe(sourcemapsWrite())
+    .pipe(sizeReporter('CSS'))
+    .pipe(gulp.dest(paths.buildStyles))
+    .pipe(plugins.browserSync.stream());
 };

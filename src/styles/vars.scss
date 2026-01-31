@@ -1,0 +1,14 @@
+:root {
+  /* Colors (with RGB for opacity control) */
+  --white: #fff;
+  --white-rgb: 255, 255, 255;
+  --black: #222;
+  --black-rgb: 34, 34, 34;
+
+  /* Typography */
+  --font-family: -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, 'Helvetica Neue', arial, sans-serif;
+
+  /* Transitions */
+  --transition-fast: 0.15s;
+  --transition-base: 0.3s;
+}

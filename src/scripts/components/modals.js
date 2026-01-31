@@ -47,8 +47,8 @@ class Modal {
     this.wrapper = document.querySelector(SELECTORS.wrapper);
     if (!this.wrapper) return;
 
-    // Speed from data attribute or CSS variable (0 if not defined)
-    this.speed = Number(this.wrapper.dataset.popupSpeed) || getTransitionDuration(this.wrapper);
+    // Speed from CSS variable --popup-speed
+    this.speed = getTransitionDuration(this.wrapper);
     this.isLocked = false;
 
     this.init();

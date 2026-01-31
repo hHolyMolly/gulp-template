@@ -1,0 +1,29 @@
+/* ─────────────────────────────────────────────────────────────
+   Custom Fonts
+   ─────────────────────────────────────────────────────────────
+
+   Add your @font-face declarations here.
+   Place font files in: src/assets/fonts/
+
+   Example:
+
+   @font-face {
+     font-family: 'CustomFont';
+     src: url('./assets/fonts/CustomFont-Regular.woff2') format('woff2');
+     font-weight: 400;
+     font-style: normal;
+     font-display: swap;
+   }
+
+   @font-face {
+     font-family: 'CustomFont';
+     src: url('./assets/fonts/CustomFont-Bold.woff2') format('woff2');
+     font-weight: 700;
+     font-style: normal;
+     font-display: swap;
+   }
+
+   Then update --font-family in vars.css:
+   --font-family: 'CustomFont', -apple-system, BlinkMacSystemFont, sans-serif;
+
+   ───────────────────────────────────────────────────────────── */

@@ -1,2 +1,7 @@
-onlyBuiltDependencies:
+ignoredBuiltDependencies:
+  - '@parcel/watcher'
+  - cwebp-bin
+  - es5-ext
+  - esbuild
+  - fsevents
   - sharp

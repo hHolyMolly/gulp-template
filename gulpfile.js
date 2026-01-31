@@ -1,16 +1,24 @@
+/**
+ * Gulpfile
+ */
+
 import gulp from 'gulp';
 import dotenv from 'dotenv';
 
+// Загрузка переменных окружения
 const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development';
 dotenv.config({ path: envFile });
 
+// Конфигурация
 import { paths } from './gulp/configs/paths.js';
 import { plugins } from './gulp/configs/plugins.js';
 import { config } from './gulp/configs/config.js';
 
-globalThis.app = { paths, plugins, gulp, config };
+// Глобальный объект приложения
+globalThis.app = { gulp, paths, plugins, config };
 
-import { clean } from './gulp/tasks/clean.js';
+// Задачи
+import { clean, clearHtmlCache, clearStylesCache } from './gulp/tasks/clean.js';
 import { html } from './gulp/tasks/html.js';
 import { styles } from './gulp/tasks/styles.js';
 import { scripts } from './gulp/tasks/scripts.js';
@@ -19,42 +27,37 @@ import { assets } from './gulp/tasks/assets.js';
 import { server } from './gulp/tasks/server.js';
 import { minifyHTML, minifyCSS, minifyJS, minifyImages } from './gulp/tasks/minify.js';
 import { sprite } from './gulp/tasks/sprite.js';
-import { sitemap, robots } from './gulp/tasks/optimize.js';
-import { logBuildStart, logBuildEnd } from './gulp/utils/logger.js';
+import { sitemap, robots, extractMedia } from './gulp/tasks/optimize.js';
+import { logBuildStart, logBuildEnd } from './gulp/utils/index.js';
 
-// ─────────────────────────────────────────────────────────────
-// Tasks
-// ─────────────────────────────────────────────────────────────
+// Watch
 
-const { globs: g } = paths;
+const { globs } = paths;
 
-// Clear cache when layout/component files change
-const clearHtmlCache = (done) => {
-  delete plugins.cached.caches['html'];
-  done();
+const watch = () => {
+  gulp.watch(globs.html, html);
+  gulp.watch(globs.htmlComponents, gulp.series(clearHtmlCache, html));
+  gulp.watch(globs.stylesWatch, gulp.series(clearStylesCache, styles));
+  gulp.watch(globs.scripts, scripts);
+  gulp.watch(globs.images, images);
+  gulp.watch(globs.sprites, sprite);
+  gulp.watch(globs.assets, assets);
 };
 
-const watchTask = () => {
-  gulp.watch(g.html, html);
-  gulp.watch([g.htmlComponents], gulp.series(clearHtmlCache, html));
-  gulp.watch(g.styles, styles);
-  gulp.watch(g.scripts, scripts);
-  gulp.watch(g.images, images);
-  gulp.watch(g.icons, sprite);
-  gulp.watch(g.assets, assets);
-};
+// ─────────────────────────────────────────────────────────────
+// Task Groups
+// ─────────────────────────────────────────────────────────────
 
-// Image processing with WebP
 const imagesTasks = gulp.series(images, imagesWebp);
-
 const mainTasks = gulp.parallel(html, styles, scripts, imagesTasks, sprite, assets);
 const minifyTasks = gulp.parallel(minifyHTML, minifyCSS, minifyJS, minifyImages);
 const seoTasks = gulp.series(sitemap, robots);
+const optimizeTasks = gulp.series(extractMedia, minifyTasks, seoTasks);
 
 // ─────────────────────────────────────────────────────────────
-// Gulp Commands
+// Commands
 // ─────────────────────────────────────────────────────────────
 
-gulp.task('start', gulp.series(logBuildStart, clean, mainTasks, gulp.parallel(watchTask, server)));
+gulp.task('start', gulp.series(logBuildStart, clean, mainTasks, gulp.parallel(watch, server)));
 gulp.task('build:dev', gulp.series(logBuildStart, clean, mainTasks, logBuildEnd));
-gulp.task('build:prod', gulp.series(logBuildStart, clean, mainTasks, minifyTasks, seoTasks, logBuildEnd));
+gulp.task('build:prod', gulp.series(logBuildStart, clean, mainTasks, optimizeTasks, logBuildEnd));

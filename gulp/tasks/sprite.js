@@ -1,25 +1,16 @@
-import { config } from '../configs/config.js';
+export const sprite = () => {
+  const { gulp, paths, plugins, config } = app;
 
-// Get SVG sprite configuration based on mode
-const getSpriteConfig = () => {
-  const modes = {};
-
-  if (config.sprite.mode === 'symbol' || config.sprite.mode === 'both') {
-    modes.symbol = {
-      sprite: '../icons/sprite.symbol.svg',
-      example: config.sprite.example,
-    };
+  if (!config.sprites.enabled) {
+    return Promise.resolve();
   }
 
-  if (config.sprite.mode === 'stack' || config.sprite.mode === 'both') {
-    modes.stack = {
-      sprite: '../icons/sprite.stack.svg',
-      example: config.sprite.example,
-    };
-  }
-
-  return {
-    mode: modes,
+  const spriteConfig = {
+    mode: {
+      symbol: {
+        sprite: `../${config.folders.sprites}/${config.sprites.fileName}`,
+      },
+    },
     shape: {
       transform: [
         {
@@ -34,12 +25,10 @@ const getSpriteConfig = () => {
       ],
     },
   };
-};
 
-export const sprite = () => {
-  return app.gulp
-    .src(app.paths.globs.icons)
-    .pipe(app.plugins.errorHandler('Sprite'))
-    .pipe(app.plugins.svgSprite(getSpriteConfig()))
-    .pipe(app.gulp.dest(app.paths.buildAssets));
+  return gulp
+    .src(paths.globs.sprites)
+    .pipe(plugins.errorHandler('Sprite'))
+    .pipe(plugins.svgSprite(spriteConfig))
+    .pipe(gulp.dest(paths.buildAssets));
 };
