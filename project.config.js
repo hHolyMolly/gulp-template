@@ -33,6 +33,7 @@ export const projectConfig = {
   // Dev server
   server: {
     port: parseInt(process.env.PORT) || 3000,
+    hostname: process.env.HOSTNAME || 'http://localhost:3000',
   },
 
   // Environment
@@ -52,7 +53,6 @@ export const projectConfig = {
       js: isProd,
       images: isProd,
     },
-    extractMedia: isProd,
     criticalCSS: false,
     sitemap: false,
     robots: false,

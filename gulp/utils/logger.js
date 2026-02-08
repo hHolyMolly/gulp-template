@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import notifier from 'node-notifier';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const pkg = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../package.json'), 'utf-8'));
@@ -53,7 +54,11 @@ export const logBuildEnd = (done) => {
   console.log('');
   console.log(divider());
   console.log('');
-
+  notifier.notify({
+    title: pkg.name,
+    message: `Build completed \u2014 ${app.config.env.isProd ? 'production' : 'development'}`,
+    sound: true,
+  });
   done();
 };
 

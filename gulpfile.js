@@ -3,11 +3,9 @@
  */
 
 import gulp from 'gulp';
-import dotenv from 'dotenv';
 
-// Load environment variables
-const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development';
-dotenv.config({ path: envFile });
+// Environment (must be first — loads .env before config evaluation)
+import './gulp/configs/env.js';
 
 // Configuration
 import { paths } from './gulp/configs/paths.js';
@@ -27,7 +25,7 @@ import { assets } from './gulp/tasks/assets.js';
 import { server } from './gulp/tasks/server.js';
 import { minifyHTML, minifyCSS, minifyJS, minifyImages } from './gulp/tasks/minify.js';
 import { sprite } from './gulp/tasks/sprite.js';
-import { sitemap, robots, extractMedia } from './gulp/tasks/optimize.js';
+import { sitemap, robots } from './gulp/tasks/optimize.js';
 import { logBuildStart, logBuildEnd } from './gulp/utils/index.js';
 
 // Watch
@@ -52,7 +50,7 @@ const imagesTasks = gulp.series(images, imagesWebp);
 const mainTasks = gulp.parallel(html, styles, scripts, imagesTasks, sprite, assets);
 const minifyTasks = gulp.parallel(minifyHTML, minifyCSS, minifyJS, minifyImages);
 const seoTasks = gulp.series(sitemap, robots);
-const optimizeTasks = gulp.series(extractMedia, minifyTasks, seoTasks);
+const optimizeTasks = gulp.series(minifyTasks, seoTasks);
 
 // ─────────────────────────────────────────────────────────────
 // Commands

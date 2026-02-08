@@ -18,40 +18,6 @@ async function findHtmlFiles(dir, files = []) {
   return files;
 }
 
-export const extractMedia = async () => {
-  const { paths, config } = app;
-
-  if (!config.optimization?.extractMedia) {
-    return;
-  }
-
-  const stylesDir = paths.buildStyles;
-  const entries = await fs.readdir(stylesDir);
-  const cssFiles = entries.filter((f) => f.endsWith('.css') && !f.endsWith('.map') && f !== 'media.css');
-
-  const allMedia = [];
-  const mediaRegex = /@media[^{]+\{(?:[^{}]*|\{[^{}]*\})*\}/g;
-
-  for (const file of cssFiles) {
-    const filePath = path.join(stylesDir, file);
-    let content = await fs.readFile(filePath, 'utf-8');
-    const matches = content.match(mediaRegex) || [];
-
-    if (matches.length > 0) {
-      allMedia.push(`/* from ${file} */`);
-      allMedia.push(...matches);
-      content = content.replace(mediaRegex, '').replace(/\n\s*\n\s*\n/g, '\n\n');
-      await fs.writeFile(filePath, content, 'utf-8');
-    }
-  }
-
-  if (allMedia.length > 0) {
-    const mediaContent = `/* Media Queries */\n\n${allMedia.join('\n\n')}\n`;
-    await fs.writeFile(path.join(stylesDir, 'media.css'), mediaContent, 'utf-8');
-    logSuccess('media.css generated');
-  }
-};
-
 export const sitemap = async () => {
   const { paths, config } = app;
 
