@@ -1,4 +1,4 @@
-import fileInclude from 'gulp-file-include';
+import nunjucksRender from 'gulp-nunjucks-render';
 import htmlBeautify from 'gulp-html-beautify';
 import gulpIf from 'gulp-if';
 import { sizeReporter } from '../utils/index.js';
@@ -15,9 +15,9 @@ export const html = async () => {
     .pipe(plugins.errorHandler('HTML'))
     .pipe(plugins.cached('html'))
     .pipe(
-      fileInclude({
-        prefix: '@@',
-        basepath: paths.srcHtml,
+      nunjucksRender({
+        path: [paths.srcHtml],
+        envOptions: { autoescape: false },
       })
     )
     .pipe(

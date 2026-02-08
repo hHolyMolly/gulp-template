@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="{{ lang | default('en') }}">
+  <head>
+    {% include "layouts/_head.html" %}
+
+    <title>{% block title %}gulp-template{% endblock %}</title>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      {% block header %}{% endblock %}
+
+      <main class="page">{% block content %}{% endblock %}</main>
+
+      {% block footer %}{% endblock %}
+    </div>
+
+    {% block modals %}{% endblock %}
+
+    <script src="./scripts/app.js" type="module"></script>
+  </body>
+</html>

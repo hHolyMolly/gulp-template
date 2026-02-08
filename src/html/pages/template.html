@@ -1,22 +1,19 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    @@include('layouts/_head.html')
+{% extends "layouts/base.html" %}
 
-    <title>gulp-template</title>
-  </head>
+{% block title %}gulp-template{% endblock %}
 
-  <body>
-    <div class="wrapper">
-      @@include('layouts/_header.html')
+{% block header %}
+  {% include "layouts/_header.html" %}
+{% endblock %}
 
-      <main class="page">page</main>
+{% block content %}
+  page
+{% endblock %}
 
-      @@include('layouts/_footer.html')
-    </div>
+{% block footer %}
+  {% include "layouts/_footer.html" %}
+{% endblock %}
 
-    @@include('layouts/_modals.html')
-
-    <script src="./scripts/app.js" type="module"></script>
-  </body>
-</html>
+{% block modals %}
+  {% include "layouts/_modals.html" %}
+{% endblock %}

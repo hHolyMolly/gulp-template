@@ -4,3 +4,6 @@ pnpm-lock.yaml
 package-lock.json
 *.min.js
 *.min.css
+
+# Nunjucks templates (Prettier has no Nunjucks parser)
+src/html/**

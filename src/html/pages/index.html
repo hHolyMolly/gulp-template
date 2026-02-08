@@ -1,16 +1,7 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    @@include('layouts/_head.html')
+{% extends "layouts/base.html" %}
 
-    <title>gulp-template</title>
-  </head>
+{% block title %}gulp-template{% endblock %}
 
-  <body>
-    <div class="wrapper">
-      <main class="page">@@include('components/welcome.html')</main>
-    </div>
-
-    <script src="./scripts/app.js" type="module"></script>
-  </body>
-</html>
+{% block content %}
+  {% include "components/welcome.html" %}
+{% endblock %}
