@@ -4,9 +4,9 @@ const SELECTORS = {
 };
 
 const CLASSES = {
-  init: '_init',
+  init: 'is-init',
   active: 'is-active',
-  sliding: '_slide',
+  sliding: 'is-sliding',
 };
 
 class Spollers {
@@ -21,17 +21,16 @@ class Spollers {
   init() {
     this.containers.forEach((container) => {
       const config = container.dataset.spollers;
-      const isOneSpoller = container.hasAttribute('data-one-spoller');
 
       if (!config) {
-        this.activate(container, isOneSpoller);
+        this.activate(container);
       } else {
         const [breakpoint, type = 'max'] = config.split(',').map((s) => s.trim());
         const mediaQuery = window.matchMedia(`(${type}-width: ${breakpoint}px)`);
 
         const handleChange = () => {
           if (mediaQuery.matches) {
-            this.activate(container, isOneSpoller);
+            this.activate(container);
           } else {
             this.deactivate(container);
           }
@@ -43,18 +42,19 @@ class Spollers {
     });
   }
 
-  activate(container, isOneSpoller) {
+  activate(container) {
     container.classList.add(CLASSES.init);
 
     const triggers = container.querySelectorAll(SELECTORS.trigger);
     triggers.forEach((trigger) => {
+      trigger.removeAttribute('tabindex');
       const content = trigger.nextElementSibling;
       if (!trigger.classList.contains(CLASSES.active) && content) {
         content.hidden = true;
       }
     });
 
-    container.addEventListener('click', (e) => this.handleClick(e, isOneSpoller));
+    container.addEventListener('click', this._handleClick);
   }
 
   deactivate(container) {
@@ -62,75 +62,107 @@ class Spollers {
 
     const triggers = container.querySelectorAll(SELECTORS.trigger);
     triggers.forEach((trigger) => {
+      trigger.setAttribute('tabindex', '-1');
       const content = trigger.nextElementSibling;
       if (content) content.hidden = false;
     });
+
+    container.removeEventListener('click', this._handleClick);
   }
 
-  handleClick(e, isOneSpoller) {
+  _handleClick = (e) => {
     const trigger = e.target.closest(SELECTORS.trigger);
     if (!trigger) return;
 
+    e.preventDefault();
+
     const container = trigger.closest(SELECTORS.container);
-    if (container.querySelector(`.${CLASSES.sliding}`)) return;
+    const isOneSpoller = container.hasAttribute('data-one-spoller');
+
+    // Блокируем пока идёт анимация
+    if (container.querySelectorAll(`.${CLASSES.sliding}`).length) return;
 
     if (isOneSpoller && !trigger.classList.contains(CLASSES.active)) {
       const activeTrigger = container.querySelector(`${SELECTORS.trigger}.${CLASSES.active}`);
-      if (activeTrigger) this.toggle(activeTrigger);
+      if (activeTrigger) {
+        activeTrigger.classList.remove(CLASSES.active);
+        this._slideUp(activeTrigger.nextElementSibling, this.speed);
+      }
     }
-
-    this.toggle(trigger);
-  }
-
-  toggle(trigger) {
-    const content = trigger.nextElementSibling;
-    if (!content) return;
 
     trigger.classList.toggle(CLASSES.active);
+    this._slideToggle(trigger.nextElementSibling, this.speed);
+  };
 
-    if (trigger.classList.contains(CLASSES.active)) {
-      this.slideDown(content);
+  _slideToggle(target, duration = 500) {
+    if (target.hidden) {
+      this._slideDown(target, duration);
     } else {
-      this.slideUp(content);
+      this._slideUp(target, duration);
     }
   }
 
-  slideDown(element) {
-    element.hidden = false;
-    element.classList.add(CLASSES.sliding);
-    element.style.height = '0';
-    element.style.overflow = 'hidden';
-    element.style.transition = `height ${this.speed}ms ease`;
+  _slideDown(target, duration = 500) {
+    if (target.classList.contains(CLASSES.sliding)) return;
+    target.classList.add(CLASSES.sliding);
 
-    requestAnimationFrame(() => {
-      element.style.height = `${element.scrollHeight}px`;
-    });
+    if (target.hidden) target.hidden = false;
+
+    const height = target.offsetHeight;
+
+    target.style.overflow = 'hidden';
+    target.style.height = '0';
+    target.style.paddingTop = '0';
+    target.style.paddingBottom = '0';
+    target.style.marginTop = '0';
+    target.style.marginBottom = '0';
+    target.offsetHeight; // reflow
+
+    target.style.transitionProperty = 'height, margin, padding';
+    target.style.transitionDuration = `${duration}ms`;
+    target.style.height = `${height}px`;
+    target.style.removeProperty('padding-top');
+    target.style.removeProperty('padding-bottom');
+    target.style.removeProperty('margin-top');
+    target.style.removeProperty('margin-bottom');
 
     setTimeout(() => {
-      element.style.removeProperty('height');
-      element.style.removeProperty('overflow');
-      element.style.removeProperty('transition');
-      element.classList.remove(CLASSES.sliding);
-    }, this.speed);
+      target.style.removeProperty('height');
+      target.style.removeProperty('overflow');
+      target.style.removeProperty('transition-duration');
+      target.style.removeProperty('transition-property');
+      target.classList.remove(CLASSES.sliding);
+    }, duration);
   }
 
-  slideUp(element) {
-    element.classList.add(CLASSES.sliding);
-    element.style.height = `${element.scrollHeight}px`;
-    element.style.overflow = 'hidden';
-    element.style.transition = `height ${this.speed}ms ease`;
+  _slideUp(target, duration = 500) {
+    if (target.classList.contains(CLASSES.sliding)) return;
+    target.classList.add(CLASSES.sliding);
 
-    requestAnimationFrame(() => {
-      element.style.height = '0';
-    });
+    target.style.transitionProperty = 'height, margin, padding';
+    target.style.transitionDuration = `${duration}ms`;
+    target.style.height = `${target.offsetHeight}px`;
+    target.offsetHeight; // reflow
+
+    target.style.overflow = 'hidden';
+    target.style.height = '0';
+    target.style.paddingTop = '0';
+    target.style.paddingBottom = '0';
+    target.style.marginTop = '0';
+    target.style.marginBottom = '0';
 
     setTimeout(() => {
-      element.hidden = true;
-      element.style.removeProperty('height');
-      element.style.removeProperty('overflow');
-      element.style.removeProperty('transition');
-      element.classList.remove(CLASSES.sliding);
-    }, this.speed);
+      target.hidden = true;
+      target.style.removeProperty('height');
+      target.style.removeProperty('padding-top');
+      target.style.removeProperty('padding-bottom');
+      target.style.removeProperty('margin-top');
+      target.style.removeProperty('margin-bottom');
+      target.style.removeProperty('overflow');
+      target.style.removeProperty('transition-duration');
+      target.style.removeProperty('transition-property');
+      target.classList.remove(CLASSES.sliding);
+    }, duration);
   }
 }
 
