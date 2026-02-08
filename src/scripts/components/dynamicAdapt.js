@@ -23,7 +23,7 @@ class DynamicAdapt {
         destination: document.querySelector(destination),
         breakpoint,
         place,
-        index: this.getIndex(node.parentNode, node),
+        idx: this.getIndex(node.parentNode, node),
       });
     });
 
@@ -46,7 +46,7 @@ class DynamicAdapt {
   handleMedia(mediaQuery, objects) {
     if (mediaQuery.matches) {
       objects.forEach((obj) => {
-        obj.index = this.getIndex(obj.parent, obj.element);
+        obj.idx = this.getIndex(obj.parent, obj.element);
         this.moveTo(obj);
       });
     } else {
@@ -74,12 +74,12 @@ class DynamicAdapt {
   }
 
   moveBack(obj) {
-    const { element, parent, index } = obj;
+    const { element, parent, idx } = obj;
 
     element.classList.remove(CLASS_NAME);
 
-    if (parent.children[index]) {
-      parent.children[index].before(element);
+    if (parent.children[idx]) {
+      parent.children[idx].before(element);
     } else {
       parent.appendChild(element);
     }

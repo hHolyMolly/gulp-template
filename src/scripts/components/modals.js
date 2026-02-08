@@ -1,4 +1,4 @@
-import { bodyLock, bodyUnLock } from '../utils/body_lock.js';
+import { bodyLock, bodyUnLock } from '../utils/bodyLock.js';
 
 const SELECTORS = {
   wrapper: '#modal-wrapper',
