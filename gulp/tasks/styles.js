@@ -1,6 +1,6 @@
 import * as dartSass from 'sass';
 import gulpDartSass from 'gulp-dart-sass';
-import sassGlob from 'gulp-sass-glob';
+import sassGlob from 'gulp-sass-glob-use-forward';
 import mergeMediaQueries from 'gulp-merge-media-queries';
 import postcss from 'gulp-postcss';
 import autoprefixer from 'autoprefixer';
