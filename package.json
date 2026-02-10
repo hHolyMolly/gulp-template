@@ -6,6 +6,7 @@
   "main": "gulpfile.js",
   "author": "HolyMolly",
   "license": "MIT",
+  "packageManager": "pnpm@10.26.2",
   "scripts": {
     "start": "cross-env NODE_OPTIONS=--no-deprecation NODE_ENV=development gulp start",
     "build:dev": "cross-env NODE_OPTIONS=--no-deprecation NODE_ENV=development gulp build:dev",
