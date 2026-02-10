@@ -29,17 +29,17 @@ pnpm start
 
 ## Commands
 
-| Command | Description |
-|---|---|
-| `pnpm start` | Dev server with hot reload |
-| `pnpm build:dev` | Development build |
-| `pnpm build:prod` | Production build (minified + optimized) |
-| `pnpm lint` | ESLint + Stylelint with auto-fix |
-| `pnpm format` | Prettier formatting |
-| `pnpm tailwind:setup` | Add Tailwind CSS to project |
-| `pnpm clean` | Remove dist |
-| `pnpm clean:cache` | Clear build caches |
-| `pnpm clean:all` | Remove node_modules + dist |
+| Command               | Description                             |
+| --------------------- | --------------------------------------- |
+| `pnpm start`          | Dev server with hot reload              |
+| `pnpm build:dev`      | Development build                       |
+| `pnpm build:prod`     | Production build (minified + optimized) |
+| `pnpm lint`           | ESLint + Stylelint with auto-fix        |
+| `pnpm format`         | Prettier formatting                     |
+| `pnpm tailwind:setup` | Add Tailwind CSS to project             |
+| `pnpm clean`          | Remove dist                             |
+| `pnpm clean:cache`    | Clear build caches                      |
+| `pnpm clean:all`      | Remove node_modules + dist              |
 
 ## Project Structure
 
