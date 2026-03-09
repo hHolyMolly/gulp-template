@@ -11,11 +11,12 @@ class HeaderScroll {
     this.header = document.querySelector(selector);
     if (!this.header) return;
 
+    this.observer = null;
     this.init();
   }
 
   init() {
-    const observer = new IntersectionObserver(
+    this.observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           this.header.classList.toggle(CLASSES.scrolled, !entry.isIntersecting);
@@ -24,8 +25,17 @@ class HeaderScroll {
       { threshold: 0 }
     );
 
-    observer.observe(this.header);
+    this.observer.observe(this.header);
+  }
+
+  destroy() {
+    if (this.observer) {
+      this.observer.disconnect();
+      this.observer = null;
+    }
+    this.header?.classList.remove(CLASSES.scrolled);
   }
 }
 
+export { HeaderScroll };
 export default new HeaderScroll();

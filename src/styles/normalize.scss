@@ -34,10 +34,6 @@ html {
 
 body {
   min-height: 100dvh;
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizespeed;
 }
 
 /* Typography */
@@ -56,7 +52,6 @@ p,
 li,
 figcaption {
   text-wrap: pretty;
-  max-inline-size: 75ch;
 }
 
 /* Links */
@@ -81,7 +76,6 @@ svg {
 }
 
 img {
-  vertical-align: middle;
   font-style: italic;
   background-repeat: no-repeat;
   background-size: cover;
@@ -120,6 +114,11 @@ textarea {
   resize: vertical;
 }
 
+::placeholder {
+  color: inherit;
+  opacity: 0.7;
+}
+
 button {
   cursor: pointer;
   background: none;
@@ -139,6 +138,15 @@ main,
 article,
 section {
   display: block;
+}
+
+summary {
+  display: list-item;
+  cursor: pointer;
+}
+
+::-webkit-details-marker {
+  display: none;
 }
 
 ul,

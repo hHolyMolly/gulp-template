@@ -3,10 +3,21 @@
   <head>
     {% include "layouts/_head.html" %}
 
-    <title>{% block title %}Gulp Template{% endblock %}</title>
+    {% block head %}
+    {% endblock %}
+
+    <title>{{ title }}</title>
   </head>
 
   <body>
+    <noscript>
+      <style>
+        .wrapper {
+          display: block;
+        }
+      </style>
+    </noscript>
+
     <div class="wrapper">
       {% block header %}{% endblock %}
 
@@ -17,6 +28,7 @@
 
     {% block modals %}{% endblock %}
 
-    <script src="./scripts/app.js" type="module"></script>
+    <script src="/scripts/app.js" type="module"></script>
+    {% block scripts %}{% endblock %}
   </body>
 </html>

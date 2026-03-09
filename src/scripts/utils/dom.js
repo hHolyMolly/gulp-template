@@ -10,22 +10,21 @@ export function exists(selector) {
   return document.querySelector(selector) !== null;
 }
 
+/**
+ * Add event listener(s) to element(s)
+ * @returns {Function} Cleanup function to remove all added listeners
+ */
 export function on(target, event, callback, options = {}) {
-  const elements = typeof target === 'string' ? document.querySelectorAll(target) : target;
+  const elements = typeof target === 'string' ? [...document.querySelectorAll(target)] : target;
+  const list = elements instanceof NodeList ? [...elements] : Array.isArray(elements) ? elements : [elements];
 
-  if (elements instanceof NodeList || Array.isArray(elements)) {
-    elements.forEach((el) => el.addEventListener(event, callback, options));
-  } else if (elements) {
-    elements.addEventListener(event, callback, options);
-  }
-}
+  list.forEach((el) => {
+    if (el) el.addEventListener(event, callback, options);
+  });
 
-export function off(target, event, callback) {
-  const elements = typeof target === 'string' ? document.querySelectorAll(target) : target;
-
-  if (elements instanceof NodeList || Array.isArray(elements)) {
-    elements.forEach((el) => el.removeEventListener(event, callback));
-  } else if (elements) {
-    elements.removeEventListener(event, callback);
-  }
+  return () => {
+    list.forEach((el) => {
+      if (el) el.removeEventListener(event, callback, options);
+    });
+  };
 }

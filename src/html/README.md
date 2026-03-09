@@ -13,7 +13,7 @@ html/
 │   ├── _footer.html       # Site footer
 │   └── _modals.html       # Modals
 ├── components/
-│   └── welcome.html       # Reusable components
+│   └── demo.html       # Reusable components
 └── pages/
     ├── index.html          # → dist/index.html
     └── template.html       # → dist/template.html
@@ -22,51 +22,30 @@ html/
 ## Page Example
 
 ```html
-{% extends "layouts/base.html" %}
-
-{% block title %}About{% endblock %}
-
-{% block header %}
-  {% include "layouts/_header.html" %}
-{% endblock %}
-
-{% block content %}
-  <section class="about">
-    <h1>About page</h1>
-  </section>
-{% endblock %}
-
-{% block footer %}
-  {% include "layouts/_footer.html" %}
-{% endblock %}
+{% extends "layouts/base.html" %} {% block title %}About{% endblock %} {% block header %} {% include
+"layouts/_header.html" %} {% endblock %} {% block content %}
+<section class="about">
+  <h1>About page</h1>
+</section>
+{% endblock %} {% block footer %} {% include "layouts/_footer.html" %} {% endblock %}
 ```
 
 ## Available Blocks
 
-| Block | Purpose | Default |
-|-------|---------|---------|
-| `title` | Page `<title>` | `gulp-template` |
-| `header` | Header area | empty |
-| `content` | Main content | empty |
-| `footer` | Footer area | empty |
-| `modals` | Modals after wrapper | empty |
+| Block     | Purpose              | Default         |
+| --------- | -------------------- | --------------- |
+| `title`   | Page `<title>`       | `gulp-template` |
+| `header`  | Header area          | empty           |
+| `content` | Main content         | empty           |
+| `footer`  | Footer area          | empty           |
+| `modals`  | Modals after wrapper | empty           |
 
 ## Quick Reference
 
 ```html
-{# Comment #}
-
-{{ variable }}
-
-{% include "components/card.html" %}
-
-{% if showBanner %}
-  <div class="banner">...</div>
-{% endif %}
-
-{% for item in items %}
-  <li>{{ item }}</li>
-{% endfor %}
-
-{% set year = 2026 %}
+{# Comment #} {{ variable }} {% include "components/card.html" %} {% if showBanner %}
+<div class="banner">...</div>
+{% endif %} {% for item in items %}
+<li>{{ item }}</li>
+{% endfor %} {% set year = 2026 %}
 ```

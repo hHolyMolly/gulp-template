@@ -1,22 +1,53 @@
 <!-- Meta -->
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="description" content="Gulp Template description." />
+<meta name="description" content="{{ description }}" />
+<meta name="robots" content="{{ robots | default('index, follow') }}" />
+<meta name="theme-color" content="{{ themeColor | default('#ffffff') }}" />
+
+<!-- Canonical -->
+{% if canonical %}
+  <link rel="canonical" href="{{ canonical }}" />
+{% endif %}
 
 <!-- Open Graph -->
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Gulp Template" />
-<meta property="og:description" content="Gulp Template description." />
-<meta property="og:image" content="./assets/img/previews/global.webp" />
-<meta property="og:url" content="" />
+<meta property="og:title" content="{{ title }}" />
+<meta property="og:description" content="{{ description }}" />
+{% if image %}
+  <meta property="og:image" content="{{ image }}" />
+{% endif %}
+{% if canonical %}
+  <meta property="og:url" content="{{ canonical }}" />
+{% endif %}
+{% if siteName %}
+  <meta property="og:site_name" content="{{ siteName }}" />
+{% endif %}
+<meta property="og:locale" content="{{ locale | default('en_US') }}" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+{% if twitterSite %}
+  <meta name="twitter:site" content="{{ twitterSite }}" />
+{% endif %}
+<meta name="twitter:title" content="{{ title }}" />
+<meta name="twitter:description" content="{{ description }}" />
+{% if image %}
+  <meta name="twitter:image" content="{{ image }}" />
+{% endif %}
 
 <!-- Favicon -->
-<link rel="icon" href="./assets/favicon.ico" />
+<link rel="icon" href="/assets/favicon.ico" />
+
+<!-- Font Preload (uncomment and adjust when using custom fonts)
+<link rel="preload" href="/assets/fonts/CustomFont-Regular.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/assets/fonts/CustomFont-Bold.woff2" as="font" type="font/woff2" crossorigin />
+-->
 
 <!-- Styles -->
-<link rel="stylesheet" href="./styles/normalize.css" />
-<link rel="stylesheet" href="./styles/vars.css" />
-<link rel="stylesheet" href="./styles/fonts.css" />
-<link rel="stylesheet" href="./styles/utils.css" />
-<link rel="stylesheet" href="./styles/ui.css" />
-<link rel="stylesheet" href="./styles/main.css" />
+<link rel="stylesheet" href="/styles/normalize.css" />
+<link rel="stylesheet" href="/styles/vars.css" />
+<link rel="stylesheet" href="/styles/fonts.css" />
+<link rel="stylesheet" href="/styles/utils.css" />
+<link rel="stylesheet" href="/styles/ui.css" />
+<link rel="stylesheet" href="/styles/main.css" />

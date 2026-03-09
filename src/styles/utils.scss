@@ -4,7 +4,8 @@
  * ───────────────────────────────────────────────────────────── */
 
 /* Screen reader only */
-.sr-only {
+.sr-only,
+.screen-reader-text {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -16,9 +17,25 @@
   border: 0;
 }
 
+.screen-reader-text:focus {
+  display: block;
+  width: auto;
+  height: auto;
+  padding: 15px 23px 14px;
+  clip-path: none;
+  background-color: #f1f1f1;
+  color: #21759b;
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: normal;
+  text-decoration: none;
+  z-index: 100000;
+}
+
 /* Image background container */
 .ibg {
   position: relative;
+  overflow: hidden;
 }
 
 .ibg img {
@@ -30,13 +47,83 @@
   object-fit: cover;
 }
 
+/* Image container with aspect ratio */
+.ibg--ratio {
+  position: relative;
+  aspect-ratio: var(--aspect-ratio, 16 / 9);
+}
+
+.ibg--ratio img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 /* SVG Icons */
 .icon {
   display: inline-block;
   fill: currentcolor;
 }
 
+/* Readable text width */
+.prose {
+  max-inline-size: 75ch;
+}
+
 /* Lock scroll on body */
 .is-lock-scroll {
   overflow: hidden;
+  overscroll-behavior: contain;
+}
+
+/* ─────────────────────────────────────────────────────────────
+ * Print Styles
+ * ───────────────────────────────────────────────────────────── */
+
+@media print {
+  .header,
+  .footer,
+  .popup,
+  .btn,
+  [data-popup],
+  [data-popup-close] {
+    display: none !important;
+  }
+
+  body {
+    color: #000;
+    background: #fff;
+  }
+
+  a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    font-size: 0.875em;
+    font-weight: normal;
+  }
+
+  img {
+    max-width: 100% !important;
+    page-break-inside: avoid;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    page-break-after: avoid;
+  }
+
+  p,
+  li {
+    orphans: 3;
+    widows: 3;
+  }
+
+  .wrapper {
+    display: block;
+  }
 }

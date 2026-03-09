@@ -64,10 +64,21 @@ class DynamicAdapt {
       const data = node.dataset.da.trim();
       const { destination, breakpoint, place, type } = this._parseOptions(data);
 
+      const destElement = (() => {
+        try {
+          return document.querySelector(destination);
+        } catch {
+          console.error(`[DynamicAdapt] Invalid selector: "${destination}"`);
+          return null;
+        }
+      })();
+
+      if (!destElement) return;
+
       this.objects.push({
         element: node,
         parent: node.parentNode,
-        destination: document.querySelector(destination),
+        destination: destElement,
         breakpoint,
         place,
         type,
@@ -91,6 +102,8 @@ class DynamicAdapt {
     });
 
     // Создаём медиа-слушатели
+    this._mediaListeners = [];
+
     groups.forEach((items, key) => {
       const type = key.split('-')[0];
       const bp = key.split('-').slice(1).join('-');
@@ -98,14 +111,18 @@ class DynamicAdapt {
 
       const handleChange = () => this.handleMedia(mediaQuery, items);
       mediaQuery.addEventListener('change', handleChange);
+      this._mediaListeners.push({ mediaQuery, handleChange });
       handleChange();
     });
   }
 
   handleMedia(mediaQuery, objects) {
     if (mediaQuery.matches) {
+      // Save all indices before moving (batch moves shift sibling positions)
       objects.forEach((obj) => {
         obj.idx = this.getIndex(obj.parent, obj.element);
+      });
+      objects.forEach((obj) => {
         this.moveTo(obj);
       });
     } else {
@@ -147,6 +164,24 @@ class DynamicAdapt {
   getIndex(parent, element) {
     return [...parent.children].indexOf(element);
   }
+
+  destroy() {
+    this.objects.forEach((obj) => {
+      if (obj.element.classList.contains(CLASS_NAME)) {
+        this.moveBack(obj);
+      }
+    });
+
+    if (this._mediaListeners) {
+      this._mediaListeners.forEach(({ mediaQuery, handleChange }) => {
+        mediaQuery.removeEventListener('change', handleChange);
+      });
+      this._mediaListeners = [];
+    }
+
+    this.objects = [];
+  }
 }
 
+export { DynamicAdapt };
 export default new DynamicAdapt();

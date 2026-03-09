@@ -21,24 +21,20 @@
   border-radius: 8px;
   background-color: var(--black);
   color: var(--white);
-  transition:
-    opacity var(--transition-fast) ease,
-    transform var(--transition-fast) ease;
+  transition: opacity var(--transition-fast) ease;
 }
 
 .btn:hover {
   opacity: 0.85;
-  transform: translateY(-2px);
 }
 
 .btn:active {
-  transform: translateY(0);
+  opacity: 0.7;
 }
 
 .btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  pointer-events: none;
 }
 
 .btn .icon {

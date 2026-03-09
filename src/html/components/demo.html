@@ -263,7 +263,12 @@
     </p>
 
     <div class="demo__actions">
-      <a href="https://github.com/hHolyMolly/gulp-template" class="demo__btn demo__btn--primary" target="_blank">
+      <a
+        href="https://github.com/hHolyMolly/gulp-template"
+        class="demo__btn demo__btn--primary"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
           <path
             d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"
@@ -276,6 +281,7 @@
         href="https://github.com/hHolyMolly/gulp-template#readme"
         class="demo__btn demo__btn--secondary"
         target="_blank"
+        rel="noopener noreferrer"
       >
         <svg
           width="18"
@@ -369,15 +375,6 @@
       </span>
 
       <span class="demo__tag">
-        <svg class="demo__tag-icon" viewBox="0 0 24 24" fill="#06B6D4">
-          <path
-            d="M12.001 4.8c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624C13.666 10.618 15.027 12 18.001 12c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C16.337 6.182 14.976 4.8 12.001 4.8zm-6 7.2c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624 1.177 1.194 2.538 2.576 5.512 2.576 3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C10.337 13.382 8.976 12 6.001 12z"
-          />
-        </svg>
-        Tailwind
-      </span>
-
-      <span class="demo__tag">
         <svg class="demo__tag-icon" viewBox="0 0 24 24" fill="#F69220">
           <path
             d="M0 0v7.5h7.5V0H0zm8.25 0v7.5h7.5V0h-7.5zm8.25 0v7.5H24V0h-7.5zM0 8.25v7.5h7.5v-7.5H0zm8.25 0v7.5h7.5v-7.5h-7.5zM0 16.5V24h7.5v-7.5H0zm8.25 0V24h7.5v-7.5h-7.5zm8.25 0V24H24v-7.5h-7.5z"
@@ -406,21 +403,46 @@
     </div>
   </div>
 
-  <div class="demo__footer">Made by <a href="https://github.com/hHolyMolly" target="_blank">@HolyMolly</a></div>
+  <div class="demo__footer">
+    Made by <a href="https://github.com/hHolyMolly" target="_blank" rel="noopener noreferrer">@HolyMolly</a>
+  </div>
 </section>
 
 <script>
-  function demoCopyCommand(btn) {
-    var text = btn.querySelector('.demo__install-text').textContent;
-    navigator.clipboard.writeText(text).then(function () {
-      var icon = btn.querySelector('.demo__install-icon');
-      icon.outerHTML =
-        '<svg class="demo__install-icon demo__install-icon--check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
-      setTimeout(function () {
-        var check = btn.querySelector('.demo__install-icon');
-        check.outerHTML =
-          '<svg class="demo__install-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>';
-      }, 2000);
-    });
-  }
+  (function () {
+    function demoCopyCommand(btn) {
+      const text = btn.querySelector('.demo__install-text').textContent;
+
+      function showCheck() {
+        const icon = btn.querySelector('.demo__install-icon');
+        icon.outerHTML =
+          '<svg class="demo__install-icon demo__install-icon--check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+        setTimeout(function () {
+          const check = btn.querySelector('.demo__install-icon');
+          check.outerHTML =
+            '<svg class="demo__install-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>';
+        }, 2000);
+      }
+
+      try {
+        navigator.clipboard
+          .writeText(text)
+          .then(showCheck)
+          .catch(function () {
+            // Fallback: select text for manual copy
+            const range = document.createRange();
+            range.selectNodeContents(btn.querySelector('.demo__install-text'));
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+          });
+      } catch (e) {
+        const range = document.createRange();
+        range.selectNodeContents(btn.querySelector('.demo__install-text'));
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+      }
+    }
+    // Expose to onclick handlers
+    window.demoCopyCommand = demoCopyCommand;
+  })();
 </script>

@@ -12,6 +12,9 @@ const CLASSES = {
   active: 'is-active',
 };
 
+const FOCUSABLE_SELECTORS =
+  'a[href], button:not([disabled]), textarea, input:not([type="hidden"]), select, [contenteditable], details > summary, [tabindex]:not([tabindex="-1"])';
+
 /**
  * Get transition duration from CSS custom property or computed style
  * @param {HTMLElement} element - Element to get transition from
@@ -27,8 +30,11 @@ const getTransitionDuration = (element, cssVar = '--popup-speed') => {
   const cssVarValue = styles.getPropertyValue(cssVar).trim();
   if (cssVarValue) {
     const parsed = parseFloat(cssVarValue);
-    // If value is in seconds (< 10), convert to ms
-    return parsed < 10 ? parsed * 1000 : parsed;
+    // Check for explicit 'ms' unit — keep as-is; otherwise treat as seconds
+    if (cssVarValue.endsWith('ms')) {
+      return parsed;
+    }
+    return parsed * 1000;
   }
 
   // Fallback to computed transition-duration
@@ -47,16 +53,39 @@ class Modal {
     this.wrapper = document.querySelector(SELECTORS.wrapper);
     if (!this.wrapper) return;
 
-    // Speed from CSS variable --popup-speed
-    this.speed = getTransitionDuration(this.wrapper);
+    // Speed from CSS variable --popup-speed (respect reduced-motion)
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.speed = prefersReducedMotion ? 0 : getTransitionDuration(this.wrapper);
     this.isLocked = false;
+    this._lastTrigger = null;
+
+    this._boundHandleClick = this.handleClick.bind(this);
+    this._boundHandleKeydown = this.handleKeydown.bind(this);
 
     this.init();
   }
 
   init() {
-    document.addEventListener('click', this.handleClick.bind(this));
-    document.addEventListener('keydown', this.handleKeydown.bind(this));
+    document.addEventListener('click', this._boundHandleClick);
+    document.addEventListener('keydown', this._boundHandleKeydown);
+  }
+
+  destroy() {
+    document.removeEventListener('click', this._boundHandleClick);
+    document.removeEventListener('keydown', this._boundHandleKeydown);
+
+    // Close all active popups
+    const activePopups = document.querySelectorAll(`${SELECTORS.popup}.${CLASSES.active}`);
+    if (activePopups.length) {
+      activePopups.forEach((popup) => {
+        popup.classList.remove(CLASSES.active);
+        popup.removeAttribute('aria-modal');
+        popup.removeAttribute('role');
+        popup.removeAttribute('tabindex');
+      });
+      bodyUnLock(0);
+    }
+    this._lastTrigger = null;
   }
 
   handleClick(e) {
@@ -67,7 +96,7 @@ class Modal {
       e.preventDefault();
       const popupId = trigger.dataset.popup;
       const popup = document.getElementById(popupId);
-      if (popup) this.open(popup);
+      if (popup) this.open(popup, trigger);
       return;
     }
 
@@ -88,10 +117,39 @@ class Modal {
       const activePopup = document.querySelector(`${SELECTORS.popup}.${CLASSES.active}`);
       if (activePopup) this.close(activePopup);
     }
+
+    // Focus trap — Tab / Shift+Tab inside active popup
+    if (e.key === 'Tab') {
+      const activePopup = document.querySelector(`${SELECTORS.popup}.${CLASSES.active}`);
+      if (!activePopup) return;
+
+      const focusableElements = activePopup.querySelectorAll(FOCUSABLE_SELECTORS);
+      if (!focusableElements.length) return;
+
+      const firstFocusable = focusableElements[0];
+      const lastFocusable = focusableElements[focusableElements.length - 1];
+
+      if (e.shiftKey) {
+        if (document.activeElement === firstFocusable) {
+          e.preventDefault();
+          lastFocusable.focus();
+        }
+      } else {
+        if (document.activeElement === lastFocusable) {
+          e.preventDefault();
+          firstFocusable.focus();
+        }
+      }
+    }
   }
 
-  open(popup) {
+  open(popup, trigger = null) {
     if (!popup || this.isLocked) return;
+
+    this.isLocked = true;
+    setTimeout(() => {
+      this.isLocked = false;
+    }, this.speed);
 
     const activePopup = document.querySelector(`${SELECTORS.popup}.${CLASSES.active}`);
 
@@ -101,13 +159,39 @@ class Modal {
       bodyLock();
     }
 
+    // Save trigger for focus return
+    this._lastTrigger = trigger || document.activeElement;
+
+    // ARIA
+    popup.setAttribute('role', 'dialog');
+    popup.setAttribute('aria-modal', 'true');
+
     popup.classList.add(CLASSES.active);
+
+    // Focus first focusable element inside popup, or the popup itself
+    popup.setAttribute('tabindex', '-1');
+    const focusable = popup.querySelector(FOCUSABLE_SELECTORS);
+    (focusable || popup).focus();
   }
 
   close(popup, unlock = true) {
     if (!popup || this.isLocked) return;
 
+    this.isLocked = true;
+    setTimeout(() => {
+      this.isLocked = false;
+    }, this.speed);
+
     popup.classList.remove(CLASSES.active);
+    popup.removeAttribute('aria-modal');
+    popup.removeAttribute('role');
+    popup.removeAttribute('tabindex');
+
+    // Return focus to trigger
+    if (unlock && this._lastTrigger) {
+      this._lastTrigger.focus();
+      this._lastTrigger = null;
+    }
 
     if (unlock) {
       bodyUnLock(this.speed);
@@ -115,4 +199,5 @@ class Modal {
   }
 }
 
+export { Modal };
 export default new Modal();

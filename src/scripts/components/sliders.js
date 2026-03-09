@@ -178,4 +178,5 @@ class Sliders {
   }
 }
 
+export { Sliders };
 export default new Sliders();

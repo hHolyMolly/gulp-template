@@ -1,6 +1,19 @@
+{# ──────────────────────────────────────────────
+   Page Meta (edit per page)
+   ────────────────────────────────────────────── #}
+{% set title = "Page Title" %}
+{% set description = "Page description for SEO." %}
+{# Optional meta:
+{% set image = "/assets/img/previews/page.webp" %}
+{% set canonical = "https://example.com/page" %}
+{% set siteName = "My Site" %}
+{% set robots = "index, follow" %}
+{% set lang = "en" %}
+{% set locale = "en_US" %}
+{% set themeColor = "#ffffff" %}
+{% set twitterSite = "@handle" %}
+#}
 {% extends "layouts/base.html" %}
-
-{% block title %}Gulp Template{% endblock %}
 
 {% block header %}
   {% include "layouts/_header.html" %}

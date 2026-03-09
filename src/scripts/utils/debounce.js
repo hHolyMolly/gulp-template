@@ -1,18 +1,43 @@
 export function debounce(func, wait = 300) {
   let timeout;
-  return function executedFunction(...args) {
+  let lastArgs;
+
+  function executedFunction(...args) {
+    lastArgs = args;
     const later = () => {
       clearTimeout(timeout);
+      timeout = null;
+      lastArgs = null;
       func(...args);
     };
     clearTimeout(timeout);
     timeout = setTimeout(later, wait);
+  }
+
+  executedFunction.cancel = () => {
+    clearTimeout(timeout);
+    timeout = null;
+    lastArgs = null;
   };
+
+  executedFunction.flush = () => {
+    if (timeout) {
+      clearTimeout(timeout);
+      timeout = null;
+      if (lastArgs) {
+        func(...lastArgs);
+        lastArgs = null;
+      }
+    }
+  };
+
+  return executedFunction;
 }
 
 export function throttle(func, wait = 300) {
   let isThrottled = false;
   let savedArgs = null;
+  let timeoutId = null;
 
   function wrapper(...args) {
     if (isThrottled) {
@@ -23,7 +48,7 @@ export function throttle(func, wait = 300) {
     func(...args);
     isThrottled = true;
 
-    setTimeout(() => {
+    timeoutId = setTimeout(() => {
       isThrottled = false;
       if (savedArgs) {
         wrapper(...savedArgs);
@@ -31,6 +56,25 @@ export function throttle(func, wait = 300) {
       }
     }, wait);
   }
+
+  wrapper.cancel = () => {
+    clearTimeout(timeoutId);
+    isThrottled = false;
+    savedArgs = null;
+    timeoutId = null;
+  };
+
+  wrapper.flush = () => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      isThrottled = false;
+      timeoutId = null;
+      if (savedArgs) {
+        func(...savedArgs);
+        savedArgs = null;
+      }
+    }
+  };
 
   return wrapper;
 }
