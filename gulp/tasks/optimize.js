@@ -30,7 +30,7 @@ export const sitemap = async () => {
     <changefreq>${isIndex ? 'weekly' : 'monthly'}</changefreq>
     <priority>${isIndex ? '1.0' : '0.8'}</priority>
   </url>`;
-      }),
+      })
   );
 
   const content = `<?xml version="1.0" encoding="UTF-8"?>
@@ -55,6 +55,6 @@ export const robots = async () => {
     lines.push('', `Sitemap: ${config.server.hostname}/sitemap.xml`);
   }
 
-  await fs.writeFile(path.join(paths.build, 'robots.txt'), lines.join('\n') + '\n', 'utf-8');
+  await fs.writeFile(path.join(paths.build, 'robots.txt'), `${lines.join('\n')}\n`, 'utf-8');
   logSuccess('robots.txt generated');
 };

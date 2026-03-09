@@ -53,15 +53,15 @@ function generateRebuildKit(distRoot, configPath, inputPath) {
       },
     },
     null,
-    2,
+    2
   );
-  fs.writeFileSync(path.join(distRoot, 'package.json'), pkg + '\n');
+  fs.writeFileSync(path.join(distRoot, 'package.json'), `${pkg}\n`);
 
   // 2. Tailwind config with dist-specific content paths
   let configContent = fs.readFileSync(configPath, 'utf-8');
   configContent = configContent.replace(
     /content:\s*\[.*?\]/s,
-    "content: ['./**/*.{html,php,js}', '!./node_modules/**']",
+    "content: ['./**/*.{html,php,js}', '!./node_modules/**']"
   );
   fs.writeFileSync(path.join(distRoot, 'tailwind.config.js'), configContent);
 

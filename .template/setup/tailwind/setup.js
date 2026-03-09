@@ -12,7 +12,7 @@ import { exec, execSync } from 'child_process';
 import http from 'http';
 import readline from 'readline';
 import * as config from './config.js';
-import { resolvePath, srcPath, gulpPath } from '../../paths.js';
+import { resolvePath, srcPath } from '../../paths.js';
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const templatesDir = path.join(__dirname, 'templates');

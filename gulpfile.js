@@ -51,12 +51,24 @@ const handleUnlink = (srcBase, buildBase, extMap = {}, cacheId = null) => {
       const buildPath = path.join(buildBase, relativePath);
 
       // Remove build file and sourcemap (try-catch for TOCTOU race)
-      try { fs.unlinkSync(buildPath); } catch {}
-      try { fs.unlinkSync(`${buildPath}.map`); } catch {}
+      try {
+        fs.unlinkSync(buildPath);
+      } catch {
+        // File may already be removed
+      }
+      try {
+        fs.unlinkSync(`${buildPath}.map`);
+      } catch {
+        // Sourcemap may not exist
+      }
 
       // Clear gulp-remember cache
       if (cacheId) {
-        try { app.plugins.remember.forget(cacheId, path.resolve(filePath)); } catch {}
+        try {
+          app.plugins.remember.forget(cacheId, path.resolve(filePath));
+        } catch {
+          // Cache key may not exist
+        }
       }
     } catch {
       // Ignore unlink errors (file may already be removed)

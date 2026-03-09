@@ -8,7 +8,17 @@ const validateConfig = (cfg) => {
   const validated = structuredClone(cfg);
 
   const criticalFolders = ['build', 'src'];
-  const optionalFolders = ['styles', 'scripts', 'html', 'assets', 'images', 'sprites', 'pages', 'layouts', 'components'];
+  const optionalFolders = [
+    'styles',
+    'scripts',
+    'html',
+    'assets',
+    'images',
+    'sprites',
+    'pages',
+    'layouts',
+    'components',
+  ];
   const requiredExtensions = ['styles', 'scripts', 'html', 'images'];
 
   criticalFolders.forEach((key) => {
