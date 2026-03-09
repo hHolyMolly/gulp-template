@@ -17,7 +17,7 @@ export const html = () => {
     .pipe(
       nunjucksRender({
         path: [paths.srcHtml],
-        envOptions: { autoescape: true },
+        envOptions: { autoescape: false },
       })
     )
     .pipe(
