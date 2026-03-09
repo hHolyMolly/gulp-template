@@ -1,19 +1,20 @@
 /**
- * Tailwind CSS Setup Script
+ * Tailwind CSS Setup Script (CLI)
  * Run: pnpm run tailwind:setup
  */
 
+// Environment (must be first — loads .env before config evaluation)
+import '../../setup-env.js';
+
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
-import { exec } from 'child_process';
+import { exec, execSync } from 'child_process';
 import http from 'http';
 import readline from 'readline';
 import * as config from './config.js';
+import { resolvePath, srcPath, gulpPath } from '../../paths.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const rootDir = path.resolve(__dirname, '../../../');
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const templatesDir = path.join(__dirname, 'templates');
 
 // ─────────────────────────────────────────────────────────────
@@ -39,23 +40,14 @@ function confirm(question) {
   });
 }
 
-function resolvePath(...parts) {
-  return path.join(rootDir, ...parts);
-}
-
-// Helper to get folder-aware paths
 function getSourcePath(...parts) {
-  return resolvePath(config.folders.src, ...parts);
-}
-
-function getGulpPath(...parts) {
-  return resolvePath(config.folders.gulp, ...parts);
+  return srcPath(...parts);
 }
 
 function copyTemplate(templateName, destPath) {
-  const srcPath = path.join(templatesDir, templateName);
+  const src = path.join(templatesDir, templateName);
 
-  if (!fs.existsSync(srcPath)) {
+  if (!fs.existsSync(src)) {
     log(`Template "${templateName}" not found.`, 'error');
     return false;
   }
@@ -70,7 +62,7 @@ function copyTemplate(templateName, destPath) {
     fs.mkdirSync(dir, { recursive: true });
   }
 
-  fs.copyFileSync(srcPath, destPath);
+  fs.copyFileSync(src, destPath);
   log(`Created ${path.basename(destPath)}.`, 'success');
   return true;
 }
@@ -94,18 +86,35 @@ function isServerRunning() {
 }
 
 function reloadServer() {
-  // Touch a file to trigger BrowserSync reload
-  const indexPath = getSourcePath(config.folders.html, config.files.indexHTML);
-  if (fs.existsSync(indexPath)) {
-    const now = new Date();
-    fs.utimesSync(indexPath, now, now);
-    log('Server reloaded.', 'success');
-  }
+  return new Promise((resolve) => {
+    const url = `http://${config.server.host}:${config.server.port}/__browser_sync__?method=reload`;
+    http
+      .get(url, () => {
+        log('Server reloaded.', 'success');
+        resolve();
+      })
+      .on('error', () => {
+        log('Could not reload server.', 'error');
+        resolve();
+      });
+  });
 }
 
 // ─────────────────────────────────────────────────────────────
 // Setup Tasks
 // ─────────────────────────────────────────────────────────────
+
+function installPackage() {
+  log(`Installing ${config.packageName}@${config.version}...`, 'info');
+
+  try {
+    execSync(`pnpm add -D ${config.packageName}@${config.version}`, { stdio: 'pipe' });
+    log(`Installed ${config.packageName}@${config.version}.`, 'success');
+  } catch (err) {
+    log(`Failed to install ${config.packageName}: ${err.message}`, 'error');
+    throw err;
+  }
+}
 
 function createConfig() {
   const destPath = resolvePath(config.paths.config.dest, config.paths.config.filename);
@@ -119,8 +128,8 @@ function createStyles() {
   copyTemplate(config.files.tailwindCSS, destPath);
 }
 
-function injectCDN() {
-  if (!config.options.injectCDN) return;
+function injectStylesheet() {
+  if (!config.options.injectStylesheet) return;
 
   const headPath = resolvePath(config.paths.head);
 
@@ -131,43 +140,36 @@ function injectCDN() {
 
   let content = fs.readFileSync(headPath, 'utf-8');
 
-  if (content.includes('cdn.tailwindcss.com')) {
-    log('Tailwind CDN already in _head.html.', 'skip');
+  if (content.includes('tailwind.css')) {
+    log('Tailwind stylesheet already in _head.html.', 'skip');
     return;
   }
 
-  const attrs = config.cdn.attributes ? ` ${config.cdn.attributes}` : '';
-  const cdnScript = `<script src="${config.cdn.url}"${attrs}></script>
-<script>
-  const script = document.createElement('script');
-  script.type = 'module';
-  script.textContent = \`import config from './tailwind.config.js'; if(window.tailwind) tailwind.config = config;\`;
-  document.head.appendChild(script);
-</script>
-<link rel="stylesheet" href="./styles/tailwind.css" />`;
+  const link = '<link rel="stylesheet" href="/styles/tailwind.css" />';
 
+  // Insert before the first stylesheet so Tailwind resets load first
   if (content.includes('<link rel="stylesheet"')) {
-    content = content.replace(/(<link rel="stylesheet")/, `${cdnScript}\n$1`);
+    content = content.replace(/(<link rel="stylesheet")/, `${link}\n$1`);
   } else if (content.includes('</head>')) {
-    content = content.replace('</head>', `${cdnScript}\n</head>`);
+    content = content.replace('</head>', `${link}\n</head>`);
   } else {
-    content += `\n${cdnScript}\n`;
+    content += `\n${link}\n`;
   }
 
   fs.writeFileSync(headPath, content);
-  log('Added Tailwind CDN to _head.html.', 'success');
+  log('Added Tailwind stylesheet to _head.html.', 'success');
 }
 
 function copyDemoPage() {
   if (!config.options.copyDemoPage) return;
 
-  const destPath = getSourcePath(config.folders.html, config.files.tailwindDemo);
+  const destPath = getSourcePath(config.folders.html, config.paths.demo.filename);
   copyTemplate(config.files.tailwindDemo, destPath);
 }
 
 function createGulpTask() {
-  const destPath = getGulpPath(config.folders.tasks, config.files.tailwindTask);
-  copyTemplate(config.files.tailwindTask, destPath);
+  const destPath = resolvePath(config.paths.gulpTask.dest, config.paths.gulpTask.filename);
+  copyTemplate('tailwind.js', destPath);
 }
 
 function updateGulpfile() {
@@ -186,21 +188,40 @@ function updateGulpfile() {
     return;
   }
 
+  // Helper: replace with validation
+  const safeReplace = (pattern, replacement, description) => {
+    const before = content;
+    content = content.replace(pattern, replacement);
+    if (content === before) {
+      log(`Could not ${description} — gulpfile format may have changed.`, 'error');
+      return false;
+    }
+    return true;
+  };
+
   // Add import
   const importLine = "import { tailwind, tailwindReload } from './gulp/tasks/tailwind.js';";
-  content = content.replace(/(import { sprite }.*?;)/, `$1\n${importLine}`);
+  if (!safeReplace(/(import { sprite }.*?;)/, `$1\n${importLine}`, 'inject tailwind import')) return;
 
   // Add to watch
-  content = content.replace(
-    /(gulp\.watch\(\[`\$\{app\.paths\.src\}\/assets\/\*\*\/\*`.*?\], assets\);)/,
-    `$1\n  gulp.watch([\`\${paths.root}/tailwind.config.js\`, \`\${paths.src}/styles/tailwind.css\`], gulp.series(tailwind, tailwindReload));`
-  );
+  if (
+    !safeReplace(
+      /(gulp\.watch\(globs\.assets.*?\).*?;)/,
+      `$1\n  gulp.watch(['tailwind.config.js', \`\${paths.srcStyles}/tailwind.css\`], gulp.series(tailwind, tailwindReload));`,
+      'add tailwind watcher'
+    )
+  )
+    return;
 
   // Add to mainTasks
-  content = content.replace(
-    /const mainTasks = gulp\.parallel\(([^)]+)\);/,
-    'const mainTasks = gulp.parallel($1, tailwind);'
-  );
+  if (
+    !safeReplace(
+      /const mainTasks = gulp\.parallel\(([^)]+)\);/,
+      'const mainTasks = gulp.parallel($1, tailwind);',
+      'add tailwind to mainTasks'
+    )
+  )
+    return;
 
   fs.writeFileSync(gulpfilePath, content);
   log('Updated gulpfile.js.', 'success');
@@ -213,10 +234,10 @@ function isInstalled() {
   // Check if config exists
   if (fs.existsSync(configPath)) return true;
 
-  // Check if CDN is in _head.html
+  // Check if stylesheet is in _head.html
   if (fs.existsSync(headPath)) {
     const content = fs.readFileSync(headPath, 'utf-8');
-    if (content.includes('cdn.tailwindcss.com')) return true;
+    if (content.includes('tailwind.css')) return true;
   }
 
   return false;
@@ -227,20 +248,22 @@ function isInstalled() {
 // ─────────────────────────────────────────────────────────────
 
 async function setup() {
-  console.log(`\n  🎨 Tailwind CSS v${config.version} Setup.\n`);
+  console.log(`\n  🎨 Tailwind CSS v${config.version} Setup (CLI)\n`);
 
   if (isInstalled()) {
-    console.log(`  ⚡ Tailwind CSS is already installed.\n`);
-    console.log(`  To reinstall, remove ${config.paths.config.filename} and CDN from _head.html.\n`);
+    console.log('  ⚡ Tailwind CSS is already installed.\n');
+    console.log(`  To reinstall, remove ${config.paths.config.filename} and tailwind link from _head.html.\n`);
     return;
   }
 
   console.log('  This will:');
+  console.log(`    • Install ${config.packageName} package`);
   console.log('    • Create tailwind.config.js');
   console.log('    • Create tailwind.css in styles folder');
-  console.log('    • Add Tailwind CDN to _head.html');
-  console.log('    • Create gulp task for Tailwind');
-  console.log('    • Copy demo page\n');
+  console.log('    • Add stylesheet link to _head.html');
+  console.log('    • Create gulp task for Tailwind CLI');
+  console.log('    • Copy demo page');
+  console.log('    • Auto-generate rebuild kit in dist/\n');
 
   const confirmed = await confirm('Do you want to continue?');
 
@@ -251,11 +274,12 @@ async function setup() {
 
   console.log('\n  Installing...\n');
 
+  installPackage();
   createConfig();
   createStyles();
   createGulpTask();
   updateGulpfile();
-  injectCDN();
+  injectStylesheet();
   copyDemoPage();
 
   console.log(`\n  ✅ Done! Docs: ${config.urls.docs}\n`);
@@ -264,13 +288,11 @@ async function setup() {
     const serverRunning = await isServerRunning();
 
     if (serverRunning) {
-      reloadServer();
-      // Wait for reload to complete
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await reloadServer();
       console.log(`  🌐 Opening ${config.urls.demo}\n`);
       openBrowser(config.urls.demo);
     } else {
-      console.log(`  💡 Run "pnpm start" to view the demo page.\n`);
+      console.log('  💡 Run "pnpm dev" to view the demo page.\n');
     }
   }
 }

@@ -1,8 +1,10 @@
 /**
  * Tailwind Setup Configuration
+ *
+ * Note: dotenv is loaded via setup-env.js (imported first in setup.js).
+ * Do NOT import dotenv here — ESM static imports evaluate before side effects.
  */
 
-import 'dotenv/config';
 import { projectConfig } from '../../paths.js';
 
 const { folders } = projectConfig;
@@ -14,9 +16,10 @@ const { folders } = projectConfig;
 export { folders };
 
 // ─────────────────────────────────────────────────────────────
-// Version
+// Package
 // ─────────────────────────────────────────────────────────────
 
+export const packageName = 'tailwindcss';
 export const version = '3.4.17';
 
 // ─────────────────────────────────────────────────────────────
@@ -24,7 +27,7 @@ export const version = '3.4.17';
 // ─────────────────────────────────────────────────────────────
 
 export const server = {
-  port: process.env.PORT || 5555,
+  port: process.env.PORT || 3000,
   host: process.env.HOST || 'localhost',
 };
 
@@ -35,7 +38,7 @@ export const server = {
 export const files = {
   tailwindConfig: 'tailwind.config.js',
   tailwindCSS: 'tailwind.css',
-  tailwindDemo: 'tailwind-demo.html',
+  tailwindDemo: 'tailwind.html',
   head: '_head.html',
 };
 
@@ -62,7 +65,7 @@ export const paths = {
     filename: 'tailwind.js',
   },
 
-  // HTML file to inject CDN script
+  // HTML file to inject stylesheet link
   head: `${folders.src}/${folders.html}/${folders.layouts}/${files.head}`,
 
   // Demo page
@@ -80,16 +83,7 @@ export const options = {
   openBrowser: true,
   copyDemoPage: true,
   createStyles: true,
-  injectCDN: true,
-};
-
-// ─────────────────────────────────────────────────────────────
-// CDN
-// ─────────────────────────────────────────────────────────────
-
-export const cdn = {
-  url: `https://cdn.tailwindcss.com/${version}`,
-  attributes: '',
+  injectStylesheet: true,
 };
 
 // ─────────────────────────────────────────────────────────────
