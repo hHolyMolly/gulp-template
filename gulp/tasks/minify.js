@@ -2,50 +2,77 @@ import htmlmin from 'gulp-htmlmin';
 import csso from 'gulp-csso';
 import terser from 'gulp-terser';
 import gulpIf from 'gulp-if';
-import through2 from 'through2';
+import { Transform } from 'stream';
 import sharp from 'sharp';
+import { optimize as svgoOptimize } from 'svgo';
 import path from 'path';
-import { sizeReporter } from '../utils/index.js';
+import fs from 'fs/promises';
+import { sizeReporter, logWarning } from '../utils/index.js';
 
 const sharpOptimize = () => {
-  return through2.obj(async function (file, enc, callback) {
-    if (file.isNull()) {
-      return callback(null, file);
-    }
-
-    const ext = path.extname(file.path).toLowerCase();
-
-    try {
-      let optimized;
-
-      switch (ext) {
-        case '.jpg':
-        case '.jpeg':
-          optimized = await sharp(file.contents).jpeg({ quality: 80, progressive: true }).toBuffer();
-          break;
-        case '.png':
-          optimized = await sharp(file.contents).png({ compressionLevel: 9, palette: true }).toBuffer();
-          break;
-        case '.webp':
-          optimized = await sharp(file.contents).webp({ quality: 80 }).toBuffer();
-          break;
-        default:
-          optimized = file.contents;
+  return new Transform({
+    objectMode: true,
+    async transform(file, enc, callback) {
+      if (file.isNull()) {
+        return callback(null, file);
       }
 
-      file.contents = optimized;
-      callback(null, file);
-    } catch {
-      callback(null, file);
-    }
+      const ext = path.extname(file.path).toLowerCase();
+      const originalSize = file.contents.length;
+      const { config } = app;
+
+      try {
+        let optimized;
+
+        switch (ext) {
+          case '.jpg':
+          case '.jpeg':
+            optimized = await sharp(file.contents)
+              .jpeg({
+                quality: config.images.jpeg?.quality ?? 80,
+                progressive: config.images.jpeg?.progressive ?? true,
+              })
+              .toBuffer();
+            break;
+          case '.png':
+            optimized = await sharp(file.contents)
+              .png({
+                compressionLevel: config.images.png?.compressionLevel ?? 9,
+              })
+              .toBuffer();
+            break;
+          case '.webp':
+            optimized = await sharp(file.contents)
+              .webp({ quality: config.images.webp?.quality ?? 80 })
+              .toBuffer();
+            break;
+          case '.gif':
+            optimized = await sharp(file.contents, { animated: true }).gif({ effort: 7 }).toBuffer();
+            break;
+          default:
+            optimized = file.contents;
+        }
+
+        // Only replace if optimization actually reduced size (prevents double-compression degradation)
+        if (optimized.length < originalSize) {
+          file.contents = optimized;
+        }
+
+        callback(null, file);
+      } catch (error) {
+        logWarning(`Image optimization failed for ${path.basename(file.path)}: ${error.message}`);
+        callback(null, file);
+      }
+    },
   });
 };
 
 export const minifyHTML = () => {
-  const { gulp, paths, config } = app;
+  const { gulp, paths, plugins, config } = app;
 
   return gulp
     .src(`${paths.build}/**/*.html`)
+    .pipe(plugins.errorHandler('Minify HTML'))
     .pipe(
       gulpIf(
         config.optimization.minify.html,
@@ -58,6 +85,8 @@ export const minifyHTML = () => {
           useShortDoctype: true,
           minifyCSS: true,
           minifyJS: true,
+          sortAttributes: true,
+          sortClassName: false,
         })
       )
     )
@@ -66,28 +95,31 @@ export const minifyHTML = () => {
 };
 
 export const minifyCSS = () => {
-  const { gulp, paths, config } = app;
+  const { gulp, paths, plugins, config } = app;
 
   return gulp
     .src(`${paths.buildStyles}/**/*.css`)
+    .pipe(plugins.errorHandler('Minify CSS'))
     .pipe(gulpIf(config.optimization.minify.css, csso()))
     .pipe(sizeReporter('CSS (min)', { showFiles: false }))
     .pipe(gulp.dest(paths.buildStyles));
 };
 
 export const minifyJS = () => {
-  const { gulp, paths, config } = app;
+  const { gulp, paths, plugins, config } = app;
 
   return gulp
     .src(`${paths.buildScripts}/**/*.js`)
+    .pipe(plugins.errorHandler('Minify JS'))
     .pipe(
       gulpIf(
         config.optimization.minify.js,
         terser({
+          module: true,
           format: { comments: false },
           compress: {
-            drop_console: config.env.isProd,
             drop_debugger: config.env.isProd,
+            pure_funcs: config.env.isProd ? ['console.log', 'console.info', 'console.warn', 'console.debug'] : [],
           },
         })
       )
@@ -97,11 +129,60 @@ export const minifyJS = () => {
 };
 
 export const minifyImages = () => {
-  const { gulp, paths, config } = app;
+  const { gulp, paths, plugins, config } = app;
 
   return gulp
-    .src([`${paths.buildImages}/**/*.{jpg,jpeg,png,webp}`, `!${paths.buildImages}/**/*.svg`])
+    .src([`${paths.buildImages}/**/*.{jpg,jpeg,png,webp,gif}`, `!${paths.buildImages}/**/*.svg`])
+    .pipe(plugins.errorHandler('Minify Images'))
     .pipe(gulpIf(config.optimization.minify.images, sharpOptimize()))
     .pipe(sizeReporter('Images (opt)', { showFiles: false }))
+    .pipe(gulp.dest(paths.buildImages));
+};
+
+export const cleanSourcemaps = async () => {
+  const { paths } = app;
+  const buildDir = paths.build;
+
+  const allFiles = await fs.readdir(buildDir, { recursive: true });
+  const mapFiles = allFiles.filter((f) => f.endsWith('.map'));
+
+  await Promise.all(mapFiles.map((f) => fs.unlink(path.join(buildDir, f)).catch(() => {})));
+};
+
+const svgOptimizeTransform = () => {
+  return new Transform({
+    objectMode: true,
+    transform(file, enc, callback) {
+      if (file.isNull() || file.isStream()) return callback(null, file);
+
+      try {
+        const result = svgoOptimize(file.contents.toString(), {
+          multipass: true,
+          plugins: [
+            {
+              name: 'preset-default',
+              params: { overrides: { removeViewBox: false } },
+            },
+          ],
+        });
+
+        file.contents = Buffer.from(result.data);
+        callback(null, file);
+      } catch (error) {
+        logWarning(`SVG optimization failed for ${path.basename(file.path)}: ${error.message}`);
+        callback(null, file);
+      }
+    },
+  });
+};
+
+export const minifySVG = () => {
+  const { gulp, paths, plugins, config } = app;
+
+  return gulp
+    .src(`${paths.buildImages}/**/*.svg`)
+    .pipe(plugins.errorHandler('Minify SVG'))
+    .pipe(gulpIf(config.optimization.minify.images, svgOptimizeTransform()))
+    .pipe(sizeReporter('SVG (opt)', { showFiles: false }))
     .pipe(gulp.dest(paths.buildImages));
 };

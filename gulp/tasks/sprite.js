@@ -16,9 +16,22 @@ export const sprite = () => {
         {
           svgo: {
             plugins: [
-              { name: 'removeViewBox', active: false },
-              { name: 'removeXMLNS', active: true },
-              { name: 'cleanupIDs', active: true },
+              {
+                name: 'preset-default',
+                params: {
+                  overrides: {
+                    removeViewBox: false,
+                  },
+                },
+              },
+              { name: 'removeXMLNS' },
+              {
+                name: 'cleanupIDs',
+                params: {
+                  remove: false,
+                  minify: true,
+                },
+              },
             ],
           },
         },
@@ -30,5 +43,6 @@ export const sprite = () => {
     .src(paths.globs.sprites)
     .pipe(plugins.errorHandler('Sprite'))
     .pipe(plugins.svgSprite(spriteConfig))
-    .pipe(gulp.dest(paths.buildAssets));
+    .pipe(gulp.dest(paths.buildAssets))
+    .pipe(plugins.browserSync.stream());
 };

@@ -1,11 +1,11 @@
 import nunjucksRender from 'gulp-nunjucks-render';
-import htmlBeautify from 'gulp-html-beautify';
+import prettier from 'gulp-prettier';
 import gulpIf from 'gulp-if';
 import { sizeReporter } from '../utils/index.js';
 
-export const html = async () => {
+export const html = () => {
   const { gulp, paths, plugins, config } = app;
-  const src = [paths.globs.htmlPages, `!${paths.srcHtmlLayouts}/**/*`, `!${paths.srcHtmlComponents}/**/*`];
+  const src = paths.globs.htmlPages;
 
   // Format HTML if not minifying (dev mode or prod without minification)
   const shouldFormat = !config.optimization.minify.html;
@@ -17,18 +17,15 @@ export const html = async () => {
     .pipe(
       nunjucksRender({
         path: [paths.srcHtml],
-        envOptions: { autoescape: false },
+        envOptions: { autoescape: true },
       })
     )
     .pipe(
       gulpIf(
         shouldFormat,
-        htmlBeautify({
-          indent_size: 2,
-          indent_char: ' ',
-          max_preserve_newlines: 1,
-          preserve_newlines: true,
-          end_with_newline: true,
+        prettier({
+          parser: 'html', // Override jinja-template parser — compiled output is plain HTML
+          htmlWhitespaceSensitivity: 'ignore',
         })
       )
     )

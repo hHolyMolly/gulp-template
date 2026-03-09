@@ -7,8 +7,7 @@ export const images = () => {
   return gulp
     .src(paths.globs.images)
     .pipe(plugins.errorHandler('Images'))
-    .pipe(plugins.cached('images'))
-    .pipe(plugins.remember('images'))
+    .pipe(plugins.newer(paths.buildImages))
     .pipe(sizeReporter('Images', { showFiles: true }))
     .pipe(gulp.dest(paths.buildImages))
     .pipe(plugins.browserSync.stream());

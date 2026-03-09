@@ -26,7 +26,7 @@ const computedPaths = {
 
 const globs = {
   html: `${computedPaths.srcHtml}/**/*.${extensions.html}`,
-  htmlPages: `${computedPaths.srcHtmlPages}/*.${extensions.html}`,
+  htmlPages: `${computedPaths.srcHtmlPages}/**/*.${extensions.html}`,
   htmlComponents: [
     `${computedPaths.srcHtmlLayouts}/**/*.${extensions.html}`,
     `${computedPaths.srcHtmlComponents}/**/*.${extensions.html}`,
@@ -43,10 +43,6 @@ const globs = {
   ],
 };
 
-const exclude = (pattern) => `!${pattern}`;
-const getSrc = (...parts) => [folders.src, ...parts].filter(Boolean).join('/');
-const getBuild = (...parts) => [folders.build, ...parts].filter(Boolean).join('/');
-
 export const paths = {
   root: rootDir,
   build: folders.build,
@@ -55,7 +51,4 @@ export const paths = {
   folders,
   extensions,
   globs,
-  exclude,
-  getSrc,
-  getBuild,
 };

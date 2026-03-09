@@ -32,8 +32,9 @@ export const projectConfig = {
 
   // Dev server
   server: {
-    port: parseInt(process.env.PORT) || 3000,
-    hostname: process.env.HOSTNAME || 'http://localhost:3000',
+    port: Number(process.env.PORT) || 3000,
+    hostname: process.env.SITE_URL || 'http://localhost:3000',
+    open: true,
   },
 
   // Environment
@@ -64,6 +65,13 @@ export const projectConfig = {
       enabled: true,
       quality: 80,
     },
+    jpeg: {
+      quality: 80,
+      progressive: true,
+    },
+    png: {
+      compressionLevel: 9,
+    },
   },
 
   // SVG Sprites
@@ -76,5 +84,10 @@ export const projectConfig = {
   sizeReport: {
     enabled: true,
     gzip: true,
+  },
+
+  // PostCSS (additional plugins applied after autoprefixer)
+  postcss: {
+    plugins: [],
   },
 };

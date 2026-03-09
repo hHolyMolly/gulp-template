@@ -1,10 +1,10 @@
 import * as dartSass from 'sass';
 import gulpDartSass from 'gulp-dart-sass';
 import sassGlob from 'gulp-sass-glob-use-forward';
-import mergeMediaQueries from 'gulp-merge-media-queries';
 import postcss from 'gulp-postcss';
 import autoprefixer from 'autoprefixer';
-import { sizeReporter, sourcemapsInit, sourcemapsWrite } from '../utils/index.js';
+import sortMediaQueries from 'postcss-sort-media-queries';
+import { sizeReporter } from '../utils/index.js';
 
 export const styles = () => {
   const { gulp, paths, plugins, config } = app;
@@ -14,23 +14,24 @@ export const styles = () => {
     ? paths.globs.styles
     : [...paths.globs.styles, `!${paths.srcStyles}/critical.scss`];
 
+  const postcssPlugins = [
+    autoprefixer(),
+    ...(config.env.isProd ? [sortMediaQueries()] : []),
+    ...(config.postcss?.plugins || []),
+  ];
+
   return gulp
-    .src(src)
+    .src(src, { sourcemaps: config.sourceMaps })
     .pipe(plugins.errorHandler('Styles'))
-    .pipe(plugins.cached('styles'))
-    .pipe(sourcemapsInit())
     .pipe(sassGlob())
     .pipe(
       gulpDartSass({
         logger: dartSass.Logger.silent,
         loadPaths: [paths.src, 'node_modules'],
-      }).on('error', gulpDartSass.logError)
+      })
     )
-    .pipe(plugins.remember('styles'))
-    .pipe(postcss([autoprefixer()]))
-    .pipe(mergeMediaQueries())
-    .pipe(sourcemapsWrite())
+    .pipe(postcss(postcssPlugins))
     .pipe(sizeReporter('CSS'))
-    .pipe(gulp.dest(paths.buildStyles))
+    .pipe(gulp.dest(paths.buildStyles, { sourcemaps: config.sourceMaps ? '.' : false }))
     .pipe(plugins.browserSync.stream());
 };

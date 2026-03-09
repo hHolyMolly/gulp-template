@@ -1,4 +1,4 @@
-import { sizeReporter, sourcemapsInit, sourcemapsWrite } from '../utils/index.js';
+import { sizeReporter } from '../utils/index.js';
 
 export const scripts = () => {
   const { gulp, paths, plugins } = app;
@@ -6,10 +6,7 @@ export const scripts = () => {
   return gulp
     .src(paths.globs.scripts)
     .pipe(plugins.errorHandler('Scripts'))
-    .pipe(plugins.cached('scripts'))
-    .pipe(sourcemapsInit())
-    .pipe(plugins.remember('scripts'))
-    .pipe(sourcemapsWrite())
+    .pipe(plugins.newer(paths.buildScripts))
     .pipe(sizeReporter('JS'))
     .pipe(gulp.dest(paths.buildScripts))
     .pipe(plugins.browserSync.stream());

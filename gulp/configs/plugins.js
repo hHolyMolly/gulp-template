@@ -3,7 +3,6 @@ import newer from 'gulp-newer';
 import svgSprite from 'gulp-svg-sprite';
 import plumber from 'gulp-plumber';
 import notify from 'gulp-notify';
-import sourcemaps from 'gulp-sourcemaps';
 import cached from 'gulp-cached';
 import remember from 'gulp-remember';
 
@@ -24,7 +23,6 @@ export const plugins = {
   svgSprite,
   plumber,
   notify,
-  sourcemaps,
   cached,
   remember,
   errorHandler,

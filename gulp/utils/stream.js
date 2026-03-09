@@ -14,13 +14,3 @@ export const sizeReporter = (title, options = {}) => {
     })
   );
 };
-
-export const sourcemapsInit = () => {
-  return gulpIf(app.config.sourceMaps, app.plugins.sourcemaps.init());
-};
-
-export const sourcemapsWrite = (dest = '.') => {
-  return gulpIf(app.config.sourceMaps, app.plugins.sourcemaps.write(dest));
-};
-
-export const noop = () => gulpIf(false, size());

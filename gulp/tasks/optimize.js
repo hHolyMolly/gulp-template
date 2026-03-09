@@ -2,22 +2,6 @@ import fs from 'fs/promises';
 import path from 'path';
 import { logSuccess } from '../utils/index.js';
 
-async function findHtmlFiles(dir, files = []) {
-  const entries = await fs.readdir(dir, { withFileTypes: true });
-
-  for (const entry of entries) {
-    const fullPath = path.join(dir, entry.name);
-
-    if (entry.isDirectory()) {
-      await findHtmlFiles(fullPath, files);
-    } else if (entry.name.endsWith('.html')) {
-      files.push(fullPath);
-    }
-  }
-
-  return files;
-}
-
 export const sitemap = async () => {
   const { paths, config } = app;
 
@@ -27,17 +11,27 @@ export const sitemap = async () => {
 
   const hostname = config.server.hostname;
   const buildDir = paths.build;
-  const htmlFiles = await findHtmlFiles(buildDir);
+  const allFiles = await fs.readdir(buildDir, { recursive: true });
+  const htmlFiles = allFiles.filter((f) => f.endsWith('.html')).map((f) => path.join(buildDir, f));
 
-  const urls = htmlFiles.map((file) => {
-    const relativePath = path.relative(buildDir, file).replace(/\\/g, '/');
-    const url = relativePath === 'index.html' ? '' : relativePath.replace(/\.html$/, '');
+  const urls = await Promise.all(
+    htmlFiles
+      .filter((file) => !path.basename(file).startsWith('404'))
+      .map(async (file) => {
+        const relativePath = path.relative(buildDir, file).replace(/\\/g, '/');
+        const url = relativePath === 'index.html' ? '' : relativePath.replace(/\.html$/, '');
+        const isIndex = relativePath === 'index.html';
+        const stat = await fs.stat(file);
+        const lastmod = stat.mtime.toISOString().split('T')[0];
 
-    return `  <url>
+        return `  <url>
     <loc>${hostname}/${url}</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <lastmod>${lastmod}</lastmod>
+    <changefreq>${isIndex ? 'weekly' : 'monthly'}</changefreq>
+    <priority>${isIndex ? '1.0' : '0.8'}</priority>
   </url>`;
-  });
+      }),
+  );
 
   const content = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -55,7 +49,7 @@ export const robots = async () => {
     return;
   }
 
-  const lines = ['User-agent: *', 'Allow: /'];
+  const lines = ['User-agent: *', 'Allow: /', 'Disallow: /404.html'];
 
   if (config.optimization.sitemap) {
     lines.push('', `Sitemap: ${config.server.hostname}/sitemap.xml`);
