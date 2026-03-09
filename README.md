@@ -7,41 +7,40 @@ Modern Gulp-based frontend template with SCSS, Nunjucks, SVG sprites, image opti
 ```bash
 npx degit hHolyMolly/gulp-template my-project
 cd my-project
-pnpm install
-pnpm dev
+npm install    # or pnpm install / yarn install
+npm run dev    # or pnpm dev / yarn dev
 ```
 
-> Requires **Node.js 22+** and **pnpm**.
+> Requires **Node.js 22+**.
 
 ## Tech Stack
 
-| Category      | Technology                                     |
-| ------------- | ---------------------------------------------- |
-| Task Runner   | Gulp 4                                         |
-| Dev Server    | BrowserSync (live reload)                      |
-| Styling       | SCSS (autoprefixer, media query merging)       |
-| Templates     | Nunjucks (layouts, pages, components)          |
-| Icons         | SVG sprites (SVGO optimization)                |
-| Images        | WebP conversion + Sharp optimization           |
-| Code Quality  | ESLint 9 + Prettier + Stylelint                |
-| CSS Framework | Tailwind CSS (optional, `pnpm tailwind:setup`) |
-| SEO           | sitemap.xml + robots.txt generation            |
-| Analysis      | Gzipped build size report                      |
+| Category      | Technology                                        |
+| ------------- | ------------------------------------------------- |
+| Task Runner   | Gulp 4                                            |
+| Dev Server    | BrowserSync (live reload)                         |
+| Styling       | SCSS (autoprefixer, media query merging)          |
+| Templates     | Nunjucks (layouts, pages, components)             |
+| Icons         | SVG sprites (SVGO optimization)                   |
+| Images        | WebP conversion + Sharp optimization              |
+| Code Quality  | ESLint 9 + Prettier + Stylelint                   |
+| CSS Framework | Tailwind CSS (optional, `npm run tailwind:setup`) |
+| SEO           | sitemap.xml + robots.txt generation               |
+| Analysis      | Gzipped build size report                         |
 
 ## Commands
 
-| Command               | Description                                   |
-| --------------------- | --------------------------------------------- |
-| `pnpm dev`            | Dev server with hot reload                    |
-| `pnpm build:dev`      | Development build                             |
-| `pnpm build:prod`     | Production build (minified + optimized)       |
-| `pnpm preview`        | Production build + local preview on port 5000 |
-| `pnpm lint`           | ESLint + Stylelint with auto-fix              |
-| `pnpm format`         | Prettier formatting                           |
-| `pnpm tailwind:setup` | Add Tailwind CSS to project                   |
-| `pnpm clean`          | Remove `dist`                                 |
-| `pnpm clean:cache`    | Clear build caches                            |
-| `pnpm clean:all`      | Remove `node_modules` + `dist`                |
+| Command                  | Description                             |
+| ------------------------ | --------------------------------------- |
+| `npm run dev`            | Dev server with hot reload              |
+| `npm run build:dev`      | Development build                       |
+| `npm run build:prod`     | Production build (minified + optimized) |
+| `npm run lint`           | ESLint + Stylelint with auto-fix        |
+| `npm run format`         | Prettier formatting                     |
+| `npm run tailwind:setup` | Add Tailwind CSS to project             |
+| `npm run clean`          | Remove `dist`                           |
+| `npm run clean:cache`    | Clear build caches                      |
+| `npm run clean:all`      | Remove `node_modules` + `dist`          |
 
 ## Project Structure
 
