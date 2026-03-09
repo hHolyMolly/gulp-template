@@ -3,7 +3,10 @@
   "rules": {
     "selector-class-pattern": null,
     "scss/at-rule-no-unknown": null,
-    "no-descending-specificity": null
+    "no-descending-specificity": [true, { "severity": "warning" }],
+    "declaration-no-important": [true, { "severity": "warning" }],
+    "selector-max-id": [1, { "severity": "warning" }],
+    "max-nesting-depth": [4, { "severity": "warning" }]
   },
   "ignoreFiles": ["dist/**/*.css", "node_modules/**/*.css"]
 }

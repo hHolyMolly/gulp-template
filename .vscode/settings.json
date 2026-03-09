@@ -1,0 +1,36 @@
+{
+  // Editor
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.stylelint": "explicit"
+  },
+
+  // File associations
+  "files.associations": {
+    "*.html": "jinja-html"
+  },
+
+  // Emmet
+  "emmet.includeLanguages": {
+    "jinja-html": "html"
+  },
+
+  // SCSS — let Stylelint handle validation
+  "scss.validate": false,
+
+  // Stylelint
+  "stylelint.validate": ["css", "scss"],
+
+  // Exclude from search
+  "search.exclude": {
+    "dist": true,
+    "pnpm-lock.yaml": true
+  },
+
+  // Hide from explorer
+  "files.exclude": {
+    "node_modules": true
+  }
+}

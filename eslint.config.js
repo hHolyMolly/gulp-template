@@ -11,16 +11,35 @@ export default [
     rules: {
       'prettier/prettier': 'warn',
       'no-unused-vars': 'warn',
-      'no-console': 'off',
+      'no-var': 'error',
+      'prefer-const': 'warn',
+      'prefer-template': 'warn',
+      'prefer-arrow-callback': 'warn',
+      'object-shorthand': 'warn',
     },
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
+    },
+  },
+  // Browser scripts
+  {
+    files: ['src/scripts/**/*.js'],
+    languageOptions: {
+      globals: globals.browser,
+    },
+  },
+  // Node / Gulp scripts
+  {
+    files: ['gulpfile.js', 'gulp/**/*.js', 'project.config.js', '.template/**/*.js'],
+    languageOptions: {
       globals: {
-        ...globals.browser,
         ...globals.node,
-        app: 'readonly', // Global Gulp object
+        app: 'readonly',
       },
+    },
+    rules: {
+      'no-console': 'off',
     },
   },
   {

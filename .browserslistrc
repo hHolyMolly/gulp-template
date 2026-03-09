@@ -10,7 +10,3 @@ not op_mini all
 # Safari needs special attention
 Safari >= 14
 iOS >= 14
-
-# Exclude old browsers
-not IE 11
-not IE_Mob 11

@@ -16,5 +16,11 @@ trim_trailing_whitespace = false
 [*.{yml,yaml}]
 indent_size = 2
 
+[*.{html,njk}]
+indent_size = 2
+
+[*.{scss,css}]
+indent_size = 2
+
 [Makefile]
 indent_style = tab
