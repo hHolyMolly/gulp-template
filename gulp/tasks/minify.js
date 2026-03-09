@@ -1,4 +1,4 @@
-import htmlmin from 'gulp-htmlmin';
+import { minify as htmlMinify } from 'html-minifier-terser';
 import csso from 'gulp-csso';
 import terser from 'gulp-terser';
 import gulpIf from 'gulp-if';
@@ -70,26 +70,40 @@ const sharpOptimize = () => {
 export const minifyHTML = () => {
   const { gulp, paths, plugins, config } = app;
 
+  const htmlMinifier = () => {
+    return new Transform({
+      objectMode: true,
+      async transform(file, enc, callback) {
+        if (file.isNull()) return callback(null, file);
+
+        try {
+          const html = file.contents.toString();
+          const minified = await htmlMinify(html, {
+            collapseWhitespace: true,
+            removeComments: true,
+            removeRedundantAttributes: true,
+            removeScriptTypeAttributes: true,
+            removeStyleLinkTypeAttributes: true,
+            useShortDoctype: true,
+            minifyCSS: true,
+            minifyJS: true,
+            sortAttributes: true,
+            sortClassName: false,
+          });
+          file.contents = Buffer.from(minified);
+          callback(null, file);
+        } catch (error) {
+          logWarning(`HTML minification failed for ${path.basename(file.path)}: ${error.message}`);
+          callback(null, file);
+        }
+      },
+    });
+  };
+
   return gulp
     .src(`${paths.build}/**/*.html`)
     .pipe(plugins.errorHandler('Minify HTML'))
-    .pipe(
-      gulpIf(
-        config.optimization.minify.html,
-        htmlmin({
-          collapseWhitespace: true,
-          removeComments: true,
-          removeRedundantAttributes: true,
-          removeScriptTypeAttributes: true,
-          removeStyleLinkTypeAttributes: true,
-          useShortDoctype: true,
-          minifyCSS: true,
-          minifyJS: true,
-          sortAttributes: true,
-          sortClassName: false,
-        })
-      )
-    )
+    .pipe(gulpIf(config.optimization.minify.html, htmlMinifier()))
     .pipe(sizeReporter('HTML (min)', { showFiles: false }))
     .pipe(gulp.dest(paths.build));
 };

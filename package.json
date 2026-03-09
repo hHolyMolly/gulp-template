@@ -6,22 +6,19 @@
   "main": "gulpfile.js",
   "author": "HolyMolly",
   "license": "MIT",
-  "packageManager": "pnpm@10.26.2",
   "engines": {
-    "node": ">=22",
-    "pnpm": ">=10"
+    "node": ">=22"
   },
   "scripts": {
     "dev": "cross-env NODE_OPTIONS=--no-deprecation NODE_ENV=development gulp dev",
     "build:dev": "cross-env NODE_OPTIONS=--no-deprecation NODE_ENV=development gulp build:dev",
     "build:prod": "cross-env NODE_OPTIONS=--no-deprecation NODE_ENV=production gulp build:prod",
-    "preview": "pnpm build:prod && serve dist -p 5000",
     "lint": "eslint . --fix && stylelint \"src/**/*.{css,scss}\" --fix",
     "format": "prettier --write .",
     "tailwind:setup": "node .template/setup/tailwind/setup.js",
-    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
-    "clean:cache": "node -e \"['node_modules/.cache','.eslintcache','.stylelintcache'].forEach(p=>require('fs').rmSync(p,{recursive:true,force:true}))\"",
-    "clean:all": "node -e \"['node_modules','dist'].forEach(p=>require('fs').rmSync(p,{recursive:true,force:true}))\""
+    "clean": "node -e \"import('fs').then(f=>f.rmSync('dist',{recursive:true,force:true}))\"",
+    "clean:cache": "node -e \"import('fs').then(f=>['node_modules/.cache','.eslintcache','.stylelintcache'].forEach(p=>f.rmSync(p,{recursive:true,force:true})))\"",
+    "clean:all": "node -e \"import('fs').then(f=>['node_modules','dist'].forEach(p=>f.rmSync(p,{recursive:true,force:true})))\""
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
@@ -37,7 +34,6 @@
     "gulp-cached": "^1.1.1",
     "gulp-csso": "^4.0.1",
     "gulp-dart-sass": "^1.1.0",
-    "gulp-htmlmin": "^5.0.1",
     "gulp-if": "^3.0.0",
     "gulp-newer": "^1.4.0",
     "gulp-notify": "^5.0.0",
@@ -51,13 +47,12 @@
     "gulp-svg-sprite": "^2.0.3",
     "gulp-terser": "^2.1.0",
     "gulp-webp": "^5.0.0",
+    "html-minifier-terser": "^7.2.0",
     "node-notifier": "^10.0.1",
     "postcss": "^8.5.3",
     "postcss-sort-media-queries": "^6.1.0",
     "prettier": "^3.8.0",
-    "prettier-plugin-jinja-template": "^2.1.0",
     "sass": "^1.83.4",
-    "serve": "^14.2.6",
     "sharp": "^0.33.0",
     "stylelint": "^17.0.0",
     "stylelint-config-standard-scss": "^17.0.0",
