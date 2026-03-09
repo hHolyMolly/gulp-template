@@ -27,6 +27,7 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
       - run: pnpm build:prod
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

@@ -43,11 +43,6 @@ Environment variables are loaded from `.env.development` or `.env.production` vi
 
 All paths are computed dynamically in `gulp/configs/paths.js` from folder names in config. Never hardcode paths — use `paths.srcStyles`, `paths.buildImages`, `paths.globs.html`, etc.
 
-Helper functions:
-- `paths.getSrc('styles', 'components')` → `src/styles/components`
-- `paths.getBuild('assets', 'img')` → `dist/assets/img`
-- `paths.exclude(pattern)` → `!pattern`
-
 ## Directory Structure
 
 ```
@@ -115,7 +110,7 @@ gulp/
 - Partials start with `_` underscore and are auto-imported via `@use 'components/*'` / `@use 'ui/*'`
 - CSS custom properties defined in `vars.scss` — use `var(--name)` everywhere
 - Component styles match HTML component names: `_header.scss` for header
-- Media queries are merged automatically via `gulp-merge-media-queries`
+- Media queries are merged automatically via `postcss-sort-media-queries` (production)
 - Autoprefixer runs via PostCSS — no vendor prefixes needed
 - Sourcemaps enabled in dev mode only
 - If adding Tailwind CSS, run `pnpm tailwind:setup`
@@ -126,7 +121,7 @@ gulp/
 - Components are in `src/scripts/components/` — one file per feature
 - Utilities are in `src/scripts/utils/` — pure helper functions
 - Use ES module imports (`import`/`export`)
-- `console.log` is allowed in dev — stripped in production build via terser
+- `console.log` is allowed in dev — `console.log`/`console.info` stripped in production via terser (`console.warn`/`console.error` preserved)
 
 ### Images
 
@@ -144,7 +139,7 @@ gulp/
 
 ## Build Pipeline
 
-### Development (`pnpm start`)
+### Development (`pnpm dev`)
 
 ```
 clean → [html, styles, scripts, images+webp, sprite, assets] → watch + BrowserSync
@@ -189,6 +184,7 @@ export const myTask = () => {
 ```
 
 Then register in `gulpfile.js`:
+
 1. Import the task
 2. Add to watch if needed
 3. Add to appropriate task group (mainTasks, optimizeTasks, etc.)
@@ -227,14 +223,15 @@ Always use `plugins.errorHandler('Task Name')` as the first pipe in any task. It
 
 ## Commands Reference
 
-| Command | Description |
-|---------|-------------|
-| `pnpm start` | Dev server with hot reload |
-| `pnpm build:dev` | Development build (no minification) |
-| `pnpm build:prod` | Production build (minified + optimized) |
-| `pnpm lint` | ESLint + Stylelint with auto-fix |
-| `pnpm format` | Prettier formatting |
-| `pnpm tailwind:setup` | Add Tailwind CSS to project |
-| `pnpm clean` | Remove dist folder |
-| `pnpm clean:cache` | Clear build caches |
-| `pnpm clean:all` | Remove node_modules + dist |
+| Command               | Description                                   |
+| --------------------- | --------------------------------------------- |
+| `pnpm dev`            | Dev server with hot reload                    |
+| `pnpm build:dev`      | Development build (no minification)           |
+| `pnpm build:prod`     | Production build (minified + optimized)       |
+| `pnpm preview`        | Production build + local preview on port 5000 |
+| `pnpm lint`           | ESLint + Stylelint with auto-fix              |
+| `pnpm format`         | Prettier formatting                           |
+| `pnpm tailwind:setup` | Add Tailwind CSS to project                   |
+| `pnpm clean`          | Remove dist folder                            |
+| `pnpm clean:cache`    | Clear build caches                            |
+| `pnpm clean:all`      | Remove node_modules + dist                    |
