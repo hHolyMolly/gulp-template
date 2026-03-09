@@ -12,7 +12,6 @@
     "pnpm": ">=10"
   },
   "scripts": {
-    "preinstall": "npx only-allow pnpm",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation NODE_ENV=development gulp dev",
     "build:dev": "cross-env NODE_OPTIONS=--no-deprecation NODE_ENV=development gulp build:dev",
     "build:prod": "cross-env NODE_OPTIONS=--no-deprecation NODE_ENV=production gulp build:prod",
@@ -53,7 +52,6 @@
     "gulp-terser": "^2.1.0",
     "gulp-webp": "^5.0.0",
     "node-notifier": "^10.0.1",
-    "only-allow": "^1.2.2",
     "postcss": "^8.5.3",
     "postcss-sort-media-queries": "^6.1.0",
     "prettier": "^3.8.0",
