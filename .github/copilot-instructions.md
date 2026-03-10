@@ -25,23 +25,24 @@ Always access these via destructuring: `const { gulp, paths, plugins, config } =
 
 ### Configuration System
 
-All project settings are in `project.config.js` at root level:
+User-facing settings are in `project.config.js` at root level:
 
-- `folders` — directory names (src, build, styles, scripts, etc.)
-- `extensions` — file extension patterns for globs
-- `server` — port, hostname (from .env)
 - `env` — `isDev` / `isProd` flags
+- `server` — port, hostname (from .env), auto-open browser
 - `sourceMaps` — enabled in dev
 - `optimization` — minification flags (html, css, js, images), criticalCSS, sitemap, robots
-- `images.webp` — WebP conversion settings
-- `sprites` — SVG sprite settings
+- `images` — WebP / JPEG / PNG quality and compression settings
+- `sprites` — SVG sprite toggle and output filename
 - `sizeReport` — build size analysis
+- `postcss` — additional PostCSS plugins (applied after Autoprefixer)
+
+Directory structure and file paths are **not user-configurable** — they are internal constants defined in `gulp/configs/paths.js`.
 
 Environment variables are loaded from `.env.development` or `.env.production` via `gulp/configs/env.js` (must be imported before config).
 
 ### Paths
 
-All paths are computed dynamically in `gulp/configs/paths.js` from folder names in config. Never hardcode paths — use `paths.srcStyles`, `paths.buildImages`, `paths.globs.html`, etc.
+All paths are computed dynamically in `gulp/configs/paths.js` from internal folder constants. Never hardcode paths — use `paths.srcStyles`, `paths.buildImages`, `paths.globs.html`, etc.
 
 ## Directory Structure
 
@@ -228,7 +229,6 @@ Always use `plugins.errorHandler('Task Name')` as the first pipe in any task. It
 | `pnpm dev`            | Dev server with hot reload                    |
 | `pnpm build:dev`      | Development build (no minification)           |
 | `pnpm build:prod`     | Production build (minified + optimized)       |
-| `pnpm preview`        | Production build + local preview on port 5000 |
 | `pnpm lint`           | ESLint + Stylelint with auto-fix              |
 | `pnpm format`         | Prettier formatting                           |
 | `pnpm tailwind:setup` | Add Tailwind CSS to project                   |
