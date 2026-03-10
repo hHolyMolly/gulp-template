@@ -25,16 +25,24 @@ export const createUnlinkHandler = (srcBase, buildBase, extMap = {}, cacheId = n
 
       try {
         fs.unlinkSync(buildPath);
-      } catch {}
+      } catch {
+        // ignore
+      }
       try {
         fs.unlinkSync(`${buildPath}.map`);
-      } catch {}
+      } catch {
+        // ignore
+      }
 
       if (cacheId) {
         try {
           app.plugins.remember.forget(cacheId, path.resolve(filePath));
-        } catch {}
+        } catch {
+          // ignore
+        }
       }
-    } catch {}
+    } catch {
+      // ignore
+    }
   };
 };

@@ -54,7 +54,9 @@ const watch = () => {
       const webpPath = path.join(paths.buildImages, relativePath.replace(ext, '.webp'));
       try {
         fs.unlinkSync(webpPath);
-      } catch {}
+      } catch {
+        // ignore
+      }
     }
   });
   gulp.watch(globs.sprites, sprite);

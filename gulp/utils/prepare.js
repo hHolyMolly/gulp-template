@@ -25,7 +25,9 @@ if (!existsSync('.git')) {
   // Self-delete — this script is no longer needed
   try {
     rmSync(fileURLToPath(import.meta.url), { force: true });
-  } catch {}
+  } catch {
+    // ignore
+  }
 
   console.log(`\n✅ Project "${projectName}" initialized. Run: pnpm dev\n`);
 }
