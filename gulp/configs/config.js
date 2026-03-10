@@ -7,38 +7,6 @@ import { logWarning } from '../utils/logger.js';
 const validateConfig = (cfg) => {
   const validated = structuredClone(cfg);
 
-  const criticalFolders = ['build', 'src'];
-  const optionalFolders = [
-    'styles',
-    'scripts',
-    'html',
-    'assets',
-    'images',
-    'sprites',
-    'pages',
-    'layouts',
-    'components',
-  ];
-  const requiredExtensions = ['styles', 'scripts', 'html', 'images'];
-
-  criticalFolders.forEach((key) => {
-    if (!validated.folders?.[key]) {
-      throw new Error(`Critical config missing: folders.${key} — build cannot proceed`);
-    }
-  });
-
-  optionalFolders.forEach((key) => {
-    if (!validated.folders?.[key]) {
-      logWarning(`Missing config: folders.${key}`);
-    }
-  });
-
-  requiredExtensions.forEach((key) => {
-    if (!validated.extensions?.[key]) {
-      logWarning(`Missing config: extensions.${key}`);
-    }
-  });
-
   if (!validated.server?.port) {
     logWarning('Missing config: server.port — defaulting to 3000');
     validated.server = { ...validated.server, port: 3000 };

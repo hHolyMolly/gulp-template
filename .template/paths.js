@@ -5,12 +5,20 @@
 
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { projectConfig } from '../project.config.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, '../');
 
-const { folders } = projectConfig;
+// Directory names (mirrors gulp/configs/paths.js)
+const folders = {
+  src: 'src',
+  styles: 'styles',
+  scripts: 'scripts',
+  html: 'html',
+  layouts: 'layouts',
+  pages: 'pages',
+  components: 'components',
+};
 
 // ─────────────────────────────────────────────────────────────
 // Path Helpers
@@ -58,5 +66,3 @@ export const templatePaths = {
   srcPath,
   gulpPath,
 };
-
-export { projectConfig };

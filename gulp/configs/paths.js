@@ -1,12 +1,39 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { projectConfig } from '../../project.config.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, '../../');
 
-const { folders, extensions } = projectConfig;
+// ─────────────────────────────────────────────────────────────
+// Directory & Extension Constants (internal — not user-facing)
+// ─────────────────────────────────────────────────────────────
+
+const folders = {
+  build: 'dist',
+  src: 'src',
+  styles: 'styles',
+  scripts: 'scripts',
+  html: 'html',
+  assets: 'assets',
+  images: 'img',
+  sprites: 'sprites',
+  pages: 'pages',
+  layouts: 'layouts',
+  components: 'components',
+};
+
+const extensions = {
+  styles: '{css,scss}',
+  scripts: 'js',
+  html: 'html',
+  images: '{jpg,jpeg,png,gif,ico,webp,svg}',
+  sprites: 'svg',
+};
+
+// ─────────────────────────────────────────────────────────────
+// Computed Paths
+// ─────────────────────────────────────────────────────────────
 
 const computedPaths = {
   srcStyles: `${folders.src}/${folders.styles}`,
@@ -48,7 +75,5 @@ export const paths = {
   build: folders.build,
   src: folders.src,
   ...computedPaths,
-  folders,
-  extensions,
   globs,
 };

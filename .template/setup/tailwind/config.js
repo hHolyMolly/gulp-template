@@ -5,13 +5,14 @@
  * Do NOT import dotenv here — ESM static imports evaluate before side effects.
  */
 
-import { projectConfig } from '../../paths.js';
-
-const { folders } = projectConfig;
-
-// ─────────────────────────────────────────────────────────────
-// Export folders
-// ─────────────────────────────────────────────────────────────
+// Directory names (mirrors gulp/configs/paths.js)
+const folders = {
+  src: 'src',
+  styles: 'styles',
+  scripts: 'scripts',
+  html: 'html',
+  layouts: 'layouts',
+};
 
 export { folders };
 

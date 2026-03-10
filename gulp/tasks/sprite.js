@@ -5,10 +5,12 @@ export const sprite = () => {
     return Promise.resolve();
   }
 
+  const spritesDir = paths.srcSprites.split('/').pop();
+
   const spriteConfig = {
     mode: {
       symbol: {
-        sprite: `../${config.folders.sprites}/${config.sprites.fileName}`,
+        sprite: `../${spritesDir}/${config.sprites.fileName}`,
       },
     },
     shape: {
