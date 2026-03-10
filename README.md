@@ -14,7 +14,7 @@
 ## Features
 
 - **SCSS** — Dart Sass, autoprefixer, media query merging
-- **HTML Includes** — simple `@@include` partials, no template engine
+- **HTML Includes** — `@@include` partials with parameters (title, description, image)
 - **SVG Sprites** — automatic symbol sprite generation
 - **Image Optimization** — Sharp (JPG/PNG/WebP/GIF) + auto WebP conversion
 - **BrowserSync** — dev server with hot reload & 404 fallback
@@ -38,34 +38,36 @@ pnpm dev
 | Command               | Description                             |
 | --------------------- | --------------------------------------- |
 | `pnpm dev`            | Dev server with hot reload              |
-| `pnpm build:dev`      | Development build                       |
+| `pnpm build:dev`      | Development build (no minification)     |
 | `pnpm build:prod`     | Production build (minified + optimized) |
+| `pnpm preview`        | Production build + local preview server |
 | `pnpm lint`           | ESLint + Stylelint with auto-fix        |
 | `pnpm format`         | Prettier formatting                     |
 | `pnpm tailwind:setup` | Add Tailwind CSS to project             |
-| `pnpm preview`        | Production build + local preview server |
 | `pnpm clean`          | Remove `dist/`                          |
+| `pnpm clean:cache`    | Clear build & linter caches             |
+| `pnpm clean:all`      | Remove `node_modules/` and `dist/`      |
 
 ## Project Structure
 
 ```
 src/
 ├── html/
-│   ├── layouts/          # Base layout + partials (_head, _header, _footer)
-│   ├── pages/            # Each page → dist/*.html
+│   ├── layouts/          # Shared partials (_head, _header, _footer, _modals)
+│   ├── pages/            # Each file → dist/*.html
 │   └── components/       # Reusable HTML blocks
 ├── styles/
 │   ├── vars.scss         # CSS custom properties
 │   ├── normalize.scss    # CSS reset
 │   ├── fonts.scss        # @font-face declarations
 │   ├── main.scss         # Main styles (auto-imports components/*)
-│   ├── ui.scss           # Auto-imports ui/*
+│   ├── ui.scss           # UI components
 │   ├── utils.scss        # Utility classes
 │   └── critical.scss     # Above-the-fold styles (optional)
 ├── scripts/
 │   ├── app.js            # Entry point
-│   ├── components/       # JS components (modals, sliders, etc.)
-│   └── utils/            # Helper functions
+│   ├── components/       # JS components (modals, sliders, spollers, etc.)
+│   └── utils/            # Helpers (DOM, debounce, bodyLock)
 └── assets/
     ├── fonts/            # Font files
     ├── img/              # Images (auto WebP + optimization)
@@ -75,18 +77,18 @@ src/
 
 ## Configuration
 
-All user-facing settings are in [`project.config.js`](project.config.js):
+All settings are in [`project.config.js`](project.config.js):
 
-| Setting        | Description                             |
-| -------------- | --------------------------------------- |
-| `server`       | Port, hostname, auto-open browser       |
-| `optimization` | HTML/CSS/JS/image minification, sitemap |
-| `images`       | WebP/JPEG/PNG quality and compression   |
-| `sprites`      | SVG sprite toggle and filename          |
-| `sizeReport`   | Gzip build size analysis                |
-| `postcss`      | Additional PostCSS plugins              |
+| Setting        | Description                                     |
+| -------------- | ----------------------------------------------- |
+| `server`       | Port, hostname, auto-open browser               |
+| `optimization` | HTML/CSS/JS/image minification, sitemap, robots |
+| `images`       | WebP/JPEG/PNG quality and compression           |
+| `sprites`      | SVG sprite toggle and filename                  |
+| `sizeReport`   | Gzip build size analysis                        |
+| `postcss`      | Additional PostCSS plugins                      |
 
-Environment variables are loaded from `.env.development` / `.env.production`.
+Environment variables: `.env.development` / `.env.production`.
 
 ## Build Pipeline
 
@@ -114,7 +116,7 @@ HTML/CSS/JS minified, images optimized via Sharp, sourcemaps removed.
 | Styling      | [Dart Sass](https://sass-lang.com) + [PostCSS](https://postcss.org) (Autoprefixer)                   |
 | Templates    | [gulp-file-include](https://github.com/haoxins/gulp-file-include)                                    |
 | Dev Server   | [BrowserSync](https://browsersync.io)                                                                |
-| Images       | [Sharp](https://sharp.pixelplumbing.com) + [gulp-webp](https://github.com/sindresorhus/gulp-webp)    |
+| Images       | [Sharp](https://sharp.pixelplumbing.com) + auto WebP                                                 |
 | Icons        | [SVG Sprite](https://github.com/svg-sprite/svg-sprite) + [SVGO](https://svgo.dev)                    |
 | Code Quality | [ESLint 9](https://eslint.org) + [Prettier](https://prettier.io) + [Stylelint](https://stylelint.io) |
 
