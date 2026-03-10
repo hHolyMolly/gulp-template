@@ -117,6 +117,7 @@ gulp/
 - Autoprefixer runs via PostCSS — no vendor prefixes needed
 - Sourcemaps enabled in dev mode only
 - If adding Tailwind CSS, run `pnpm tailwind:setup`
+- Mixins file `_mixins.scss` provides `rem()`, `em()`, `media()`, `media-down()` — import via `@use '../mixins' as *`
 
 ### Scripts (JavaScript)
 
@@ -132,6 +133,14 @@ gulp/
 - JPG/PNG are auto-converted to WebP format alongside originals
 - In production: Sharp optimizes JPG (quality 80), PNG (compression 9), WebP (quality 80)
 - SVG files for sprites go in `src/assets/sprites/`
+- Use `<picture>` for responsive images with WebP fallback:
+
+```html
+<picture>
+  <source srcset="assets/img/photo.webp" type="image/webp">
+  <img src="assets/img/photo.jpg" alt="Description" width="800" height="600" loading="lazy">
+</picture>
+```
 
 ### SVG Sprites
 

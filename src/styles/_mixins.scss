@@ -1,0 +1,76 @@
+/* ─────────────────────────────────────────────────────────────
+ * Mixins & Functions
+ * ───────────────────────────────────────────────────────────── */
+
+@use 'sass:math';
+
+// ─────────────────────────────────────────────────────────────
+// Unit Conversion
+// ─────────────────────────────────────────────────────────────
+
+/// Convert px to rem (base 16px)
+/// @param {Number} $px - Value in pixels
+/// @return {Number} Value in rem
+/// @example scss
+///   font-size: rem(18);    // 1.125rem
+///   padding: rem(20) rem(32); // 1.25rem 2rem
+@function rem($px) {
+  @return math.div($px, 16) * 1rem;
+}
+
+/// Convert px to em (relative to parent font-size)
+/// @param {Number} $px - Value in pixels
+/// @param {Number} $base [16] - Parent font-size in px
+/// @return {Number} Value in em
+/// @example scss
+///   font-size: em(14);        // 0.875em
+///   font-size: em(14, 18);    // 0.7778em (14px relative to 18px parent)
+@function em($px, $base: 16) {
+  @return math.div($px, $base) * 1em;
+}
+
+// ─────────────────────────────────────────────────────────────
+// Breakpoints
+// ─────────────────────────────────────────────────────────────
+
+$breakpoints: (
+  xs: em(480),
+  sm: em(576),
+  md: em(768),
+  lg: em(992),
+  xl: em(1200),
+  xxl: em(1400),
+) !default;
+
+/// Media query: min-width (mobile-first)
+/// @param {String|Number} $breakpoint - Named breakpoint or custom value
+/// @example scss
+///   @include media(md) { ... }       // @media (min-width: 48em)
+///   @include media(800px) { ... }    // @media (min-width: 800px)
+@mixin media($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (min-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  } @else {
+    @media (min-width: $breakpoint) {
+      @content;
+    }
+  }
+}
+
+/// Media query: max-width (desktop-first)
+/// @param {String|Number} $breakpoint - Named breakpoint or custom value
+/// @example scss
+///   @include media-down(md) { ... }  // @media (max-width: 47.9375em)
+@mixin media-down($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (max-width: map-get($breakpoints, $breakpoint) - em(0.02)) {
+      @content;
+    }
+  } @else {
+    @media (max-width: $breakpoint) {
+      @content;
+    }
+  }
+}
