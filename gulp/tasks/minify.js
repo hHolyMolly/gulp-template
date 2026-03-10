@@ -80,6 +80,7 @@ export const minifyHTML = () => {
           const html = file.contents.toString();
           const minified = await htmlMinify(html, {
             collapseWhitespace: true,
+            conservativeCollapse: true,
             removeComments: true,
             removeRedundantAttributes: true,
             removeScriptTypeAttributes: true,
