@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { logWarning } from './logger.js';
 
 /**
  * Creates an unlink handler for gulp.watch that:
@@ -41,8 +42,8 @@ export const createUnlinkHandler = (srcBase, buildBase, extMap = {}, cacheId = n
           // ignore
         }
       }
-    } catch {
-      // ignore
+    } catch (error) {
+      logWarning(`Unlink handler failed for ${filePath}: ${error.message}`);
     }
   };
 };

@@ -429,16 +429,31 @@
           .writeText(text)
           .then(showCheck)
           .catch(function () {
-            var range = document.createRange();
-            range.selectNodeContents(btn.querySelector('.demo__install-text'));
-            window.getSelection().removeAllRanges();
-            window.getSelection().addRange(range);
+            fallbackCopy();
           });
+      } catch (e) {
+        fallbackCopy();
+      }
+    }
+
+    function fallbackCopy() {
+      var textArea = document.createElement('textarea');
+      textArea.value = text;
+      textArea.style.position = 'fixed';
+      textArea.style.opacity = '0';
+      document.body.appendChild(textArea);
+      textArea.select();
+
+      try {
+        document.execCommand('copy');
+        showCheck();
       } catch (e) {
         var range = document.createRange();
         range.selectNodeContents(btn.querySelector('.demo__install-text'));
         window.getSelection().removeAllRanges();
         window.getSelection().addRange(range);
+      } finally {
+        document.body.removeChild(textArea);
       }
     }
 
