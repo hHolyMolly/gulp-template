@@ -117,7 +117,7 @@ gulp/
 - Autoprefixer runs via PostCSS — no vendor prefixes needed
 - Sourcemaps enabled in dev mode only
 - If adding Tailwind CSS, run `pnpm tailwind:setup`
-- Mixins file `_mixins.scss` provides `rem()`, `em()`, `media()`, `media-down()` — import via `@use '../mixins' as *`
+- Mixins file `_mixins.scss` provides `rem()`, `em()` functions — import via `@use '../mixins' as *`
 
 ### Scripts (JavaScript)
 
