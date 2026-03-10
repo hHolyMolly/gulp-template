@@ -89,6 +89,10 @@ export const logWarning = (message) => {
   console.log(`  ${c.yellow}⚠${c.reset} ${message}`);
 };
 
+export const logError = (message) => {
+  console.log(`  ${c.red}✗${c.reset} ${message}`);
+};
+
 export const logInfo = (message) => {
   console.log(`  ${c.cyan}ℹ${c.reset} ${message}`);
 };

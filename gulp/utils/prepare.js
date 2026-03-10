@@ -16,11 +16,11 @@ if (!existsSync('.git')) {
   const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
   pkg.name = projectName;
   pkg.version = '1.0.0';
-  pkg.description = '';
-  pkg.author = '';
+  delete pkg.description;
+  delete pkg.author;
   delete pkg.license;
   delete pkg.scripts.prepare;
-  writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
+  writeFileSync('package.json', `${JSON.stringify(pkg, null, 2)}\n`);
 
   // Self-delete — this script is no longer needed
   try {

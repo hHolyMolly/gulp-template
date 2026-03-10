@@ -29,76 +29,36 @@ import { minifyHTML, minifyCSS, minifyJS, minifyImages, minifySVG, cleanSourcema
 import { sprite } from './gulp/tasks/sprite.js';
 import { sitemap, robots } from './gulp/tasks/optimize.js';
 import { logBuildStart, logBuildEnd } from './gulp/utils/index.js';
+import { createUnlinkHandler } from './gulp/utils/watcher.js';
 
+// ─────────────────────────────────────────────────────────────
 // Watch
+// ─────────────────────────────────────────────────────────────
 
 const { globs } = paths;
 
-/**
- * Remove corresponding file from dist when source is deleted
- * Also clears gulp-remember cache to prevent ghost files
- */
-const handleUnlink = (srcBase, buildBase, extMap = {}, cacheId = null) => {
-  return (filePath) => {
-    try {
-      let relativePath = path.relative(srcBase, filePath);
-      const ext = path.extname(relativePath);
-
-      if (extMap[ext]) {
-        relativePath = relativePath.replace(ext, extMap[ext]);
-      }
-
-      const buildPath = path.join(buildBase, relativePath);
-
-      // Remove build file and sourcemap (try-catch for TOCTOU race)
-      try {
-        fs.unlinkSync(buildPath);
-      } catch {
-        // File may already be removed
-      }
-      try {
-        fs.unlinkSync(`${buildPath}.map`);
-      } catch {
-        // Sourcemap may not exist
-      }
-
-      // Clear gulp-remember cache
-      if (cacheId) {
-        try {
-          app.plugins.remember.forget(cacheId, path.resolve(filePath));
-        } catch {
-          // Cache key may not exist
-        }
-      }
-    } catch {
-      // Ignore unlink errors (file may already be removed)
-    }
-  };
-};
-
 const watch = () => {
-  gulp.watch(globs.htmlPages, html).on('unlink', handleUnlink(paths.srcHtmlPages, paths.build, {}, 'html'));
+  gulp.watch(globs.htmlPages, html).on('unlink', createUnlinkHandler(paths.srcHtmlPages, paths.build, {}, 'html'));
   gulp.watch(globs.htmlComponents, gulp.series(clearHtmlCache, html));
   gulp
     .watch(globs.stylesWatch, styles)
-    .on('unlink', handleUnlink(paths.srcStyles, paths.buildStyles, { '.scss': '.css' }));
-  gulp.watch(globs.scripts, scripts).on('unlink', handleUnlink(paths.srcScripts, paths.buildScripts));
+    .on('unlink', createUnlinkHandler(paths.srcStyles, paths.buildStyles, { '.scss': '.css' }));
+  gulp.watch(globs.scripts, scripts).on('unlink', createUnlinkHandler(paths.srcScripts, paths.buildScripts));
   gulp.watch(globs.images, gulp.series(images, imagesWebp)).on('unlink', (filePath) => {
-    // Remove the image itself
-    handleUnlink(paths.srcImages, paths.buildImages)(filePath);
+    createUnlinkHandler(paths.srcImages, paths.buildImages)(filePath);
 
     // Remove orphan .webp copy
     const relativePath = path.relative(paths.srcImages, filePath);
     const ext = path.extname(relativePath);
     if (['.jpg', '.jpeg', '.png'].includes(ext.toLowerCase())) {
       const webpPath = path.join(paths.buildImages, relativePath.replace(ext, '.webp'));
-      if (fs.existsSync(webpPath)) {
+      try {
         fs.unlinkSync(webpPath);
-      }
+      } catch {}
     }
   });
   gulp.watch(globs.sprites, sprite);
-  gulp.watch(globs.assets, assets).on('unlink', handleUnlink(paths.srcAssets, paths.buildAssets));
+  gulp.watch(globs.assets, assets).on('unlink', createUnlinkHandler(paths.srcAssets, paths.buildAssets));
 };
 
 // ─────────────────────────────────────────────────────────────

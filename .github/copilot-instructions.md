@@ -93,7 +93,8 @@ gulp/
     ├── index.js          # Re-exports
     ├── logger.js         # Console logger with ANSI colors + notifications
     ├── prepare.js        # Post-install setup for degit users (self-deleting)
-    └── stream.js         # sizeReporter, sourcemapsInit/Write, noop
+    ├── stream.js         # sizeReporter
+    └── watcher.js        # createUnlinkHandler for watch mode
 ```
 
 ## Conventions
@@ -225,14 +226,14 @@ Always use `plugins.errorHandler('Task Name')` as the first pipe in any task. It
 
 ## Commands Reference
 
-| Command               | Description                                   |
-| --------------------- | --------------------------------------------- |
-| `pnpm dev`            | Dev server with hot reload                    |
-| `pnpm build:dev`      | Development build (no minification)           |
-| `pnpm build:prod`     | Production build (minified + optimized)       |
-| `pnpm lint`           | ESLint + Stylelint with auto-fix              |
-| `pnpm format`         | Prettier formatting                           |
-| `pnpm tailwind:setup` | Add Tailwind CSS to project                   |
-| `pnpm clean`          | Remove dist folder                            |
-| `pnpm clean:cache`    | Clear build caches                            |
-| `pnpm clean:all`      | Remove node_modules + dist                    |
+| Command               | Description                             |
+| --------------------- | --------------------------------------- |
+| `pnpm dev`            | Dev server with hot reload              |
+| `pnpm build:dev`      | Development build (no minification)     |
+| `pnpm build:prod`     | Production build (minified + optimized) |
+| `pnpm lint`           | ESLint + Stylelint with auto-fix        |
+| `pnpm format`         | Prettier formatting                     |
+| `pnpm tailwind:setup` | Add Tailwind CSS to project             |
+| `pnpm clean`          | Remove dist folder                      |
+| `pnpm clean:cache`    | Clear build caches                      |
+| `pnpm clean:all`      | Remove node_modules + dist              |
