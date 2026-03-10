@@ -92,7 +92,7 @@ gulp/
 └── utils/
     ├── index.js          # Re-exports
     ├── logger.js         # Console logger with ANSI colors + notifications
-    ├── prepare.js        # Post-install cleanup for degit users
+    ├── prepare.js        # Post-install setup for degit users (self-deleting)
     └── stream.js         # sizeReporter, sourcemapsInit/Write, noop
 ```
 
