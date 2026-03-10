@@ -20,6 +20,11 @@
     "clean:cache": "node -e \"import('fs').then(f=>['node_modules/.cache','.eslintcache','.stylelintcache'].forEach(p=>f.rmSync(p,{recursive:true,force:true})))\"",
     "clean:all": "node -e \"import('fs').then(f=>['node_modules','dist'].forEach(p=>f.rmSync(p,{recursive:true,force:true})))\""
   },
+  "browserslist": [
+    ">= 1%",
+    "last 2 versions",
+    "not dead"
+  ],
   "devDependencies": {
     "@eslint/js": "^9.39.2",
     "autoprefixer": "^10.4.21",
