@@ -10,6 +10,7 @@
     "node": ">=22"
   },
   "scripts": {
+    "prepare": "node gulp/utils/prepare.js",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation NODE_ENV=development gulp dev",
     "build:dev": "cross-env NODE_OPTIONS=--no-deprecation NODE_ENV=development gulp build:dev",
     "build:prod": "cross-env NODE_OPTIONS=--no-deprecation NODE_ENV=production gulp build:prod",
