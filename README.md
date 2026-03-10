@@ -14,7 +14,7 @@
 ## Features
 
 - **SCSS** — Dart Sass, autoprefixer, media query merging
-- **Nunjucks** — layouts, pages, components templating
+- **HTML Includes** — simple `@@include` partials, no template engine
 - **SVG Sprites** — automatic symbol sprite generation
 - **Image Optimization** — Sharp (JPG/PNG/WebP/GIF) + auto WebP conversion
 - **BrowserSync** — dev server with hot reload & 404 fallback
@@ -35,15 +35,16 @@ pnpm dev
 
 ## Commands
 
-| Command              | Description                             |
-| -------------------- | --------------------------------------- |
-| `pnpm dev`           | Dev server with hot reload              |
-| `pnpm build:dev`     | Development build                       |
-| `pnpm build:prod`    | Production build (minified + optimized) |
-| `pnpm lint`          | ESLint + Stylelint with auto-fix        |
-| `pnpm format`        | Prettier formatting                     |
-| `pnpm tailwind:setup`| Add Tailwind CSS to project             |
-| `pnpm clean`         | Remove `dist/`                          |
+| Command               | Description                             |
+| --------------------- | --------------------------------------- |
+| `pnpm dev`            | Dev server with hot reload              |
+| `pnpm build:dev`      | Development build                       |
+| `pnpm build:prod`     | Production build (minified + optimized) |
+| `pnpm lint`           | ESLint + Stylelint with auto-fix        |
+| `pnpm format`         | Prettier formatting                     |
+| `pnpm tailwind:setup` | Add Tailwind CSS to project             |
+| `pnpm preview`        | Production build + local preview server |
+| `pnpm clean`          | Remove `dist/`                          |
 
 ## Project Structure
 
@@ -76,14 +77,14 @@ src/
 
 All user-facing settings are in [`project.config.js`](project.config.js):
 
-| Setting        | Description                                 |
-| -------------- | ------------------------------------------- |
-| `server`       | Port, hostname, auto-open browser           |
-| `optimization` | HTML/CSS/JS/image minification, sitemap     |
-| `images`       | WebP/JPEG/PNG quality and compression       |
-| `sprites`      | SVG sprite toggle and filename              |
-| `sizeReport`   | Gzip build size analysis                    |
-| `postcss`      | Additional PostCSS plugins                  |
+| Setting        | Description                             |
+| -------------- | --------------------------------------- |
+| `server`       | Port, hostname, auto-open browser       |
+| `optimization` | HTML/CSS/JS/image minification, sitemap |
+| `images`       | WebP/JPEG/PNG quality and compression   |
+| `sprites`      | SVG sprite toggle and filename          |
+| `sizeReport`   | Gzip build size analysis                |
+| `postcss`      | Additional PostCSS plugins              |
 
 Environment variables are loaded from `.env.development` / `.env.production`.
 
@@ -107,14 +108,14 @@ HTML/CSS/JS minified, images optimized via Sharp, sourcemaps removed.
 
 ## Tech Stack
 
-| Category     | Technology                                       |
-| ------------ | ------------------------------------------------ |
-| Task Runner  | [Gulp 4](https://gulpjs.com)                     |
-| Styling      | [Dart Sass](https://sass-lang.com) + [PostCSS](https://postcss.org) (Autoprefixer) |
-| Templates    | [Nunjucks](https://mozilla.github.io/nunjucks/)  |
-| Dev Server   | [BrowserSync](https://browsersync.io)            |
-| Images       | [Sharp](https://sharp.pixelplumbing.com) + [gulp-webp](https://github.com/sindresorhus/gulp-webp) |
-| Icons        | [SVG Sprite](https://github.com/svg-sprite/svg-sprite) + [SVGO](https://svgo.dev) |
+| Category     | Technology                                                                                           |
+| ------------ | ---------------------------------------------------------------------------------------------------- |
+| Task Runner  | [Gulp 4](https://gulpjs.com)                                                                         |
+| Styling      | [Dart Sass](https://sass-lang.com) + [PostCSS](https://postcss.org) (Autoprefixer)                   |
+| Templates    | [gulp-file-include](https://github.com/haoxins/gulp-file-include)                                    |
+| Dev Server   | [BrowserSync](https://browsersync.io)                                                                |
+| Images       | [Sharp](https://sharp.pixelplumbing.com) + [gulp-webp](https://github.com/sindresorhus/gulp-webp)    |
+| Icons        | [SVG Sprite](https://github.com/svg-sprite/svg-sprite) + [SVGO](https://svgo.dev)                    |
 | Code Quality | [ESLint 9](https://eslint.org) + [Prettier](https://prettier.io) + [Stylelint](https://stylelint.io) |
 
 ## License

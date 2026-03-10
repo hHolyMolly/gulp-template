@@ -47,6 +47,9 @@ importers:
       gulp-dart-sass:
         specifier: ^1.1.0
         version: 1.1.0
+      gulp-file-include:
+        specifier: ^2.3.0
+        version: 2.3.0
       gulp-if:
         specifier: ^3.0.0
         version: 3.0.0
@@ -56,9 +59,6 @@ importers:
       gulp-notify:
         specifier: ^5.0.0
         version: 5.0.0
-      gulp-nunjucks-render:
-        specifier: ^2.2.3
-        version: 2.2.3(chokidar@3.6.0)
       gulp-plumber:
         specifier: ^1.2.1
         version: 1.2.1
@@ -585,9 +585,6 @@ packages:
     resolution: {integrity: sha512-cQzWCtO6C8TQiYl1ruKNn2U6Ao4o4WBBcbL61yJl84x+j5sOWWFU9X7DpND8XZG3daDppSsigMdfAIl2upQBRw==}
     engines: {node: '>=10.0.0'}
 
-  a-sync-waterfall@1.0.1:
-    resolution: {integrity: sha512-RYTOHHdWipFUliRFMCS4X2Yn2X8M87V/OpSqWzKKOGhzqyUxzyVmhHDH9sAvG+ZuQf/TAOFsLCpMw09I1ufUnA==}
-
   accepts@1.3.8:
     resolution: {integrity: sha512-PYAthTa2m2VKxuvSD3DPC/Gy+U+sOA1LAuT8mkmRuvw+NACSaeXEQ+NHcVF7rONl6qcaxV3Uuemwawk+7+SJLw==}
     engines: {node: '>= 0.6'}
@@ -739,9 +736,6 @@ packages:
   array-unique@0.3.2:
     resolution: {integrity: sha512-SleRWjh9JUud2wH1hPs9rZBZ33H6T9HOiL0uwGnGx9FpE6wKGyfWugmbkEOIs6qWrZhg0LWeLziLrEwQJhs5mQ==}
     engines: {node: '>=0.10.0'}
-
-  asap@2.0.6:
-    resolution: {integrity: sha512-BSHWgDSAiKs50o2Re8ppvp3seVHXSRM44cdSsT9FfNEUUZLOGWVCsiWaRPWM1Znn+mqZ1OfVZ3z3DWEzSp7hRA==}
 
   assign-symbols@1.0.0:
     resolution: {integrity: sha512-Q+JC7Whu8HhmTdBph/Tq59IoRtoy6KAm5zzPv00WdujX82lbAL8K7WVjne7vdCsAmbF4AYaDOPyO3k0kl8qIrw==}
@@ -1086,10 +1080,6 @@ packages:
   commander@2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
 
-  commander@5.1.0:
-    resolution: {integrity: sha512-P0CysNDQ7rtVw4QIQtm+MRxV66vKFSvlsQvGYXZWR3qFU0jlMKHZZZgw8e+8DSah4UDKMqnknRDQz+xuQXQ/Zg==}
-    engines: {node: '>= 6'}
-
   commander@7.2.0:
     resolution: {integrity: sha512-QrWXB+ZQSVPmIWIhtEO9H+gwHaMGYiF5ChvoJ+K9ZGHG/sVsa6yiesAD1GC/x46sET00Xlwo1u49RVVVzvcSkw==}
     engines: {node: '>= 10'}
@@ -1103,6 +1093,10 @@ packages:
   concat-stream@1.6.2:
     resolution: {integrity: sha512-27HBghJxjiZtIk3Ycvn/4kbJk/1uZuJFfuPEns6LaEvpvG1f0hTea8lilrouyo9mVc2GWdcEZ8OLoGmSADlrCw==}
     engines: {'0': node >= 0.8}
+
+  concat-stream@2.0.0:
+    resolution: {integrity: sha512-MWufYdFw53ccGjCA+Ol7XJYpAlW6/prSMzuPOTRnJGcGzuhLn4Scrz7qf6o8bROZ514ltazcIFJZevcfbo0x7A==}
+    engines: {'0': node >= 6.0}
 
   config-chain@1.1.13:
     resolution: {integrity: sha512-qj+f8APARXHrM0hraqXYb2/bOVSV4PvJQlNZ/DVj0QrmNM2q2euizkeuVckQ57J+W0mRH6Hvi+k50M4Jul2VRQ==}
@@ -1751,6 +1745,9 @@ packages:
   flat-cache@6.1.20:
     resolution: {integrity: sha512-AhHYqwvN62NVLp4lObVXGVluiABTHapoB57EyegZVmazN+hhGhLTn3uZbOofoTw4DSDvVCadzzyChXhOAvy8uQ==}
 
+  flatnest@1.0.1:
+    resolution: {integrity: sha512-fw6V/6LdrkB/q/mW/8M4PfX9sDUo4k5UZ9vlRlTrsbhDrxbe51puGoGHOmfr5hAczTH/33Q4jzuDnOBerGaIlQ==}
+
   flatted@3.3.3:
     resolution: {integrity: sha512-GX+ysw4PBCz0PzosHDepZGANEuFCMLrnRTiEy9McGjmkCQYwRq4A/X786G/fjM/+OjsWSU1ZrY5qyARZmO/uwg==}
 
@@ -1961,6 +1958,9 @@ packages:
     resolution: {integrity: sha512-wc04rAk3ycBk4Z+vTVh5tPxgKNjtlfjqC7BiVG4ZvU8JswdzZs17Hn141RYTu+e7J8FivbL3VOhL5+Z+wvU0Ww==}
     engines: {node: '>=14'}
 
+  gulp-file-include@2.3.0:
+    resolution: {integrity: sha512-OoMq5QtXHYz6hu2dZm1OxravcqrPXGeCNvOtz+8/589zFKcdpKGGvFXz/Aw4hx8pKZqaS+oJusgKDVQ4dCzqSg==}
+
   gulp-if@3.0.0:
     resolution: {integrity: sha512-fCUEngzNiEZEK2YuPm+sdMpO6ukb8+/qzbGfJBXyNOXz85bCG7yBI+pPSl+N90d7gnLvMsarthsAImx0qy7BAw==}
 
@@ -1973,10 +1973,6 @@ packages:
   gulp-notify@5.0.0:
     resolution: {integrity: sha512-7ib3qN7lbEbrOjH9zU6Uh2RLrTBEGlSWWXqStSAGG6TwYC2WFur180iDR8LZv106gW4/b3PY+kW4DQaJkD/vpA==}
     engines: {node: '>=18.0.0'}
-
-  gulp-nunjucks-render@2.2.3:
-    resolution: {integrity: sha512-YHrmwiwPw2DN16WJVj8S2tgUanB1ssZE8e5rRF6rH1T41mhO7r59iAqw92Yz5WSZXYB9G+uYXDTCODgixYPIRw==}
-    engines: {node: '>=0.10.0'}
 
   gulp-plugin-extras@0.2.2:
     resolution: {integrity: sha512-0gssXzTNrrOocYBWN4qOZqd03cz3bxhjxVUPZV9iJdBR0ZZbwMQO/OT8hZChYoc9GjKaA5meaqDr6CjkmKA7BA==}
@@ -2417,6 +2413,11 @@ packages:
   json-stable-stringify-without-jsonify@1.0.1:
     resolution: {integrity: sha512-Bdboy+l7tA3OGW6FjyFHWkP5LuByj1Tk33Ljyq0axyzdk9//JSi2u3fP1QSmd1KNwq6VOKYGlAu87CisVir6Pw==}
 
+  json5@2.2.3:
+    resolution: {integrity: sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==}
+    engines: {node: '>=6'}
+    hasBin: true
+
   jsonfile@3.0.1:
     resolution: {integrity: sha512-oBko6ZHlubVB5mRFkur5vgYR1UyqX+S6Y/oCfLhqNdcc2fYFlDpIoNc7AfKS1KOGcnNAkvsr0grLck9ANM815w==}
 
@@ -2730,16 +2731,6 @@ packages:
   number-is-nan@1.0.1:
     resolution: {integrity: sha512-4jbtZXNAsfZbAHiiqjLPBiCl16dES1zI4Hpzzxw61Tk+loF+sBDBKx1ICKKKwIqQ7M0mFn1TmkN7euSncWgHiQ==}
     engines: {node: '>=0.10.0'}
-
-  nunjucks@3.2.4:
-    resolution: {integrity: sha512-26XRV6BhkgK0VOxfbU5cQI+ICFUtMLixv1noZn1tGU38kQH5A5nmmbk/O45xdyBhD1esk47nKrY0mvQpZIhRjQ==}
-    engines: {node: '>= 6.9.0'}
-    hasBin: true
-    peerDependencies:
-      chokidar: ^3.3.0
-    peerDependenciesMeta:
-      chokidar:
-        optional: true
 
   object-assign@4.1.1:
     resolution: {integrity: sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg==}
@@ -4385,8 +4376,6 @@ snapshots:
 
   '@xmldom/xmldom@0.8.11': {}
 
-  a-sync-waterfall@1.0.1: {}
-
   accepts@1.3.8:
     dependencies:
       mime-types: 2.1.35
@@ -4519,8 +4508,6 @@ snapshots:
       kind-of: 5.1.0
 
   array-unique@0.3.2: {}
-
-  asap@2.0.6: {}
 
   assign-symbols@1.0.0: {}
 
@@ -4993,8 +4980,6 @@ snapshots:
 
   commander@2.20.3: {}
 
-  commander@5.1.0: {}
-
   commander@7.2.0: {}
 
   component-emitter@1.3.1: {}
@@ -5006,6 +4991,13 @@ snapshots:
       buffer-from: 1.1.2
       inherits: 2.0.4
       readable-stream: 2.3.8
+      typedarray: 0.0.6
+
+  concat-stream@2.0.0:
+    dependencies:
+      buffer-from: 1.1.2
+      inherits: 2.0.4
+      readable-stream: 3.6.2
       typedarray: 0.0.6
 
   config-chain@1.1.13:
@@ -5780,6 +5772,8 @@ snapshots:
       flatted: 3.3.3
       hookified: 1.15.0
 
+  flatnest@1.0.1: {}
+
   flatted@3.3.3: {}
 
   flush-write-stream@1.1.1:
@@ -6074,6 +6068,17 @@ snapshots:
       through2: 2.0.5
       vinyl-sourcemaps-apply: 0.2.1
 
+  gulp-file-include@2.3.0:
+    dependencies:
+      balanced-match: 1.0.2
+      concat-stream: 2.0.0
+      extend: 3.0.2
+      flatnest: 1.0.1
+      json5: 2.2.3
+      plugin-error: 1.0.1
+      through2: 4.0.2
+      vinyl: 2.2.1
+
   gulp-if@3.0.0:
     dependencies:
       gulp-match: 1.1.0
@@ -6099,16 +6104,6 @@ snapshots:
       node.extend: 2.0.3
       plugin-error: 2.0.1
       through2: 4.0.2
-
-  gulp-nunjucks-render@2.2.3(chokidar@3.6.0):
-    dependencies:
-      lodash: 4.17.23
-      nunjucks: 3.2.4(chokidar@3.6.0)
-      plugin-error: 1.0.1
-      replace-ext: 1.0.1
-      through2: 2.0.5
-    transitivePeerDependencies:
-      - chokidar
 
   gulp-plugin-extras@0.2.2:
     dependencies:
@@ -6515,6 +6510,8 @@ snapshots:
 
   json-stable-stringify-without-jsonify@1.0.1: {}
 
+  json5@2.2.3: {}
+
   jsonfile@3.0.1:
     optionalDependencies:
       graceful-fs: 4.2.11
@@ -6842,14 +6839,6 @@ snapshots:
       boolbase: 1.0.0
 
   number-is-nan@1.0.1: {}
-
-  nunjucks@3.2.4(chokidar@3.6.0):
-    dependencies:
-      a-sync-waterfall: 1.0.1
-      asap: 2.0.6
-      commander: 5.1.0
-    optionalDependencies:
-      chokidar: 3.6.0
 
   object-assign@4.1.1: {}
 

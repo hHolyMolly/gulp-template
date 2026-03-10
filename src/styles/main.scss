@@ -4,6 +4,9 @@
  * normalize, vars, fonts, utils, ui are linked separately in HTML
  * ───────────────────────────────────────────────────────────── */
 
+// Mixins & Functions (rem, em)
+@use 'mixins' as *;
+
 // Components (auto-import all files from folder)
 @use 'components/*';
 

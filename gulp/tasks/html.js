@@ -1,4 +1,4 @@
-import nunjucksRender from 'gulp-nunjucks-render';
+import fileInclude from 'gulp-file-include';
 import prettier from 'gulp-prettier';
 import gulpIf from 'gulp-if';
 import { sizeReporter } from '../utils/index.js';
@@ -15,16 +15,16 @@ export const html = () => {
     .pipe(plugins.errorHandler('HTML'))
     .pipe(plugins.cached('html'))
     .pipe(
-      nunjucksRender({
-        path: [paths.srcHtml],
-        envOptions: { autoescape: false },
+      fileInclude({
+        prefix: '@@',
+        basepath: paths.srcHtml,
       })
     )
     .pipe(
       gulpIf(
         shouldFormat,
         prettier({
-          parser: 'html', // Override jinja-template parser — compiled output is plain HTML
+          parser: 'html',
           htmlWhitespaceSensitivity: 'ignore',
         })
       )

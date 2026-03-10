@@ -2,9 +2,9 @@
 
 ## Project Overview
 
-Modern Gulp 4 template for fast frontend development with SCSS, Nunjucks HTML templates, SVG sprites, and automatic image optimization. Uses ESM modules, BrowserSync for hot reload, and a centralized configuration system.
+Modern Gulp 4 template for fast frontend development with SCSS, HTML includes, SVG sprites, and automatic image optimization. Uses ESM modules, BrowserSync for hot reload, and a centralized configuration system.
 
-**Stack:** Gulp 4, SCSS (Dart Sass), Nunjucks, PostCSS (Autoprefixer), Sharp, SVG Sprite, BrowserSync, ESLint + Prettier + Stylelint, pnpm
+**Stack:** Gulp 4, SCSS (Dart Sass), gulp-file-include, PostCSS (Autoprefixer), Sharp, SVG Sprite, BrowserSync, ESLint + Prettier + Stylelint, pnpm
 
 ## Architecture
 
@@ -54,7 +54,7 @@ src/
 │   ├── sprites/         # SVG files → combined into sprite.symbol.svg
 │   └── video/           # Video files
 ├── html/
-│   ├── layouts/         # Nunjucks layouts (base.html + _partials)
+│   ├── layouts/         # HTML partials (_head, _header, _footer)
 │   ├── components/      # Reusable HTML components
 │   └── pages/           # Page files → compiled to dist/*.html
 ├── scripts/
@@ -81,7 +81,7 @@ gulp/
 ├── tasks/               # Gulp tasks
 │   ├── assets.js        # Copy static assets
 │   ├── clean.js         # Clean dist + cache clearing
-│   ├── html.js          # Nunjucks → HTML + beautify
+│   ├── html.js          # HTML includes + beautify
 │   ├── images.js        # Copy images + WebP conversion
 │   ├── minify.js        # HTML/CSS/JS/Image minification (prod)
 │   ├── optimize.js      # sitemap.xml + robots.txt generation
@@ -99,13 +99,14 @@ gulp/
 
 ## Conventions
 
-### HTML (Nunjucks)
+### HTML
 
 - Pages go in `src/html/pages/` — each page compiles to a root-level HTML file in `dist/`
-- Layouts use `base.html` as master template with `{% extends "layouts/base.html" %}`
-- Partials (head, header, footer, modals) are prefixed with `_` underscore
-- Components are included via `{% include "components/name.html" %}`
-- Auto-escape is OFF (`autoescape: false`) — output raw HTML when needed
+- Each page is a complete HTML document (`<!doctype html>`, `<html>`, `<head>`, `<body>`)
+- Partials (head, header, footer) are prefixed with `_` underscore and live in `layouts/`
+- Include partials via `@@include('layouts/_header.html')`
+- Components are included via `@@include('components/name.html')`
+- No template engine — plain HTML with simple file includes
 
 ### Styles (SCSS)
 
@@ -137,8 +138,8 @@ gulp/
 
 ```html
 <picture>
-  <source srcset="assets/img/photo.webp" type="image/webp">
-  <img src="assets/img/photo.jpg" alt="Description" width="800" height="600" loading="lazy">
+  <source srcset="assets/img/photo.webp" type="image/webp" />
+  <img src="assets/img/photo.jpg" alt="Description" width="800" height="600" loading="lazy" />
 </picture>
 ```
 

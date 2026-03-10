@@ -16,12 +16,6 @@
   "scss.validate": false,
 
   // ── File Associations ──────────────────────────────────────
-  "files.associations": {
-    "*.html": "nunjucks"
-  },
-  "emmet.includeLanguages": {
-    "nunjucks": "html"
-  },
 
   // ── Files ──────────────────────────────────────────────────
   "files.eol": "\n",

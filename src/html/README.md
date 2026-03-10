@@ -1,19 +1,17 @@
-# HTML Templates (Nunjucks)
+# HTML Templates
 
-Pages extend a base layout and override blocks. Partials are included with `{% include %}`.
+Each page is a complete HTML document. Shared parts (head, header, footer) are included via `@@include`.
 
 ## Structure
 
 ```
 html/
 ├── layouts/
-│   ├── base.html          # Base layout (all pages extend this)
 │   ├── _head.html         # <head> meta, styles
 │   ├── _header.html       # Site header
-│   ├── _footer.html       # Site footer
-│   └── _modals.html       # Modals
+│   └── _footer.html       # Site footer
 ├── components/
-│   └── demo.html       # Reusable components
+│   └── demo.html          # Reusable components
 └── pages/
     ├── index.html          # → dist/index.html
     └── template.html       # → dist/template.html
@@ -22,30 +20,35 @@ html/
 ## Page Example
 
 ```html
-{% extends "layouts/base.html" %} {% block title %}About{% endblock %} {% block header %} {% include
-"layouts/_header.html" %} {% endblock %} {% block content %}
-<section class="about">
-  <h1>About page</h1>
-</section>
-{% endblock %} {% block footer %} {% include "layouts/_footer.html" %} {% endblock %}
+<!doctype html>
+<html lang="en">
+  <head>
+    @@include('layouts/_head.html')
+    <title>About</title>
+  </head>
+
+  <body>
+    @@include('layouts/_header.html')
+
+    <main class="page">
+      <section class="about">
+        <div class="container">
+          <h1>About page</h1>
+        </div>
+      </section>
+    </main>
+
+    @@include('layouts/_footer.html')
+
+    <script src="./scripts/app.js" type="module"></script>
+  </body>
+</html>
 ```
 
-## Available Blocks
-
-| Block     | Purpose              | Default         |
-| --------- | -------------------- | --------------- |
-| `title`   | Page `<title>`       | `gulp-template` |
-| `header`  | Header area          | empty           |
-| `content` | Main content         | empty           |
-| `footer`  | Footer area          | empty           |
-| `modals`  | Modals after wrapper | empty           |
-
-## Quick Reference
+## Include Syntax
 
 ```html
-{# Comment #} {{ variable }} {% include "components/card.html" %} {% if showBanner %}
-<div class="banner">...</div>
-{% endif %} {% for item in items %}
-<li>{{ item }}</li>
-{% endfor %} {% set year = 2026 %}
+@@include('layouts/_header.html') @@include('components/card.html')
 ```
+
+Paths are relative to `src/html/`.

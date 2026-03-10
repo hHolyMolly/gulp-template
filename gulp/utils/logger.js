@@ -1,7 +1,7 @@
 import notifier from 'node-notifier';
 import pkg from '../../package.json' with { type: 'json' };
 
-export const colors = {
+const colors = {
   reset: '\x1b[0m',
   bold: '\x1b[1m',
   dim: '\x1b[2m',
@@ -88,13 +88,3 @@ export const logSuccess = (message) => {
 export const logWarning = (message) => {
   console.log(`  ${c.yellow}⚠${c.reset} ${message}`);
 };
-
-export const logError = (message) => {
-  console.log(`  ${c.red}✗${c.reset} ${message}`);
-};
-
-export const logInfo = (message) => {
-  console.log(`  ${c.cyan}ℹ${c.reset} ${message}`);
-};
-
-export { pkg, divider };

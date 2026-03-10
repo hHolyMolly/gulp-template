@@ -14,6 +14,7 @@
     "dev": "cross-env NODE_OPTIONS=--no-deprecation NODE_ENV=development gulp dev",
     "build:dev": "cross-env NODE_OPTIONS=--no-deprecation NODE_ENV=development gulp build:dev",
     "build:prod": "cross-env NODE_OPTIONS=--no-deprecation NODE_ENV=production gulp build:prod",
+    "preview": "pnpm build:prod && npx serve dist",
     "lint": "eslint . --fix && stylelint \"src/**/*.{css,scss}\" --fix",
     "format": "prettier --write .",
     "tailwind:setup": "node .template/setup/tailwind/setup.js",
@@ -21,11 +22,6 @@
     "clean:cache": "rm -rf node_modules/.cache .eslintcache .stylelintcache",
     "clean:all": "rm -rf node_modules dist"
   },
-  "browserslist": [
-    ">= 1%",
-    "last 2 versions",
-    "not dead"
-  ],
   "devDependencies": {
     "@eslint/js": "^9.39.2",
     "autoprefixer": "^10.4.21",
@@ -40,10 +36,10 @@
     "gulp-cached": "^1.1.1",
     "gulp-csso": "^4.0.1",
     "gulp-dart-sass": "^1.1.0",
+    "gulp-file-include": "^2.3.0",
     "gulp-if": "^3.0.0",
     "gulp-newer": "^1.4.0",
     "gulp-notify": "^5.0.0",
-    "gulp-nunjucks-render": "^2.2.3",
     "gulp-plumber": "^1.2.1",
     "gulp-postcss": "^10.0.0",
     "gulp-prettier": "^6.0.0",

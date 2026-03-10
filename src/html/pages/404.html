@@ -1,20 +1,20 @@
-{% set title = "Page Not Found" %}
-{% set description = "The page you are looking for does not exist." %}
-{% set robots = "noindex, nofollow" %}
-{% extends "layouts/base.html" %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- prettier-ignore -->
+    @@include('layouts/_head.html', {
+      "title": "404 — Page Not Found",
+      "description": "The page you are looking for does not exist"
+    })
+  </head>
 
-{% block header %}
-  {% include "layouts/_header.html" %}
-{% endblock %}
+  <body>
+    @@include('layouts/_header.html')
 
-{% block content %}
-  404
-{% endblock %}
+    <main class="page">404 — Page Not Found</main>
 
-{% block footer %}
-  {% include "layouts/_footer.html" %}
-{% endblock %}
+    @@include('layouts/_footer.html') @@include('layouts/_modals.html')
 
-{% block modals %}
-  {% include "layouts/_modals.html" %}
-{% endblock %}
+    <script src="./scripts/app.js" type="module"></script>
+  </body>
+</html>

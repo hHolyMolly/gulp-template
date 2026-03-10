@@ -429,20 +429,19 @@
           .writeText(text)
           .then(showCheck)
           .catch(function () {
-            // Fallback: select text for manual copy
-            const range = document.createRange();
+            var range = document.createRange();
             range.selectNodeContents(btn.querySelector('.demo__install-text'));
             window.getSelection().removeAllRanges();
             window.getSelection().addRange(range);
           });
       } catch (e) {
-        const range = document.createRange();
+        var range = document.createRange();
         range.selectNodeContents(btn.querySelector('.demo__install-text'));
         window.getSelection().removeAllRanges();
         window.getSelection().addRange(range);
       }
     }
-    // Expose to onclick handlers
+
     window.demoCopyCommand = demoCopyCommand;
   })();
 </script>

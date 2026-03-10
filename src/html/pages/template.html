@@ -1,32 +1,20 @@
-{# ──────────────────────────────────────────────
-   Page Meta (edit per page)
-   ────────────────────────────────────────────── #}
-{% set title = "Page Title" %}
-{% set description = "Page description for SEO." %}
-{# Optional meta:
-{% set image = "./assets/img/previews/page.webp" %}
-{% set canonical = "https://example.com/page" %}
-{% set siteName = "My Site" %}
-{% set robots = "index, follow" %}
-{% set lang = "en" %}
-{% set locale = "en_US" %}
-{% set themeColor = "#ffffff" %}
-{% set twitterSite = "@handle" %}
-#}
-{% extends "layouts/base.html" %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- prettier-ignore -->
+    @@include('layouts/_head.html', {
+      "title": "Home Page",
+      "description": "Page description"
+    })
+  </head>
 
-{% block header %}
-  {% include "layouts/_header.html" %}
-{% endblock %}
+  <body>
+    @@include('layouts/_header.html')
 
-{% block content %}
-  page
-{% endblock %}
+    <main class="page">Home Page</main>
 
-{% block footer %}
-  {% include "layouts/_footer.html" %}
-{% endblock %}
+    @@include('layouts/_footer.html') @@include('layouts/_modals.html')
 
-{% block modals %}
-  {% include "layouts/_modals.html" %}
-{% endblock %}
+    <script src="./scripts/app.js" type="module"></script>
+  </body>
+</html>

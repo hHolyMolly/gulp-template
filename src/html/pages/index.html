@@ -1,7 +1,16 @@
-{% set title = "Gulp Template" %}
-{% set description = "Professional Gulp-based frontend template." %}
-{% extends "layouts/base.html" %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- prettier-ignore -->
+    @@include('layouts/_head.html', {
+      "title": "Gulp Template",
+      "description": "Modern Gulp 4 starter for fast frontend development"
+    })
+  </head>
 
-{% block content %}
-  {% include "components/demo.html" %}
-{% endblock %}
+  <body>
+    <main class="page">@@include('components/demo.html')</main>
+
+    <script src="./scripts/app.js" type="module"></script>
+  </body>
+</html>
