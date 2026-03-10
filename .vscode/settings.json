@@ -1,21 +1,41 @@
 {
-  // Editor
-  "editor.formatOnSave": true,
+  // ── Formatter ──────────────────────────────────────────────
   "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+
+  // ── ESLint ─────────────────────────────────────────────────
+  "eslint.useFlatConfig": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
     "source.fixAll.stylelint": "explicit"
   },
 
-  // SCSS — let Stylelint handle validation
+  // ── Stylelint ──────────────────────────────────────────────
+  "stylelint.validate": ["css", "scss"],
+  "css.validate": false,
   "scss.validate": false,
 
-  // Stylelint
-  "stylelint.validate": ["css", "scss"],
+  // ── File Associations ──────────────────────────────────────
+  "files.associations": {
+    "*.html": "nunjucks"
+  },
+  "emmet.includeLanguages": {
+    "nunjucks": "html"
+  },
 
-  // Exclude from search
+  // ── Files ──────────────────────────────────────────────────
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/.DS_Store": true
+  },
+
+  // ── Search ─────────────────────────────────────────────────
   "search.exclude": {
-    "dist": true,
-    "pnpm-lock.yaml": true
+    "**/dist": true,
+    "**/pnpm-lock.yaml": true
   }
 }

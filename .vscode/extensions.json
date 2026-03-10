@@ -1,8 +1,14 @@
 {
   "recommendations": [
-    "esbenp.prettier-vscode",
     "dbaeumer.vscode-eslint",
     "stylelint.vscode-stylelint",
-    "samuelcolvin.jinjahtml"
+    "esbenp.prettier-vscode",
+    "ronnidc.nunjucks",
+    "bradlc.vscode-tailwindcss",
+    "formulahendry.auto-rename-tag",
+    "streetsidesoftware.code-spell-checker",
+    "streetsidesoftware.code-spell-checker-russian",
+    "csstools.postcss",
+    "editorconfig.editorconfig"
   ]
 }
