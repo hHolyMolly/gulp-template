@@ -17,9 +17,9 @@
     "lint": "eslint . --fix && stylelint \"src/**/*.{css,scss}\" --fix",
     "format": "prettier --write .",
     "tailwind:setup": "node .template/setup/tailwind/setup.js",
-    "clean": "node -e \"import('fs').then(f=>f.rmSync('dist',{recursive:true,force:true}))\"",
-    "clean:cache": "node -e \"import('fs').then(f=>['node_modules/.cache','.eslintcache','.stylelintcache'].forEach(p=>f.rmSync(p,{recursive:true,force:true})))\"",
-    "clean:all": "node -e \"import('fs').then(f=>['node_modules','dist'].forEach(p=>f.rmSync(p,{recursive:true,force:true})))\""
+    "clean": "rm -rf dist",
+    "clean:cache": "rm -rf node_modules/.cache .eslintcache .stylelintcache",
+    "clean:all": "rm -rf node_modules dist"
   },
   "browserslist": [
     ">= 1%",

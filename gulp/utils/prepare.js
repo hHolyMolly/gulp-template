@@ -2,30 +2,17 @@ import { existsSync, rmSync, readFileSync, writeFileSync } from 'node:fs';
 import { basename, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-// Only runs for degit-cloned projects (no .git directory)
+// Only runs for degit-cloned projects (no .git directory).
+// Cleans up template-specific files and initializes a fresh project.
 if (!existsSync('.git')) {
-  // 1. Remove CI workflows (template-repo only)
+  const projectName = basename(resolve('.'));
+
+  // Remove CI workflows (only needed for the template repo)
   if (existsSync('.github/workflows')) {
     rmSync('.github/workflows', { recursive: true });
   }
 
-  // 2. Ask for project name (interactive) or use directory name (CI/non-TTY)
-  const dirName = basename(resolve('.'));
-  let projectName = dirName;
-
-  if (process.stdin.isTTY) {
-    try {
-      const { createInterface } = await import('node:readline/promises');
-      const rl = createInterface({ input: process.stdin, output: process.stdout });
-      const answer = await rl.question(`\n📦 Project name (${dirName}): `);
-      if (answer.trim()) projectName = answer.trim();
-      rl.close();
-    } catch {
-      // Non-interactive fallback — use directory name
-    }
-  }
-
-  // 3. Update package.json for the new project
+  // Reset package.json to a clean project state
   const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
   pkg.name = projectName;
   pkg.version = '1.0.0';
@@ -35,10 +22,10 @@ if (!existsSync('.git')) {
   delete pkg.scripts.prepare;
   writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
 
-  // 4. Self-cleanup
+  // Self-delete — this script is no longer needed
   try {
     rmSync(fileURLToPath(import.meta.url), { force: true });
   } catch {}
 
-  console.log(`\n✅ Project "${projectName}" is ready! Run: pnpm dev\n`);
+  console.log(`\n✅ Project "${projectName}" initialized. Run: pnpm dev\n`);
 }
