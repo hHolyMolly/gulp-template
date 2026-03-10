@@ -134,7 +134,7 @@ export const minifyJS = () => {
           format: { comments: false },
           compress: {
             drop_debugger: config.env.isProd,
-            pure_funcs: config.env.isProd ? ['console.log', 'console.info', 'console.warn', 'console.debug'] : [],
+            pure_funcs: config.env.isProd ? ['console.log', 'console.info', 'console.debug'] : [],
           },
         })
       )
