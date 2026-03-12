@@ -10,11 +10,15 @@
   </head>
 
   <body>
-    @@include('layouts/_header.html')
+    <div class="wrapper">
+      @@include('layouts/_header.html')
 
-    <main class="page">Home Page</main>
+      <main class="page">Home Page</main>
 
-    @@include('layouts/_footer.html') @@include('layouts/_modals.html')
+      @@include('layouts/_footer.html')
+    </div>
+
+    @@include('layouts/_modals.html')
 
     <script src="./scripts/app.js" type="module"></script>
   </body>
