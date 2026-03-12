@@ -7,9 +7,11 @@ import { fileURLToPath } from 'node:url';
 if (!existsSync('.git')) {
   const projectName = basename(resolve('.'));
 
-  // Remove CI workflows (only needed for the template repo)
-  if (existsSync('.github/workflows')) {
-    rmSync('.github/workflows', { recursive: true });
+  // Remove template-specific files
+  for (const file of ['LICENSE', '.github/workflows']) {
+    if (existsSync(file)) {
+      rmSync(file, { recursive: true });
+    }
   }
 
   // Reset package.json to a clean project state
