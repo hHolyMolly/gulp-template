@@ -15,6 +15,7 @@ html {
   scroll-behavior: smooth;
   text-size-adjust: 100%;
   hanging-punctuation: first last;
+  overscroll-behavior: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
