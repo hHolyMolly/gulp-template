@@ -3,13 +3,13 @@
   <p>Modern Gulp 4 starter for fast frontend development</p>
 
   <p>
-    <a href="https://nodejs.org"><img src="https://img.shields.io/badge/node-%3E%3D22-brightgreen" alt="Node.js"></a>
-    <a href="https://gulpjs.com"><img src="https://img.shields.io/badge/gulp-4-cf4647" alt="Gulp"></a>
-    <a href="https://github.com/hHolyMolly/gulp-template/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="License"></a>
+    <a href="https://nodejs.org"><img src="https://img.shields.io/badge/node-%3E%3D22-brightgreen?style=flat-square" alt="Node.js"></a>
+    <a href="https://gulpjs.com"><img src="https://img.shields.io/badge/gulp-4-cf4647?style=flat-square" alt="Gulp"></a>
+    <a href="https://github.com/hHolyMolly/gulp-template/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="License"></a>
   </p>
 </div>
 
----
+<br />
 
 ## Features
 
@@ -21,6 +21,18 @@
 - **Production Build** — HTML/CSS/JS minification, sitemap, robots.txt
 - **Code Quality** — ESLint 9 + Prettier + Stylelint
 - **Tailwind CSS** — optional, one command setup
+
+## Tech Stack
+
+| Category     | Technology                                                                                           |
+| ------------ | ---------------------------------------------------------------------------------------------------- |
+| Task Runner  | [Gulp 4](https://gulpjs.com)                                                                         |
+| Styling      | [Dart Sass](https://sass-lang.com) + [PostCSS](https://postcss.org) (Autoprefixer)                   |
+| Templates    | [gulp-file-include](https://github.com/haoxins/gulp-file-include)                                    |
+| Dev Server   | [BrowserSync](https://browsersync.io)                                                                |
+| Images       | [Sharp](https://sharp.pixelplumbing.com) + auto WebP                                                 |
+| Icons        | [SVG Sprite](https://github.com/svg-sprite/svg-sprite) + [SVGO](https://svgo.dev)                    |
+| Code Quality | [ESLint 9](https://eslint.org) + [Prettier](https://prettier.io) + [Stylelint](https://stylelint.io) |
 
 ## Quick Start
 
@@ -108,18 +120,6 @@ clean → [html, styles, scripts, images, sprites, assets] → minify → sitema
 
 HTML/CSS/JS minified, images optimized via Sharp, sourcemaps removed.
 
-## Tech Stack
-
-| Category     | Technology                                                                                           |
-| ------------ | ---------------------------------------------------------------------------------------------------- |
-| Task Runner  | [Gulp 4](https://gulpjs.com)                                                                         |
-| Styling      | [Dart Sass](https://sass-lang.com) + [PostCSS](https://postcss.org) (Autoprefixer)                   |
-| Templates    | [gulp-file-include](https://github.com/haoxins/gulp-file-include)                                    |
-| Dev Server   | [BrowserSync](https://browsersync.io)                                                                |
-| Images       | [Sharp](https://sharp.pixelplumbing.com) + auto WebP                                                 |
-| Icons        | [SVG Sprite](https://github.com/svg-sprite/svg-sprite) + [SVGO](https://svgo.dev)                    |
-| Code Quality | [ESLint 9](https://eslint.org) + [Prettier](https://prettier.io) + [Stylelint](https://stylelint.io) |
-
 ## License
 
-MIT
+MIT © [HolyMolly](https://github.com/hHolyMolly)
