@@ -3,14 +3,16 @@
  * Helper classes
  * ───────────────────────────────────────────────────────────── */
 
+@use 'mixins' as *;
+
 /* Visually hidden, still read by screen readers */
 .visually-hidden,
 .sr-only {
   position: absolute;
-  width: 1px;
-  height: 1px;
+  width: rem(1);
+  height: rem(1);
   padding: 0;
-  margin: -1px;
+  margin: rem(-1);
   overflow: hidden;
   clip-path: inset(50%);
   white-space: nowrap;
@@ -80,7 +82,7 @@
 
   a[href^='http']::after {
     content: ' (' attr(href) ')';
-    font-size: 0.875em;
+    font-size: em(14);
     font-weight: normal;
   }
 

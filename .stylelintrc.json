@@ -3,6 +3,12 @@
   "rules": {
     "selector-class-pattern": null,
     "scss/at-rule-no-unknown": null,
+    "scss/at-function-pattern": [
+      "^_?[a-z][a-z0-9-]*$",
+      {
+        "message": "Expected function name to be kebab-case (leading _ marks module-private)"
+      }
+    ],
     "no-descending-specificity": [true, { "severity": "warning" }],
     "declaration-no-important": [true, { "severity": "warning" }],
     "selector-max-id": [1, { "severity": "warning" }],

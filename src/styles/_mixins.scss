@@ -5,6 +5,8 @@
 
 @use 'sass:math';
 @use 'sass:map';
+@use 'sass:meta';
+@use 'sass:list';
 
 /* ─────────────────────────────────────────────────────────────
  * Breakpoints (px)
@@ -68,20 +70,73 @@ $breakpoints: (
  * Functions
  * ───────────────────────────────────────────────────────────── */
 
-/// Convert px to rem (base 16px)
-/// @example scss
-///   font-size: rem(18);           // 1.125rem
-///   padding: rem(20) rem(32);     // 1.25rem 2rem
-@function rem($px) {
-  @return math.div($px, 16) * 1rem;
+@function _to-rem($value) {
+  // Keywords (auto, inherit, …) pass through untouched
+  @if meta.type-of($value) != 'number' {
+    @return $value;
+  }
+
+  // Unitless number = pixels
+  @if math.is-unitless($value) {
+    @if $value == 0 {
+      @return 0;
+    }
+
+    @return math.div($value, 16) * 1rem;
+  }
+
+  // px (pasted from Figma etc.) — strip the unit and re-run
+  @if math.unit($value) == 'px' {
+    @return _to-rem(math.div($value, 1px));
+  }
+
+  // Any other unit (%, vw, s, …) passes through untouched
+  @return $value;
 }
 
-/// Convert px to em (relative to parent font-size)
+/// Write pixels, get rem — the single sizing pattern of this project.
+/// Accepts one or many values; numbers may be unitless or in px;
+/// 0, auto, %, vw and keywords pass through untouched.
+/// @example scss
+///   font-size: rem(18);           // 1.125rem
+///   padding: rem(12 24);          // 0.75rem 1.5rem
+///   margin: rem(0 auto);          // 0 auto
+///   width: rem(320px);            // 20rem
+@function rem($values...) {
+  $result: ();
+
+  @each $value in $values {
+    // Support both rem(12 24) and rem(12, 24)
+    $items: ($value);
+
+    @if meta.type-of($value) == 'list' {
+      $items: $value;
+    }
+
+    @each $item in $items {
+      $result: list.append($result, _to-rem($item), space);
+    }
+  }
+
+  @if list.length($result) == 1 {
+    @return list.nth($result, 1);
+  }
+
+  @return $result;
+}
+
+/// Write pixels, get em (relative to parent font-size)
 /// @example scss
 ///   font-size: em(14);            // 0.875em
 ///   font-size: em(14, 18);        // 0.7778em (14px relative to 18px parent)
 @function em($px, $base: 16) {
-  @return math.div($px, $base) * 1em;
+  $value: $px;
+
+  @if meta.type-of($px) == 'number' and math.unit($px) == 'px' {
+    $value: math.div($px, 1px);
+  }
+
+  @return math.div($value, $base) * 1em;
 }
 
 /// Fluid value between two viewport widths (px in, clamp() out)

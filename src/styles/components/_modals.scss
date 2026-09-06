@@ -3,8 +3,10 @@
  * Delete this file if not using modals
  * ───────────────────────────────────────────────────────────── */
 
+@use '../mixins' as *;
+
 .popup {
-  padding: 15px;
+  padding: rem(15);
   width: 100%;
   height: 100%;
   display: flex;
@@ -34,10 +36,10 @@
 
 .popup__body {
   margin: auto;
-  max-width: min(90vw, 600px);
+  max-width: min(90vw, #{rem(600)});
   max-height: 85dvh;
   overflow-y: auto;
   overscroll-behavior: contain;
-  border-radius: 8px;
+  border-radius: var(--radius);
   background-color: var(--white);
 }

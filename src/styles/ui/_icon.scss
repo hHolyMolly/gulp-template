@@ -4,10 +4,12 @@
  * Sized by font-size, colored by text color
  * ───────────────────────────────────────────────────────────── */
 
+@use '../mixins' as *;
+
 .icon {
   display: inline-block;
   flex-shrink: 0;
-  width: 1em;
-  height: 1em;
+  width: em(16);
+  height: em(16);
   fill: currentcolor;
 }

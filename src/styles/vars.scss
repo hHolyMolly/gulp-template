@@ -1,3 +1,5 @@
+@use 'mixins' as *;
+
 :root {
   /* Colors — base */
   --white: #fff;
@@ -12,10 +14,10 @@
   --font-family: 'Roboto', -apple-system, blinkmacsystemfont, 'Segoe UI', 'Helvetica Neue', arial, sans-serif;
 
   /* Layout */
-  --container-width: 1230px;
-  --container-padding: 15px;
-  --header-height: 0px; /* set when the header becomes fixed/sticky (anchors offset by it) */
-  --radius: 8px;
+  --container-width: #{rem(1230)};
+  --container-padding: #{rem(15)};
+  --header-height: 0px; /* stays in px — usually set from JS (getBoundingClientRect) for anchor offsets */
+  --radius: #{rem(8)};
 
   /* Z-index scale */
   --z-header: 100;

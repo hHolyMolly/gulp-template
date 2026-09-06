@@ -37,6 +37,10 @@ hand-editable. Keep it that way.
   Breakpoints live in `styles/_mixins.scss` (`$breakpoints` map,
   `media-up/down/between`, `hover`, `fluid()`) — never hardcode media queries.
   Design tokens (colors/z-index/radius/header-height) in `styles/vars.scss`.
+- **Sizing pattern**: all sizes are written in pixels through `rem()` / `em()`
+  (`rem(18)`, `rem(12 24)`, `rem(0 auto)`, `rem(320px)`, `em(20)`) — never raw
+  `px`/`rem` literals in declarations. Exceptions: media queries inside
+  `_mixins.scss` (px by design) and `--header-height` (px — set from JS).
 - **Critical CSS**: `optimization.criticalCSS: true` inlines compiled
   `critical.scss` into `<head>` (html task, `__CRITICAL_CSS__` placeholder) —
   it never compiles to a standalone file.

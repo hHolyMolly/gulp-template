@@ -1,5 +1,7 @@
 /* Modern CSS Reset & Normalize */
 
+@use 'mixins' as *;
+
 *,
 *::before,
 *::after {
@@ -79,7 +81,7 @@ img {
   font-style: italic;
   background-repeat: no-repeat;
   background-size: cover;
-  shape-margin: 0.75rem;
+  shape-margin: rem(12);
 }
 
 /* Forms */
@@ -168,13 +170,13 @@ ol {
 }
 
 :focus-visible {
-  outline: 2px solid currentcolor;
-  outline-offset: 2px;
+  outline: rem(2) solid currentcolor;
+  outline-offset: rem(2);
 }
 
 /* Anchor targets stop below a fixed header (--header-height in vars.scss) */
 :target {
-  scroll-margin-block-start: calc(var(--header-height, 0px) + 1rem);
+  scroll-margin-block-start: calc(var(--header-height, 0px) + #{rem(16)});
 }
 
 /* Tables */

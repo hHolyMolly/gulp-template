@@ -1,7 +1,7 @@
 {
   "name": "gulp-template",
   "description": "Modern Gulp 5 template for fast frontend development",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "private": true,
   "type": "module",
   "author": "HolyMolly",
