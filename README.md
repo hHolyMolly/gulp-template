@@ -158,9 +158,15 @@ CSS-first config in `src/styles/tailwind.css` (`@theme`, `@source`). Additive �
 - **Rebuild kit** (Tailwind active): `dist/package.json` + `TAILWIND.md` — after editing `.php`: `npm install && npm run css`
 - **CDN dev mode**: on `localhost` / `*.local` / `*.test` pages auto-load the pinned Tailwind browser build (SRI) — new classes work without rebuild; production hosts load nothing. Override: `window.TW_CDN = true/false`
 
+## Deploy
+
+**Vercel** — zero config: import the repo at [vercel.com/new](https://vercel.com/new), everything
+(build command, `dist` output, clean URLs, security headers) comes from [`vercel.json`](vercel.json).
+Every push runs `lint:check` + `format:check` + `build:prod` on Vercel's side.
+
 ## Production Headers
 
-Set on the server (static output can't):
+Vercel sets them from `vercel.json`. On your own server:
 
 ```nginx
 add_header X-Content-Type-Options "nosniff" always;

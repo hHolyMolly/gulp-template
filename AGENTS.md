@@ -84,7 +84,9 @@ hand-editable. Keep it that way.
   `pnpm serve` (no rebuild) / `pnpm zip` (handoff archive)
 - `pnpm tailwind:setup` (add Tailwind) / `pnpm clean:demo` (remove demo content
   — destructive, test only on a copy)
-- `pnpm lint:check` and `pnpm format:check` must pass (CI runs both).
+- `pnpm lint:check` and `pnpm format:check` must pass — Vercel runs both plus
+  `build:prod` on every push (vercel.json `buildCommand`); a failure blocks
+  the deploy.
 - After build changes verify: all 6 CSS entries in `dist/styles/`, sprite in
   `dist/assets/sprites/`, `.webp` siblings for jpg/png, no `@@` leftovers in
   dist HTML, no `dist/package.json` unless Tailwind is active in prod.
