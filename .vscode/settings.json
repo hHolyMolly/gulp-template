@@ -4,7 +4,6 @@
   "editor.formatOnSave": true,
 
   // ── ESLint ─────────────────────────────────────────────────
-  "eslint.useFlatConfig": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
     "source.fixAll.stylelint": "explicit"
@@ -16,6 +15,9 @@
   "scss.validate": false,
 
   // ── File Associations ──────────────────────────────────────
+  "files.associations": {
+    ".env.*": "dotenv"
+  },
 
   // ── Files ──────────────────────────────────────────────────
   "files.eol": "\n",

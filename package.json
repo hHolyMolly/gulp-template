@@ -1,13 +1,15 @@
 {
   "name": "gulp-template",
   "description": "Modern Gulp 5 template for fast frontend development",
-  "version": "3.0.0",
+  "version": "3.1.0",
+  "private": true,
   "type": "module",
-  "main": "gulpfile.js",
   "author": "HolyMolly",
   "license": "MIT",
+  "packageManager": "pnpm@10.26.2",
   "engines": {
-    "node": ">=22"
+    "node": ">=22",
+    "pnpm": ">=10"
   },
   "scripts": {
     "prepare": "node gulp/utils/prepare.js",
@@ -15,9 +17,12 @@
     "build:dev": "cross-env NODE_ENV=development gulp build:dev",
     "build:prod": "cross-env NODE_ENV=production gulp build:prod",
     "preview": "pnpm build:prod && cross-env NODE_ENV=production gulp preview",
-    "lint": "eslint . --fix && stylelint \"src/**/*.{css,scss}\" --fix",
-    "lint:check": "eslint . && stylelint \"src/**/*.{css,scss}\"",
+    "serve": "cross-env NODE_ENV=production gulp preview",
+    "zip": "pnpm build:prod && node .template/setup/zip.js",
+    "lint": "eslint . --fix --cache --cache-location .eslintcache && stylelint \"src/**/*.{css,scss}\" --fix --cache",
+    "lint:check": "eslint . --max-warnings 0 --cache --cache-location .eslintcache && stylelint \"src/**/*.{css,scss}\" --cache",
     "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "tailwind:setup": "node .template/setup/tailwind/setup.js",
     "clean:demo": "node .template/setup/clean-demo.js",
     "clean": "node -e \"fs.rmSync('dist', { recursive: true, force: true })\"",

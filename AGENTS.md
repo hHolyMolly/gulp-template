@@ -34,6 +34,12 @@ hand-editable. Keep it that way.
 - **Sass**: gulp-sass + sass-embedded. No glob imports — partials are
   registered in `styles/components/_index.scss` / `styles/ui/_index.scss` via
   `@forward`. Folder names are lowercase (case-sensitive FS compatibility).
+  Breakpoints live in `styles/_mixins.scss` (`$breakpoints` map,
+  `media-up/down/between`, `hover`, `fluid()`) — never hardcode media queries.
+  Design tokens (colors/z-index/radius/header-height) in `styles/vars.scss`.
+- **Critical CSS**: `optimization.criticalCSS: true` inlines compiled
+  `critical.scss` into `<head>` (html task, `__CRITICAL_CSS__` placeholder) —
+  it never compiles to a standalone file.
 - **JS is copied 1:1** as native ES modules — never add a bundler/transpiler.
   Libraries come in via `vendors` in project.config.js → `dist/**/vendor/`.
 - **Minification happens in the main tasks** (single pass, gated by
@@ -69,10 +75,11 @@ hand-editable. Keep it that way.
 
 ## Commands & verification
 
-- `pnpm dev` / `pnpm build:dev` / `pnpm build:prod` / `pnpm preview`
+- `pnpm dev` / `pnpm build:dev` / `pnpm build:prod` / `pnpm preview` /
+  `pnpm serve` (no rebuild) / `pnpm zip` (handoff archive)
 - `pnpm tailwind:setup` (add Tailwind) / `pnpm clean:demo` (remove demo content
   — destructive, test only on a copy)
-- `pnpm lint:check` must pass (CI runs it).
+- `pnpm lint:check` and `pnpm format:check` must pass (CI runs both).
 - After build changes verify: all 6 CSS entries in `dist/styles/`, sprite in
   `dist/assets/sprites/`, `.webp` siblings for jpg/png, no `@@` leftovers in
   dist HTML, no `dist/package.json` unless Tailwind is active in prod.

@@ -1,1 +1,4 @@
-/* Critical (above-the-fold) styles */
+/* Critical (above-the-fold) styles.
+ * Enable with optimization.criticalCSS: true (project.config.js) —
+ * the compiled result is inlined into the <head> of every page.
+ * Keep it tiny: first-screen layout only. */

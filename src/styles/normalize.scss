@@ -14,8 +14,6 @@
 html {
   scroll-behavior: smooth;
   text-size-adjust: 100%;
-  hanging-punctuation: first last;
-  overscroll-behavior: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -35,6 +33,7 @@ html {
 
 body {
   min-height: 100dvh;
+  background-color: var(--color-bg, #fff);
 }
 
 /* Typography */
@@ -150,9 +149,17 @@ summary {
   display: none;
 }
 
+/* Note: removing list-style also drops list semantics in VoiceOver/Safari —
+   add role="list" to semantic lists that must stay announced as lists */
 ul,
 ol {
   list-style: none;
+}
+
+/* Author display rules must never defeat the hidden attribute
+   (spollers.js and others toggle it) */
+[hidden] {
+  display: none !important;
 }
 
 /* Focus visible for accessibility */
@@ -165,19 +172,13 @@ ol {
   outline-offset: 2px;
 }
 
-/* Target smooth scrolling */
+/* Anchor targets stop below a fixed header (--header-height in vars.scss) */
 :target {
-  scroll-margin-block: 5ex;
+  scroll-margin-block-start: calc(var(--header-height, 0px) + 1rem);
 }
 
 /* Tables */
 table {
   border-collapse: collapse;
   border-spacing: 0;
-}
-
-/* Selection */
-::selection {
-  background-color: Highlight;
-  color: HighlightText;
 }

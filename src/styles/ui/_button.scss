@@ -3,6 +3,8 @@
  * Base button style — sizes are set where used
  * ───────────────────────────────────────────────────────────── */
 
+@use '../mixins' as *;
+
 .btn {
   display: inline-flex;
   align-items: center;
@@ -18,14 +20,14 @@
   cursor: pointer;
   user-select: none;
   border: 2px solid transparent;
-  border-radius: 8px;
+  border-radius: var(--radius);
   background-color: var(--black);
   color: var(--white);
   transition: opacity var(--transition-fast) ease;
-}
 
-.btn:hover {
-  opacity: 0.85;
+  @include hover {
+    opacity: 0.85;
+  }
 }
 
 .btn:active {

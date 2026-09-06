@@ -3,10 +3,12 @@
     "dbaeumer.vscode-eslint",
     "stylelint.vscode-stylelint",
     "esbenp.prettier-vscode",
+    "bradlc.vscode-tailwindcss",
     "formulahendry.auto-rename-tag",
     "streetsidesoftware.code-spell-checker",
     "streetsidesoftware.code-spell-checker-russian",
     "csstools.postcss",
-    "editorconfig.editorconfig"
+    "editorconfig.editorconfig",
+    "mikestead.dotenv"
   ]
 }

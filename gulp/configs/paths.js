@@ -52,11 +52,11 @@ const computedPaths = {
 };
 
 const globs = {
-  html: `${computedPaths.srcHtml}/**/*.${extensions.html}`,
   htmlPages: `${computedPaths.srcHtmlPages}/**/*.${extensions.html}`,
-  htmlComponents: [
-    `${computedPaths.srcHtmlLayouts}/**/*.${extensions.html}`,
-    `${computedPaths.srcHtmlComponents}/**/*.${extensions.html}`,
+  // Everything except pages: layouts, components and any other included partial
+  htmlShared: [
+    `${computedPaths.srcHtml}/**/*.${extensions.html}`,
+    `!${computedPaths.srcHtmlPages}/**/*.${extensions.html}`,
   ],
   styles: [`${computedPaths.srcStyles}/*.${extensions.styles}`, `!${computedPaths.srcStyles}/_*.${extensions.styles}`],
   stylesWatch: `${computedPaths.srcStyles}/**/*.${extensions.styles}`,

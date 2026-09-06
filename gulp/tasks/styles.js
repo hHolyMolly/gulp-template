@@ -10,10 +10,9 @@ const sass = gulpSass(sassEmbedded);
 export const styles = () => {
   const { gulp, paths, plugins, config } = app;
 
-  // Exclude critical.scss if disabled
-  const src = config.optimization.criticalCSS
-    ? paths.globs.styles
-    : [...paths.globs.styles, `!${paths.srcStyles}/critical.scss`];
+  // critical.scss never compiles to a standalone file —
+  // when enabled it is inlined into <head> by the html task
+  const src = [...paths.globs.styles, `!${paths.srcStyles}/critical.scss`];
 
   const postcssPlugins = [
     autoprefixer(),

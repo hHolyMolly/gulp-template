@@ -154,7 +154,8 @@ class Modal {
     const activePopup = document.querySelector(`${SELECTORS.popup}.${CLASSES.active}`);
 
     if (activePopup) {
-      this.close(activePopup, false);
+      // _close, not close — isLocked is already set for this switch
+      this._close(activePopup, false);
     } else {
       bodyLock();
     }
@@ -182,6 +183,10 @@ class Modal {
       this.isLocked = false;
     }, this.speed);
 
+    this._close(popup, unlock);
+  }
+
+  _close(popup, unlock = true) {
     popup.classList.remove(CLASSES.active);
     popup.removeAttribute('aria-modal');
     popup.removeAttribute('role');

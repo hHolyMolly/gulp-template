@@ -51,8 +51,9 @@ export const server = () => {
         return;
       }
 
+      // BrowserSync silently takes the next free port — log the real one
       const urls = bs.options.get('urls');
-      logServerStart(config.server.port, urls?.get('external'));
+      logServerStart(bs.options.get('port'), urls?.get('external'));
     }
   );
 };

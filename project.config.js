@@ -41,7 +41,7 @@ export const projectConfig = {
       js: isProd,
       images: isProd,
     },
-    criticalCSS: false, // include critical.scss in build
+    criticalCSS: false, // inline compiled critical.scss into <head> of every page
     sitemap: false, // generate sitemap.xml
     robots: false, // generate robots.txt
   },

@@ -19,7 +19,7 @@
 - **Images** — Sharp optimization, auto WebP, opt-in AVIF
 - **Vendors** — library files copied from `node_modules` into `dist`
 - **BrowserSync 3** — dev server, hot reload, 404 fallback
-- **Production** — Lightning CSS + Terser + html-minifier, sitemap, robots.txt
+- **Production** — Lightning CSS + Terser + html-minifier; optional sitemap, robots.txt, inline critical CSS
 - **Tailwind CSS v4** — optional, one command, zero patching
 - **WordPress Handoff** — self-sufficient `dist/` with Tailwind rebuild kit & CDN dev mode
 - **Code Quality** — ESLint 9, Prettier, Stylelint 17
@@ -43,9 +43,12 @@ pnpm dev
 | `pnpm build:dev`      | Development build (readable)            |
 | `pnpm build:prod`     | Production build (minified + optimized) |
 | `pnpm preview`        | Production build + preview server       |
+| `pnpm serve`          | Serve existing `dist/` (no rebuild)     |
+| `pnpm zip`            | Production build + `dist/` → zip        |
 | `pnpm lint`           | ESLint + Stylelint with auto-fix        |
 | `pnpm lint:check`     | Lint check only (CI)                    |
 | `pnpm format`         | Prettier formatting                     |
+| `pnpm format:check`   | Prettier check only (CI)                |
 | `pnpm tailwind:setup` | Add Tailwind CSS v4                     |
 | `pnpm clean:demo`     | Remove demo content, reset index.html   |
 | `pnpm clean`          | Remove `dist/`                          |
@@ -82,18 +85,22 @@ New SCSS partials: add a `@forward` line to `components/_index.scss` or `ui/_ind
 
 [`project.config.js`](project.config.js) — the only settings file:
 
-| Setting        | Description                                                        |
-| -------------- | ------------------------------------------------------------------ |
-| `server`       | Port, hostname, auto-open (values come from `.env`)                |
-| `optimization` | HTML/CSS/JS/image minification, sitemap, robots                    |
-| `tailwind`     | `'auto'` (on when `src/styles/tailwind.css` exists) / `true/false` |
-| `vendors`      | Files copied from `node_modules` into `dist/**/vendor/`            |
-| `images`       | WebP/AVIF/JPEG/PNG quality                                         |
-| `sprites`      | SVG sprite toggle and filename                                     |
-| `sizeReport`   | Gzip build size report                                             |
-| `postcss`      | Extra PostCSS plugins                                              |
+| Setting                    | Description                                                        |
+| -------------------------- | ------------------------------------------------------------------ |
+| `server`                   | Port, hostname, auto-open (values come from `.env`)                |
+| `sourceMaps`               | CSS/JS sourcemaps (dev only by default)                            |
+| `optimization`             | HTML/CSS/JS/image minification, sitemap, robots                    |
+| `optimization.criticalCSS` | Inline compiled `critical.scss` into `<head>` of every page        |
+| `tailwind`                 | `'auto'` (on when `src/styles/tailwind.css` exists) / `true/false` |
+| `vendors`                  | Files copied from `node_modules` into `dist/**/vendor/`            |
+| `images`                   | WebP/AVIF/JPEG/PNG quality                                         |
+| `sprites`                  | SVG sprite toggle and filename                                     |
+| `sizeReport`               | Gzip build size report                                             |
+| `postcss`                  | Extra PostCSS plugins                                              |
 
 Env: `.env.development` / `.env.production` (committed, no secrets) + `.env.local` (gitignored, wins). `PORT` and `SITE_URL` — hostname falls back to `http://localhost:<PORT>` automatically.
+
+> Changes to `project.config.js`, `.env.*` or the `vendors` list require a dev server restart.
 
 ## SVG Icons
 
@@ -104,6 +111,15 @@ Drop an SVG into `src/assets/sprites/` and include it anywhere:
 ```
 
 Icons size from `font-size` and color from `currentColor` (`.icon` in `ui/_icon.scss`).
+
+## Responsive Images
+
+The build creates a `.webp` sibling for every jpg/png (AVIF — opt-in via `images.avif`):
+
+```html
+@@include('components/_picture.html', { "src": "./assets/img/demo", "ext": "jpg", "alt": "…", "class": "", "loading":
+"lazy", "width": "1200", "height": "675" })
+```
 
 ## Vendor Libraries
 

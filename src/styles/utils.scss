@@ -3,9 +3,9 @@
  * Helper classes
  * ───────────────────────────────────────────────────────────── */
 
-/* Screen reader only */
-.sr-only,
-.screen-reader-text {
+/* Visually hidden, still read by screen readers */
+.visually-hidden,
+.sr-only {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -15,21 +15,6 @@
   clip-path: inset(50%);
   white-space: nowrap;
   border: 0;
-}
-
-.screen-reader-text:focus {
-  display: block;
-  width: auto;
-  height: auto;
-  padding: 15px 23px 14px;
-  clip-path: none;
-  background-color: #f1f1f1;
-  color: #21759b;
-  font-size: 0.875rem;
-  font-weight: 700;
-  line-height: normal;
-  text-decoration: none;
-  z-index: 100000;
 }
 
 /* Image background container */
@@ -61,18 +46,14 @@
   object-fit: cover;
 }
 
-/* SVG Icons */
-.icon {
-  display: inline-block;
-  fill: currentcolor;
-}
-
 /* Readable text width */
 .prose {
   max-inline-size: 75ch;
 }
 
-/* Lock scroll on body */
+/* Lock scroll on body (toggled by scripts/utils/bodyLock.js).
+   Fixed/absolute elements that jump when the scrollbar disappears
+   should get class="is-lock-padding" — bodyLock compensates their padding */
 .is-lock-scroll {
   overflow: hidden;
   overscroll-behavior: contain;

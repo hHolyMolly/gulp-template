@@ -6,6 +6,7 @@
  */
 
 import fs from 'node:fs';
+import readline from 'node:readline';
 import { resolvePath } from '../paths.js';
 
 const DEMO_COMPONENT = 'src/html/components/demo.html';
@@ -49,7 +50,29 @@ function log(message, type = 'success') {
   console.log(`    ${icons[type]} ${message}`);
 }
 
+function confirm(question) {
+  return new Promise((resolve) => {
+    const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+
+    rl.question(`  ${question} (y/N): `, (answer) => {
+      rl.close();
+      resolve(answer.toLowerCase() === 'y' || answer.toLowerCase() === 'yes');
+    });
+  });
+}
+
 console.log('\n  🧹 Demo cleanup\n');
+console.log(`  This will DELETE ${DEMO_COMPONENT}`);
+console.log(`  and OVERWRITE ${INDEX_PAGE} with a clean skeleton.\n`);
+
+const confirmed = await confirm('Do you want to continue?');
+
+if (!confirmed) {
+  console.log('\n  ❌ Cancelled.\n');
+  process.exit(0);
+}
+
+console.log('');
 
 if (fs.existsSync(resolvePath(DEMO_COMPONENT))) {
   fs.rmSync(resolvePath(DEMO_COMPONENT));

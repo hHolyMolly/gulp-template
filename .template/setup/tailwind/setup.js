@@ -86,7 +86,7 @@ async function setup() {
 
   try {
     log(`Installing ${config.packages.join(', ')}...`);
-    execSync(`pnpm add -D ${config.packages.join(' ')}`, { stdio: 'pipe' });
+    execSync(`pnpm add -D ${config.packages.join(' ')}`, { stdio: 'inherit' });
     log('Packages installed.', 'success');
   } catch (error) {
     log(`Install failed: ${error.message}`, 'error');

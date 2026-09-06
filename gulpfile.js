@@ -42,7 +42,7 @@ const watch = () => {
   const withTailwind = (task) => (config.tailwind.active ? gulp.series(task, tailwind) : task);
 
   gulp.watch(globs.htmlPages, withTailwind(html)).on('unlink', createUnlinkHandler(paths.srcHtmlPages, paths.build));
-  gulp.watch(globs.htmlComponents, withTailwind(htmlAll));
+  gulp.watch(globs.htmlShared, withTailwind(htmlAll));
   gulp
     .watch(globs.stylesWatch, styles)
     .on('unlink', createUnlinkHandler(paths.srcStyles, paths.buildStyles, { '.scss': '.css' }));
@@ -57,6 +57,10 @@ const watch = () => {
 
   if (config.tailwind.active) {
     gulp.watch(`${paths.srcStyles}/tailwind.css`, tailwind);
+  }
+
+  if (config.optimization.criticalCSS) {
+    gulp.watch(`${paths.srcStyles}/critical.scss`, htmlAll);
   }
 };
 
@@ -84,6 +88,11 @@ gulp.task('preview', server);
 ['SIGINT', 'SIGTERM'].forEach((signal) => {
   process.on(signal, () => {
     plugins.browserSync.exit();
+    // gulp-cli's exit listener flips the code to 1 because watch tasks never
+    // "complete" — register later so we run after it and restore a clean exit
+    process.on('exit', () => {
+      process.exitCode = 0;
+    });
     process.exit(0);
   });
 });

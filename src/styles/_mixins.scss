@@ -1,12 +1,74 @@
 /* ─────────────────────────────────────────────────────────────
  * Mixins & Functions
+ * Usage in any partial: @use '../mixins' as *; (or 'mixins' from root)
  * ───────────────────────────────────────────────────────────── */
 
 @use 'sass:math';
+@use 'sass:map';
+
+/* ─────────────────────────────────────────────────────────────
+ * Breakpoints (px)
+ * Keep in sync with JS defaults (dynamicAdapt / spollers use 767/768)
+ * ───────────────────────────────────────────────────────────── */
+
+$breakpoints: (
+  sm: 480,
+  md: 768,
+  lg: 992,
+  xl: 1230,
+);
+
+@function breakpoint($name) {
+  @if not map.has-key($breakpoints, $name) {
+    @error 'Unknown breakpoint "#{$name}". Available: #{map.keys($breakpoints)}';
+  }
+
+  @return map.get($breakpoints, $name);
+}
+
+/// Desktop-first: styles below the breakpoint
+/// @example scss
+///   @include media-down(md) { ... }   // @media (max-width: 767.98px)
+@mixin media-down($name) {
+  @media (max-width: #{breakpoint($name) - 0.02}px) {
+    @content;
+  }
+}
+
+/// Mobile-first: styles from the breakpoint and up
+/// @example scss
+///   @include media-up(md) { ... }     // @media (min-width: 768px)
+@mixin media-up($name) {
+  @media (min-width: #{breakpoint($name)}px) {
+    @content;
+  }
+}
+
+/// Styles between two breakpoints
+/// @example scss
+///   @include media-between(sm, lg) { ... }
+@mixin media-between($min, $max) {
+  @media (min-width: #{breakpoint($min)}px) and (max-width: #{breakpoint($max) - 0.02}px) {
+    @content;
+  }
+}
+
+/// Hover only on devices that actually hover (no sticky :hover on touch)
+/// @example scss
+///   .btn { @include hover { opacity: 0.85; } }
+@mixin hover {
+  @media (any-hover: hover) {
+    &:hover {
+      @content;
+    }
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+ * Functions
+ * ───────────────────────────────────────────────────────────── */
 
 /// Convert px to rem (base 16px)
-/// @param {Number} $px - Value in pixels
-/// @return {Number} Value in rem
 /// @example scss
 ///   font-size: rem(18);           // 1.125rem
 ///   padding: rem(20) rem(32);     // 1.25rem 2rem
@@ -15,12 +77,20 @@
 }
 
 /// Convert px to em (relative to parent font-size)
-/// @param {Number} $px - Value in pixels
-/// @param {Number} $base [16] - Parent font-size in px
-/// @return {Number} Value in em
 /// @example scss
 ///   font-size: em(14);            // 0.875em
 ///   font-size: em(14, 18);        // 0.7778em (14px relative to 18px parent)
 @function em($px, $base: 16) {
   @return math.div($px, $base) * 1em;
+}
+
+/// Fluid value between two viewport widths (px in, clamp() out)
+/// @example scss
+///   font-size: fluid(24, 48);              // 24px at 375px → 48px at 1230px
+///   padding-block: fluid(40, 96, 768);     // scales from 768px viewport
+@function fluid($min, $max, $vp-min: 375, $vp-max: 1230) {
+  $slope: math.div($max - $min, $vp-max - $vp-min);
+  $intercept: $min - $slope * $vp-min;
+
+  @return clamp(#{rem($min)}, #{rem($intercept)} + #{$slope * 100}vw, #{rem($max)});
 }
