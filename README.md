@@ -8,7 +8,7 @@
     <a href="https://github.com/hHolyMolly/gulp-template/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="License"></a>
   </p>
 
-  <p><a href="https://gulp-template-one.vercel.app">Live Demo</a></p>
+  <p><a href="https://gulp-template-seven.vercel.app">Live Demo</a></p>
 </div>
 
 <br />
