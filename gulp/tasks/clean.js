@@ -1,4 +1,4 @@
-import fs from 'fs/promises';
+import fs from 'node:fs/promises';
 import { logWarning } from '../utils/index.js';
 
 export const clean = async () => {
@@ -9,9 +9,4 @@ export const clean = async () => {
       logWarning(`Clean failed: ${error.message}`);
     }
   }
-};
-
-export const clearHtmlCache = (done) => {
-  delete app.plugins.cached.caches['html'];
-  done();
 };

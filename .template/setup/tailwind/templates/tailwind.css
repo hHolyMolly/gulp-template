@@ -1,3 +1,20 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* ─────────────────────────────────────────────────────────────
+ * Tailwind CSS v4 — CSS-first config
+ * Docs: https://tailwindcss.com/docs/theme
+ *
+ * The block between the tw-theme markers is inlined into pages for
+ * the CDN dev mode (WordPress handoff) — keep theme tokens inside it.
+ * @source lines stay outside: they only matter for the build.
+ * ───────────────────────────────────────────────────────────── */
+
+@import 'tailwindcss';
+
+/* Content sources (relative to this file) */
+@source '../html';
+@source '../scripts';
+
+/* tw-theme:start */
+@theme {
+  --font-sans: 'Roboto', sans-serif;
+}
+/* tw-theme:end */

@@ -1,18 +1,17 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 import { logWarning } from './logger.js';
 
 /**
- * Creates an unlink handler for gulp.watch that:
- * - Removes the corresponding build file + its .map sourcemap
- * - Clears gulp-remember cache entry (prevents ghost files)
+ * Creates an unlink handler for gulp.watch that removes the corresponding
+ * build file, its .map sourcemap and optional derived siblings (.webp/.avif).
  *
  * @param {string} srcBase - Source base directory
  * @param {string} buildBase - Build output directory
  * @param {Object} extMap - Extension mapping (e.g. { '.scss': '.css' })
- * @param {string|null} cacheId - gulp-cached/remember cache ID
+ * @param {string[]} siblingExts - Derived sibling extensions to remove (e.g. ['.webp', '.avif'])
  */
-export const createUnlinkHandler = (srcBase, buildBase, extMap = {}, cacheId = null) => {
+export const createUnlinkHandler = (srcBase, buildBase, extMap = {}, siblingExts = []) => {
   return (filePath) => {
     try {
       let relativePath = path.relative(srcBase, filePath);
@@ -23,24 +22,14 @@ export const createUnlinkHandler = (srcBase, buildBase, extMap = {}, cacheId = n
       }
 
       const buildPath = path.join(buildBase, relativePath);
+      const targets = [buildPath, `${buildPath}.map`];
 
-      try {
-        fs.unlinkSync(buildPath);
-      } catch {
-        // ignore
-      }
-      try {
-        fs.unlinkSync(`${buildPath}.map`);
-      } catch {
-        // ignore
+      for (const siblingExt of siblingExts) {
+        targets.push(buildPath.replace(path.extname(buildPath), siblingExt));
       }
 
-      if (cacheId) {
-        try {
-          app.plugins.remember.forget(cacheId, path.resolve(filePath));
-        } catch {
-          // ignore
-        }
+      for (const target of targets) {
+        fs.rmSync(target, { force: true });
       }
     } catch (error) {
       logWarning(`Unlink handler failed for ${filePath}: ${error.message}`);

@@ -1,10 +1,10 @@
 <div align="center">
   <h1>Gulp Template</h1>
-  <p>Modern Gulp 4 starter for fast frontend development</p>
+  <p>Modern Gulp 5 starter for fast frontend development</p>
 
   <p>
     <a href="https://nodejs.org"><img src="https://img.shields.io/badge/node-%3E%3D22-brightgreen?style=flat-square" alt="Node.js"></a>
-    <a href="https://gulpjs.com"><img src="https://img.shields.io/badge/gulp-4-cf4647?style=flat-square" alt="Gulp"></a>
+    <a href="https://gulpjs.com"><img src="https://img.shields.io/badge/gulp-5-cf4647?style=flat-square" alt="Gulp"></a>
     <a href="https://github.com/hHolyMolly/gulp-template/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="License"></a>
   </p>
 </div>
@@ -13,26 +13,16 @@
 
 ## Features
 
-- **SCSS** — Dart Sass, autoprefixer, media query merging
-- **HTML Includes** — `@@include` partials with parameters (title, description, image)
-- **SVG Sprites** — automatic symbol sprite generation
-- **Image Optimization** — Sharp (JPG/PNG/WebP/GIF) + auto WebP conversion
-- **BrowserSync** — dev server with hot reload & 404 fallback
-- **Production Build** — HTML/CSS/JS minification, sitemap, robots.txt
-- **Code Quality** — ESLint 9 + Prettier + Stylelint
-- **Tailwind CSS** — optional, one command setup
-
-## Tech Stack
-
-| Category     | Technology                                                                                           |
-| ------------ | ---------------------------------------------------------------------------------------------------- |
-| Task Runner  | [Gulp 4](https://gulpjs.com)                                                                         |
-| Styling      | [Dart Sass](https://sass-lang.com) + [PostCSS](https://postcss.org) (Autoprefixer)                   |
-| Templates    | [gulp-file-include](https://github.com/haoxins/gulp-file-include)                                    |
-| Dev Server   | [BrowserSync](https://browsersync.io)                                                                |
-| Images       | [Sharp](https://sharp.pixelplumbing.com) + auto WebP                                                 |
-| Icons        | [SVG Sprite](https://github.com/svg-sprite/svg-sprite) + [SVGO](https://svgo.dev)                    |
-| Code Quality | [ESLint 9](https://eslint.org) + [Prettier](https://prettier.io) + [Stylelint](https://stylelint.io) |
+- **SCSS** — Dart Sass (sass-embedded), Autoprefixer, media query merging
+- **HTML Includes** — `@@include` partials with parameters
+- **SVG Sprites** — symbol sprite + `_icon.html` partial
+- **Images** — Sharp optimization, auto WebP, opt-in AVIF
+- **Vendors** — library files copied from `node_modules` into `dist`
+- **BrowserSync 3** — dev server, hot reload, 404 fallback
+- **Production** — Lightning CSS + Terser + html-minifier, sitemap, robots.txt
+- **Tailwind CSS v4** — optional, one command, zero patching
+- **WordPress Handoff** — self-sufficient `dist/` with Tailwind rebuild kit & CDN dev mode
+- **Code Quality** — ESLint 9, Prettier, Stylelint 17
 
 ## Quick Start
 
@@ -43,19 +33,21 @@ pnpm install
 pnpm dev
 ```
 
-> **Requirements:** Node.js 22+, pnpm
+> Node.js 22+, pnpm 10+
 
 ## Commands
 
 | Command               | Description                             |
 | --------------------- | --------------------------------------- |
 | `pnpm dev`            | Dev server with hot reload              |
-| `pnpm build:dev`      | Development build (no minification)     |
+| `pnpm build:dev`      | Development build (readable)            |
 | `pnpm build:prod`     | Production build (minified + optimized) |
-| `pnpm preview`        | Production build + local preview server |
+| `pnpm preview`        | Production build + preview server       |
 | `pnpm lint`           | ESLint + Stylelint with auto-fix        |
+| `pnpm lint:check`     | Lint check only (CI)                    |
 | `pnpm format`         | Prettier formatting                     |
-| `pnpm tailwind:setup` | Add Tailwind CSS to project             |
+| `pnpm tailwind:setup` | Add Tailwind CSS v4                     |
+| `pnpm clean:demo`     | Remove demo content, reset index.html   |
 | `pnpm clean`          | Remove `dist/`                          |
 | `pnpm clean:cache`    | Clear build & linter caches             |
 | `pnpm clean:all`      | Remove `node_modules/` and `dist/`      |
@@ -65,60 +57,100 @@ pnpm dev
 ```
 src/
 ├── html/
-│   ├── layouts/          # Shared partials (_head, _header, _footer, _modals)
+│   ├── layouts/          # _head, _header, _footer, _modals
 │   ├── pages/            # Each file → dist/*.html
-│   └── components/       # Reusable HTML blocks
+│   └── components/       # Reusable blocks (_icon.html, demo.html)
 ├── styles/
 │   ├── vars.scss         # CSS custom properties
 │   ├── normalize.scss    # CSS reset
-│   ├── fonts.scss        # @font-face declarations
-│   ├── main.scss         # Main styles (auto-imports components/*)
-│   ├── ui.scss           # UI components
+│   ├── fonts.scss        # @font-face
+│   ├── main.scss         # Layout + components/_index.scss
+│   ├── ui.scss           # UI elements via ui/_index.scss
 │   ├── utils.scss        # Utility classes
-│   └── critical.scss     # Above-the-fold styles (optional)
+│   └── critical.scss     # Above-the-fold (optional)
 ├── scripts/
-│   ├── app.js            # Entry point
-│   ├── components/       # JS components (modals, sliders, spollers, etc.)
-│   └── utils/            # Helpers (DOM, debounce, bodyLock)
+│   ├── app.js            # Entry — native ES modules, no bundler
+│   ├── components/       # modals, sliders, spollers, …
+│   └── utils/            # DOM, debounce, bodyLock
 └── assets/
-    ├── fonts/            # Font files
-    ├── img/              # Images (auto WebP + optimization)
-    ├── sprites/          # SVG icons → sprite.symbol.svg
-    └── video/            # Video files
+    ├── fonts/  img/  sprites/  video/
 ```
+
+New SCSS partials: add a `@forward` line to `components/_index.scss` or `ui/_index.scss`.
 
 ## Configuration
 
-All settings are in [`project.config.js`](project.config.js):
+[`project.config.js`](project.config.js) — the only settings file:
 
-| Setting        | Description                                     |
-| -------------- | ----------------------------------------------- |
-| `server`       | Port, hostname, auto-open browser               |
-| `optimization` | HTML/CSS/JS/image minification, sitemap, robots |
-| `images`       | WebP/JPEG/PNG quality and compression           |
-| `sprites`      | SVG sprite toggle and filename                  |
-| `sizeReport`   | Gzip build size analysis                        |
-| `postcss`      | Additional PostCSS plugins                      |
+| Setting        | Description                                                        |
+| -------------- | ------------------------------------------------------------------ |
+| `server`       | Port, hostname, auto-open (values come from `.env`)                |
+| `optimization` | HTML/CSS/JS/image minification, sitemap, robots                    |
+| `tailwind`     | `'auto'` (on when `src/styles/tailwind.css` exists) / `true/false` |
+| `vendors`      | Files copied from `node_modules` into `dist/**/vendor/`            |
+| `images`       | WebP/AVIF/JPEG/PNG quality                                         |
+| `sprites`      | SVG sprite toggle and filename                                     |
+| `sizeReport`   | Gzip build size report                                             |
+| `postcss`      | Extra PostCSS plugins                                              |
 
-Environment variables: `.env.development` / `.env.production`.
+Env: `.env.development` / `.env.production` (committed, no secrets) + `.env.local` (gitignored, wins). `PORT` and `SITE_URL` — hostname falls back to `http://localhost:<PORT>` automatically.
 
-## Build Pipeline
+## SVG Icons
 
-**Development** — `pnpm dev`
+Drop an SVG into `src/assets/sprites/` and include it anywhere:
 
-```
-clean → [html, styles, scripts, images, sprites, assets] → watch + BrowserSync
-```
-
-Sourcemaps enabled, no minification, file caching for fast rebuilds.
-
-**Production** — `pnpm build:prod`
-
-```
-clean → [html, styles, scripts, images, sprites, assets] → minify → sitemap + robots.txt
+```html
+@@include('components/_icon.html', {"name": "arrow-right"})
 ```
 
-HTML/CSS/JS minified, images optimized via Sharp, sourcemaps removed.
+Icons size from `font-size` and color from `currentColor` (`.icon` in `ui/_icon.scss`).
+
+## Vendor Libraries
+
+```bash
+pnpm add swiper
+```
+
+```js
+// project.config.js
+vendors: [
+  'swiper/swiper-bundle.min.js',
+  { from: 'swiper/swiper-bundle.min.css', to: 'swiper.min.css' },
+],
+```
+
+```html
+<link rel="stylesheet" href="./styles/vendor/swiper.min.css" />
+<script src="./scripts/vendor/swiper-bundle.min.js"></script>
+<script src="./scripts/app.js" type="module"></script>
+```
+
+## Tailwind CSS v4 (optional)
+
+```bash
+pnpm tailwind:setup   # installs packages, creates src/styles/tailwind.css + demo page
+pnpm dev              # restart — pipeline activates automatically
+```
+
+CSS-first config in `src/styles/tailwind.css` (`@theme`, `@source`). Additive — SCSS entries untouched.
+
+## WordPress Handoff
+
+`pnpm build:prod` makes `dist/` self-sufficient inside a theme:
+
+- JS ships as readable per-file ES modules; set `optimization.minify.*: false` for fully hand-editable output
+- **Rebuild kit** (Tailwind active): `dist/package.json` + `TAILWIND.md` — after editing `.php`: `npm install && npm run css`
+- **CDN dev mode**: on `localhost` / `*.local` / `*.test` pages auto-load the pinned Tailwind browser build (SRI) — new classes work without rebuild; production hosts load nothing. Override: `window.TW_CDN = true/false`
+
+## Production Headers
+
+Set on the server (static output can't):
+
+```nginx
+add_header X-Content-Type-Options "nosniff" always;
+add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+# CSP on staging with Tailwind CDN dev mode: allow script-src https://cdn.jsdelivr.net
+```
 
 ## License
 

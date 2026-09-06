@@ -1,4 +1,3 @@
-import notifier from 'node-notifier';
 import pkg from '../../package.json' with { type: 'json' };
 
 const colors = {
@@ -55,11 +54,6 @@ export const logBuildEnd = (done) => {
   console.log('');
   console.log(divider());
   console.log('');
-  notifier.notify({
-    title: pkg.name,
-    message: `Build completed \u2014 ${app.config.env.isProd ? 'production' : 'development'}`,
-    sound: true,
-  });
   done();
 };
 
@@ -87,4 +81,9 @@ export const logSuccess = (message) => {
 
 export const logWarning = (message) => {
   console.log(`  ${c.yellow}⚠${c.reset} ${message}`);
+};
+
+export const logError = (title, error) => {
+  const message = error?.message || String(error);
+  console.log(`  ${c.red}✗${c.reset} ${c.bold}${title}${c.reset} ${c.red}${message}${c.reset}`);
 };

@@ -1,10 +1,11 @@
-import * as dartSass from 'sass';
-import gulpDartSass from 'gulp-dart-sass';
-import sassGlob from 'gulp-sass-glob-use-forward';
+import gulpSass from 'gulp-sass';
+import * as sassEmbedded from 'sass-embedded';
 import postcss from 'gulp-postcss';
 import autoprefixer from 'autoprefixer';
 import sortMediaQueries from 'postcss-sort-media-queries';
-import { sizeReporter } from '../utils/index.js';
+import { sizeReporter, handleError, cssMinify } from '../utils/index.js';
+
+const sass = gulpSass(sassEmbedded);
 
 export const styles = () => {
   const { gulp, paths, plugins, config } = app;
@@ -20,17 +21,21 @@ export const styles = () => {
     ...(config.postcss?.plugins || []),
   ];
 
-  return gulp
+  let stream = gulp
     .src(src, { sourcemaps: config.sourceMaps })
-    .pipe(plugins.errorHandler('Styles'))
-    .pipe(sassGlob())
     .pipe(
-      gulpDartSass({
-        logger: dartSass.Logger.silent,
+      sass({
+        logger: sassEmbedded.Logger.silent,
         loadPaths: [paths.src, 'node_modules'],
-      })
+      }).on('error', handleError('Styles'))
     )
-    .pipe(postcss(postcssPlugins))
+    .pipe(postcss(postcssPlugins).on('error', handleError('PostCSS')));
+
+  if (config.optimization.minify.css) {
+    stream = stream.pipe(cssMinify());
+  }
+
+  return stream
     .pipe(sizeReporter('CSS'))
     .pipe(gulp.dest(paths.buildStyles, { sourcemaps: config.sourceMaps ? '.' : false }))
     .pipe(plugins.browserSync.stream());

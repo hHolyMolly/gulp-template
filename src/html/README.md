@@ -1,6 +1,6 @@
 # HTML Templates
 
-Each page is a standalone HTML document. Shared parts (`<head>`, header, footer, modals) are included via `@@include` with parameters.
+Each page is a standalone document. Shared parts are included via `@@include` with parameters. Paths are relative to `src/html/`.
 
 ## Structure
 
@@ -10,9 +10,11 @@ html/
 │   ├── _head.html         # <head> meta, OG tags, styles
 │   ├── _header.html       # Site header
 │   ├── _footer.html       # Site footer
-│   └── _modals.html       # Modal wrapper + script
+│   ├── _modals.html       # Modal wrapper + script
+│   └── _tailwind-cdn.html # Tailwind CDN dev mode (prod builds only)
 ├── components/
-│   └── demo.html          # Demo section (delete after starting)
+│   ├── _icon.html         # SVG sprite icon
+│   └── demo.html          # Demo section (pnpm clean:demo)
 └── pages/
     ├── index.html         # → dist/index.html
     ├── template.html      # → dist/template.html (starter page)
@@ -21,50 +23,46 @@ html/
 
 ## Creating a Page
 
-Use `template.html` as a base. Each page passes `title`, `description`, and `image` to the shared `_head.html` layout:
+Copy `template.html`. Every page passes params to `_head.html`:
 
 ```html
-<!doctype html>
-<html lang="en">
-  <head>
-    <!-- prettier-ignore -->
-    @@include('layouts/_head.html', {
-      "title": "About",
-      "description": "About page description",
-      "image": "./assets/img/previews/global.webp"
-    })
-  </head>
-
-  <body>
-    @@include('layouts/_header.html')
-
-    <main class="page">
-      <section class="about">
-        <div class="container">
-          <h1>About</h1>
-        </div>
-      </section>
-    </main>
-
-    @@include('layouts/_footer.html') @@include('layouts/_modals.html')
-
-    <script src="./scripts/app.js" type="module"></script>
-  </body>
-</html>
+<!-- prettier-ignore -->
+@@include('layouts/_head.html', {
+  "title": "About",
+  "description": "About page description",
+  "image": "./assets/img/previews/global.webp"
+})
 ```
 
-## Parameters
+| Parameter     | Used for                      |
+| ------------- | ----------------------------- |
+| `title`       | `<title>` + OG/Twitter title  |
+| `description` | Meta + OG/Twitter description |
+| `image`       | OG/Twitter Card preview       |
 
-| Parameter     | Description                               | Example                               |
-| ------------- | ----------------------------------------- | ------------------------------------- |
-| `title`       | Page title & OG/Twitter title             | `"Home Page"`                         |
-| `description` | Meta description & OG/Twitter description | `"Page description"`                  |
-| `image`       | OG & Twitter Card preview image           | `"./assets/img/previews/global.webp"` |
+## Icons
 
-## Include Syntax
+Add an SVG to `src/assets/sprites/`, then:
 
 ```html
-@@include('layouts/_header.html') @@include('components/card.html')
+@@include('components/_icon.html', {"name": "arrow-right"})
 ```
 
-Paths are relative to `src/html/`.
+## Context Variables (`@@if`)
+
+| Variable      | True when                          |
+| ------------- | ---------------------------------- |
+| `tailwind`    | Tailwind pipeline active           |
+| `tailwindCdn` | Tailwind active + production build |
+
+Used by `_head.html` — vanilla projects emit nothing.
+
+## Vendor Libraries
+
+Classic tags **before** the module entry (globals like `window.Swiper`):
+
+```html
+<link rel="stylesheet" href="./styles/vendor/swiper.min.css" />
+<script src="./scripts/vendor/swiper-bundle.min.js"></script>
+<script src="./scripts/app.js" type="module"></script>
+```

@@ -1,33 +1,47 @@
-import webp from 'gulp-webp';
-import { sizeReporter } from '../utils/index.js';
+import { sizeReporter, sharpOptimize, svgoOptimize, imageToFormat } from '../utils/index.js';
 
 export const images = () => {
-  const { gulp, paths, plugins } = app;
+  const { gulp, paths, plugins, config } = app;
 
-  return gulp
-    .src(paths.globs.images)
-    .pipe(plugins.errorHandler('Images'))
-    .pipe(plugins.newer(paths.buildImages))
+  let stream = gulp.src(paths.globs.images, { encoding: false, since: gulp.lastRun(images) });
+
+  // Single pass: optimize on the way to dist (no re-reading dist afterwards)
+  if (config.optimization.minify.images) {
+    stream = stream.pipe(sharpOptimize()).pipe(svgoOptimize());
+  }
+
+  return stream
     .pipe(sizeReporter('Images', { showFiles: true }))
     .pipe(gulp.dest(paths.buildImages))
     .pipe(plugins.browserSync.stream());
 };
 
-export const imagesWebp = () => {
-  const { gulp, paths, plugins, config } = app;
+const rasterSources = () => `${app.paths.srcImages}/**/*.{jpg,jpeg,png}`;
 
-  if (!config.images.webp.enabled) {
+export const imagesWebp = () => {
+  const { gulp, paths, config } = app;
+
+  if (!config.images.webp?.enabled) {
     return Promise.resolve();
   }
 
-  // Only jpg/jpeg/png, exclude already webp
-  const src = [`${paths.srcImages}/**/*.{jpg,jpeg,png}`, `!${paths.srcImages}/**/*.webp`];
+  return gulp
+    .src(rasterSources(), { encoding: false, since: gulp.lastRun(imagesWebp) })
+    .pipe(imageToFormat('webp', { quality: config.images.webp.quality ?? 80 }))
+    .pipe(sizeReporter('WebP', { showFiles: false }))
+    .pipe(gulp.dest(paths.buildImages));
+};
+
+export const imagesAvif = () => {
+  const { gulp, paths, config } = app;
+
+  if (!config.images.avif?.enabled) {
+    return Promise.resolve();
+  }
 
   return gulp
-    .src(src)
-    .pipe(plugins.errorHandler('WebP'))
-    .pipe(plugins.newer({ dest: paths.buildImages, ext: '.webp' }))
-    .pipe(webp({ quality: config.images.webp.quality }))
-    .pipe(sizeReporter('WebP', { showFiles: false }))
+    .src(rasterSources(), { encoding: false, since: gulp.lastRun(imagesAvif) })
+    .pipe(imageToFormat('avif', { quality: config.images.avif.quality ?? 60 }))
+    .pipe(sizeReporter('AVIF', { showFiles: false }))
     .pipe(gulp.dest(paths.buildImages));
 };

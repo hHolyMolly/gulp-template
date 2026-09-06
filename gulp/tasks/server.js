@@ -18,12 +18,21 @@ export const server = () => {
       middleware: [
         // Serve 404.html for unmatched routes (dev only)
         (req, res, next) => {
-          const url = req.url.split('?')[0];
+          let url;
+          try {
+            url = decodeURIComponent(req.url.split('?')[0]);
+          } catch {
+            return next();
+          }
 
           // Let BrowserSync handle static assets and existing files
           if (path.extname(url)) return next();
 
-          const resolved = path.join(paths.build, url);
+          // Reject path traversal — only look up files inside the build dir
+          const buildRoot = path.resolve(paths.build);
+          const resolved = path.resolve(buildRoot, `.${path.posix.normalize(`/${url}`)}`);
+          if (resolved !== buildRoot && !resolved.startsWith(buildRoot + path.sep)) return next();
+
           if (fs.existsSync(resolved) || fs.existsSync(`${resolved}.html`)) return next();
 
           const page404 = path.join(paths.build, '404.html');

@@ -7,8 +7,8 @@
 // Mixins & Functions (rem, em)
 @use 'mixins' as *;
 
-// Components (auto-import all files from folder)
-@use 'components/*';
+// Components (registered in components/_index.scss)
+@use 'components';
 
 // ─────────────────────────────────────────────────────────────
 // Layout

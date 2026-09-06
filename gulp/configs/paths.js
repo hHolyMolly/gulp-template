@@ -24,7 +24,7 @@ const folders = {
 };
 
 const extensions = {
-  styles: '{css,scss}',
+  styles: 'scss',
   scripts: 'js',
   html: 'html',
   images: '{jpg,jpeg,png,gif,ico,webp,svg}',

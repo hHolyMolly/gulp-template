@@ -3,10 +3,12 @@
  *
  * This file contains user-facing settings only.
  * Directory structure and internal paths are managed by gulp/configs/paths.js
+ * PORT / SITE_URL come from .env files (see gulp/configs/env.js)
  */
 
-const isDev = process.env.NODE_ENV !== 'production';
-const isProd = process.env.NODE_ENV === 'production';
+import { env } from './gulp/configs/env.js';
+
+const { isDev, isProd } = env;
 
 export const projectConfig = {
   // ─────────────────────────────────────────────────────────
@@ -20,8 +22,8 @@ export const projectConfig = {
   // ─────────────────────────────────────────────────────────
 
   server: {
-    port: Number(process.env.PORT) || 3000,
-    hostname: process.env.SITE_URL || 'http://localhost:3000',
+    port: env.port, // PORT from .env
+    hostname: env.siteUrl, // SITE_URL from .env, falls back to http://localhost:<port>
     open: true, // open browser on `pnpm dev`
   },
 
@@ -33,6 +35,7 @@ export const projectConfig = {
 
   optimization: {
     minify: {
+      // Tip: hand-editable dist (e.g. WordPress handoff) → set these to false
       html: isProd,
       css: isProd,
       js: isProd,
@@ -44,6 +47,28 @@ export const projectConfig = {
   },
 
   // ─────────────────────────────────────────────────────────
+  // Tailwind CSS (optional — install with `pnpm tailwind:setup`)
+  // 'auto' = active when src/styles/tailwind.css exists
+  // true / false = force on / off
+  // ─────────────────────────────────────────────────────────
+
+  tailwind: {
+    enabled: 'auto',
+  },
+
+  // ─────────────────────────────────────────────────────────
+  // Vendor Libraries
+  // Prebuilt files copied from node_modules into dist —
+  // .css → dist/styles/vendor/, everything else → dist/scripts/vendor/
+  // Install the package first, then list the file. Restart dev after edits.
+  // ─────────────────────────────────────────────────────────
+
+  vendors: [
+    // 'swiper/swiper-bundle.min.js',
+    // { from: 'swiper/swiper-bundle.min.css', to: 'swiper.min.css' },
+  ],
+
+  // ─────────────────────────────────────────────────────────
   // Images
   // ─────────────────────────────────────────────────────────
 
@@ -51,6 +76,10 @@ export const projectConfig = {
     webp: {
       enabled: true,
       quality: 80,
+    },
+    avif: {
+      enabled: false, // opt-in: smaller than webp, slower to encode
+      quality: 60,
     },
     jpeg: {
       quality: 80,

@@ -1,6 +1,3 @@
-ignoredBuiltDependencies:
-  - '@parcel/watcher'
-  - es5-ext
-  - esbuild
-  - fsevents
-  - sharp
+# Supply-chain protection: only install package versions published at least
+# 3 days ago (4320 min). Bypass for a hotfix: pnpm add <pkg> --config.minimum-release-age=0
+minimumReleaseAge: 4320

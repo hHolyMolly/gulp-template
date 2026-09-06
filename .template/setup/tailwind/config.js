@@ -1,99 +1,31 @@
 /**
  * Tailwind Setup Configuration
- *
- * Note: dotenv is loaded via setup-env.js (imported first in setup.js).
- * Do NOT import dotenv here — ESM static imports evaluate before side effects.
  */
 
 // Directory names (mirrors gulp/configs/paths.js)
-const folders = {
+export const folders = {
   src: 'src',
   styles: 'styles',
-  scripts: 'scripts',
   html: 'html',
-  layouts: 'layouts',
-};
-
-export { folders };
-
-// ─────────────────────────────────────────────────────────────
-// Package
-// ─────────────────────────────────────────────────────────────
-
-export const packageName = 'tailwindcss';
-export const version = '3.4.17';
-
-// ─────────────────────────────────────────────────────────────
-// Server
-// ─────────────────────────────────────────────────────────────
-
-export const server = {
-  port: process.env.PORT || 3000,
-  host: process.env.HOST || 'localhost',
+  pages: 'pages',
 };
 
 // ─────────────────────────────────────────────────────────────
-// Files
+// Packages (Tailwind v4, CSS-first config)
+// ─────────────────────────────────────────────────────────────
+
+export const packages = ['tailwindcss@^4', '@tailwindcss/postcss@^4'];
+
+// ─────────────────────────────────────────────────────────────
+// Files created by the setup
 // ─────────────────────────────────────────────────────────────
 
 export const files = {
-  tailwindConfig: 'tailwind.config.js',
-  tailwindCSS: 'tailwind.css',
-  tailwindDemo: 'tailwind.html',
-  head: '_head.html',
+  // Creating this file activates the Tailwind pipeline (tailwind.enabled: 'auto')
+  entry: `${folders.src}/${folders.styles}/tailwind.css`,
+  demo: `${folders.src}/${folders.html}/${folders.pages}/tailwind.html`,
 };
-
-// ─────────────────────────────────────────────────────────────
-// Paths
-// ─────────────────────────────────────────────────────────────
-
-export const paths = {
-  // Where to create tailwind config
-  config: {
-    dest: './',
-    filename: files.tailwindConfig,
-  },
-
-  // Where to create tailwind styles
-  styles: {
-    dest: `${folders.src}/${folders.styles}/`,
-    filename: files.tailwindCSS,
-  },
-
-  // Gulp task file
-  gulpTask: {
-    dest: 'gulp/tasks/',
-    filename: 'tailwind.js',
-  },
-
-  // HTML file to inject stylesheet link
-  head: `${folders.src}/${folders.html}/${folders.layouts}/${files.head}`,
-
-  // Demo page
-  demo: {
-    dest: `${folders.src}/${folders.html}/`,
-    filename: files.tailwindDemo,
-  },
-};
-
-// ─────────────────────────────────────────────────────────────
-// Options
-// ─────────────────────────────────────────────────────────────
-
-export const options = {
-  openBrowser: true,
-  copyDemoPage: true,
-  createStyles: true,
-  injectStylesheet: true,
-};
-
-// ─────────────────────────────────────────────────────────────
-// URLs
-// ─────────────────────────────────────────────────────────────
 
 export const urls = {
-  get demo() {
-    return `http://${server.host}:${server.port}/${paths.demo.filename}`;
-  },
-  docs: 'https://v3.tailwindcss.com',
+  docs: 'https://tailwindcss.com/docs',
 };

@@ -8,5 +8,30 @@
     "selector-max-id": [1, { "severity": "warning" }],
     "max-nesting-depth": [4, { "severity": "warning" }]
   },
+  "overrides": [
+    {
+      "files": ["**/*.css"],
+      "rules": {
+        "import-notation": null,
+        "at-rule-no-unknown": [
+          true,
+          {
+            "ignoreAtRules": [
+              "tailwind",
+              "theme",
+              "source",
+              "utility",
+              "variant",
+              "custom-variant",
+              "apply",
+              "reference",
+              "config",
+              "plugin"
+            ]
+          }
+        ]
+      }
+    }
+  ],
   "ignoreFiles": ["dist/**/*.css", "node_modules/**/*.css"]
 }

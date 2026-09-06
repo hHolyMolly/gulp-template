@@ -1,3 +1,5 @@
+import { handleError } from '../utils/index.js';
+
 export const sprite = () => {
   const { gulp, paths, plugins, config } = app;
 
@@ -28,6 +30,7 @@ export const sprite = () => {
               },
               { name: 'removeXMLNS' },
               {
+                // svg-sprite bundles svgo@2 — plugin name is cleanupIDs there
                 name: 'cleanupIDs',
                 params: {
                   remove: false,
@@ -43,8 +46,7 @@ export const sprite = () => {
 
   return gulp
     .src(paths.globs.sprites)
-    .pipe(plugins.errorHandler('Sprite'))
-    .pipe(plugins.svgSprite(spriteConfig))
+    .pipe(plugins.svgSprite(spriteConfig).on('error', handleError('Sprite')))
     .pipe(gulp.dest(paths.buildAssets))
     .pipe(plugins.browserSync.stream());
 };
