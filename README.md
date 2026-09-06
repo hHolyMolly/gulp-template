@@ -117,7 +117,7 @@ Icons size from `font-size` and color from `currentColor` (`.icon` in `ui/_icon.
 The build creates a `.webp` sibling for every jpg/png (AVIF — opt-in via `images.avif`):
 
 ```html
-@@include('components/_picture.html', { "src": "./assets/img/demo", "ext": "jpg", "alt": "…", "class": "", "loading":
+@@include('components/_picture.html', { "src": "./assets/img/photo", "ext": "jpg", "alt": "…", "class": "", "loading":
 "lazy", "width": "1200", "height": "675" })
 ```
 

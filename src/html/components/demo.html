@@ -226,16 +226,6 @@
     flex-shrink: 0;
   }
 
-  .demo__media {
-    margin-top: 2.5rem;
-  }
-
-  .demo__media img {
-    width: 100%;
-    height: auto;
-    border-radius: 12px;
-  }
-
   .demo__footer {
     position: absolute;
     bottom: 1rem;
@@ -455,20 +445,6 @@
         </svg>
         Prettier
       </span>
-    </div>
-
-    <!-- Responsive image demo: build generates the .webp sibling automatically -->
-    <div class="demo__media">
-      <!-- prettier-ignore -->
-      @@include('components/_picture.html', {
-        "src": "./assets/img/demo",
-        "ext": "jpg",
-        "alt": "Auto-generated WebP demo image",
-        "class": "",
-        "loading": "lazy",
-        "width": "1200",
-        "height": "675"
-      })
     </div>
   </div>
 

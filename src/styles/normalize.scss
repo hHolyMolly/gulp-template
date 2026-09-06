@@ -12,10 +12,13 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Smooth scroll with reduced motion support */
+/* Smooth scroll with reduced motion support.
+   overscroll-behavior + background kill the white rubber-band edges */
 html {
   scroll-behavior: smooth;
   text-size-adjust: 100%;
+  overscroll-behavior: none;
+  background-color: var(--color-bg, #fff);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -176,7 +179,7 @@ ol {
 
 /* Anchor targets stop below a fixed header (--header-height in vars.scss) */
 :target {
-  scroll-margin-block-start: calc(var(--header-height, 0px) + #{rem(16)});
+  scroll-margin-block-start: calc(var(--header-height, 0rem) + #{rem(16)});
 }
 
 /* Tables */
